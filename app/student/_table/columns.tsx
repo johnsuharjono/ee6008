@@ -4,7 +4,6 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
-
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -64,7 +63,11 @@ export const columns: ColumnDef<Project>[] = [
 			return <DataTableColumnHeader column={column} title='Thematic' />
 		},
 		cell: ({ row }) => <div>{row.getValue('thematic')}</div>,
+		filterFn: (row, id, value) => {
+			return value.includes(row.getValue(id))
+		},
 	},
+
 	{
 		id: 'actions',
 		enableHiding: false,

@@ -19,6 +19,10 @@ import {
 	Trash,
 	User,
 	X,
+	Home,
+	FilePlus,
+	List,
+	Pen,
 } from 'lucide-react'
 
 import type { LucideIcon } from 'lucide-react'
@@ -46,4 +50,8 @@ export const Icons = {
 	moon: Moon,
 	laptop: Laptop,
 	check: Check,
+	home: Home,
+	addProject: FilePlus,
+	viewProject: List,
+	mark: Pen,
 }

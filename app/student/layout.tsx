@@ -10,12 +10,12 @@ interface MarketingLayoutProps {
 	children: React.ReactNode
 }
 
-export default async function MarketingLayout({
+export default async function StudentLayout({
 	children,
 }: MarketingLayoutProps) {
 	return (
-		<div className='flex min-h-screen flex-col'>
-			<header className='container z-40 bg-background'>
+		<div className='flex min-h-screen flex-col bg-background/50'>
+			<header className='container z-40'>
 				<div className='flex h-20 items-center justify-between py-6'>
 					<MainNav
 						items={studentConfig.mainNav}
