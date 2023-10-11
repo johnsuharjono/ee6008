@@ -8,14 +8,13 @@ import { SideNav } from '@/components/sidebar-nav'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { Shell } from '@/components/shell'
+import { UserNav } from '@/components/user-nav'
 
-interface MarketingLayoutProps {
+interface FacultyLayoutProps {
 	children: React.ReactNode
 }
 
-export default async function FacultyLayout({
-	children,
-}: MarketingLayoutProps) {
+export default async function FacultyLayout({ children }: FacultyLayoutProps) {
 	return (
 		<div className='flex min-h-screen flex-col bg-background/50 space-y-6'>
 			<header className='z-40 border-b'>
@@ -24,16 +23,9 @@ export default async function FacultyLayout({
 						items={facultyConfig.mainNav}
 						homeUrl={facultyConfig.homeUrl}
 					/>
+
 					<nav className='flex items-center justify-end gap-4'>
-						<Link
-							href='/login'
-							className={cn(
-								buttonVariants({ variant: 'secondary', size: 'sm' }),
-								'px-4'
-							)}
-						>
-							Login
-						</Link>
+						<UserNav />
 						<ModeToggle />
 					</nav>
 				</div>

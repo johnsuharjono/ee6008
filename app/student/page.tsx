@@ -12,8 +12,8 @@ export default async function Home() {
 	return (
 		<section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
 			<div className='container flex max-w-[1280px] flex-col gap-4'>
-				<h1>Welcome back, Student!</h1>
-				<h3 className='opacity-60 font-medium tracking-tight'>
+				<h1 className='text-3xl font-semibold'>Welcome back, Student!</h1>
+				<h3 className='text-muted-foreground text-lg tracking-tight'>
 					Here are the list of projects available:
 				</h3>
 				<DataTable columns={columns} data={data} />

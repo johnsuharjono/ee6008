@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  STUDENT
+  FACULTY
+}
+
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  name     String?
+  role     UserRole @default(STUDENT)
+  Admin    Admin?
+  Faculty  Faculty?
+  Student  Student?
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  FacultyRole FacultyRole[]
+}
+
+model Admin {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Faculty {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  // one faculty member can have many project
+  Project Project[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FacultyRole {
+  id        String  @id @default(uuid())
+  facultyId String
+  faculty   User    @relation(fields: [facultyId], references: [id])
+  role      String
+  programme String?
+}
+
+model Student {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+
+  projectPlan ProjectPlan[]
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Registration Registration[]
+}
+
+model Project {
+  id          String @id @default(uuid())
+  title       String
+  description String
+
+  // one project handled by one faculty member
+  faculty   Faculty @relation(fields: [facultyId], references: [id])
+  facultyId String
+
+  // one project can have multiple student
+  students Student[]
+
+  // the project can be wishlisted by multiple students
+  project_plan ProjectPlan[]
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Registration Registration[]
+}
+
+model ProjectPlan {
+  id        String  @id @default(uuid())
+  studentId String
+  projectId String
+  student   Student @relation(fields: [studentId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, projectId])
+}
+
+model Registration {
+  id        String  @id @default(uuid())
+  studentId String
+  projectId String
+  student   Student @relation(fields: [studentId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id])
+  priority  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, projectId])
+}

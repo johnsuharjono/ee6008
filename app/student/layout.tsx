@@ -2,17 +2,15 @@ import Link from 'next/link'
 
 import { studentConfig } from '@/config/nav-config'
 import { MainNav } from '@/components/main-nav'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { ModeToggle } from '@/components/mode-toggle'
+import { UserNav } from '@/components/user-nav'
 
-interface MarketingLayoutProps {
+interface StudentLayoutProps {
 	children: React.ReactNode
 }
 
-export default async function StudentLayout({
-	children,
-}: MarketingLayoutProps) {
+export default async function StudentLayout({ children }: StudentLayoutProps) {
 	return (
 		<div className='flex min-h-screen flex-col bg-background/50'>
 			<header className='container z-40'>
@@ -21,18 +19,9 @@ export default async function StudentLayout({
 						items={studentConfig.mainNav}
 						homeUrl={studentConfig.homeUrl}
 					/>
-					{/* <nav>
-						<Link
-							href='/login'
-							className={cn(
-								buttonVariants({ variant: 'secondary', size: 'sm' }),
-								'px-4'
-							)}
-						>
-							Login
-						</Link>
-					</nav> */}
+
 					<nav className='flex items-center justify-end gap-4'>
+						<UserNav />
 						<ModeToggle />
 					</nav>
 				</div>
