@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
@@ -11,7 +11,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Icons } from './icons'
 import { signOut, useSession } from 'next-auth/react'
 
 export function UserNav() {
@@ -24,10 +23,9 @@ export function UserNav() {
 			<DropdownMenuTrigger asChild>
 				<Button variant='ghost' className='relative h-8 w-8 rounded-full'>
 					<Avatar className='h-8 w-8'>
-						<AvatarImage src='/avatars/01.png' alt='@shadcn' />
-						<AvatarFallback>
-							<Icons.user />
-						</AvatarFallback>
+						<span className='flex h-full w-full items-center justify-center rounded-full bg-muted'>
+							{user?.name?.charAt(0).toUpperCase()}
+						</span>
 					</Avatar>
 				</Button>
 			</DropdownMenuTrigger>

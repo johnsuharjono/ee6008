@@ -1,4 +1,4 @@
-import { CreateProposalForm } from '@/components/form/create-proposal-form'
+import { AddProjectForm } from '@/components/form/add-project-form'
 
 const CreateProposal = () => {
 	return (
@@ -9,8 +9,8 @@ const CreateProposal = () => {
 					Start creating your proposal by filling form below
 				</h2>
 			</div>
-			<div>
-				<CreateProposalForm />
+			<div className='max-w-[800px]'>
+				<AddProjectForm />
 			</div>
 		</div>
 	)
