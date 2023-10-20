@@ -9,7 +9,7 @@ const CreateProposal = () => {
 					Start creating your proposal by filling form below
 				</h2>
 			</div>
-			<div className='max-w-[800px]'>
+			<div>
 				<AddProjectForm />
 			</div>
 		</div>

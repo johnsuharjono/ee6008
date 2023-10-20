@@ -16,6 +16,13 @@ enum UserRole {
   FACULTY
 }
 
+enum ProjectStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
 model User {
   id       String   @id @default(uuid())
   email    String   @unique
@@ -76,9 +83,12 @@ model Student {
 }
 
 model Project {
-  id          String @id @default(uuid())
-  title       String
-  description String
+  id               String        @id @default(uuid())
+  title            String
+  description      String
+  programme        String
+  numberOfStudents Int
+  status           ProjectStatus @default(PENDING)
 
   // one project handled by one faculty member
   faculty   Faculty @relation(fields: [facultyId], references: [id])

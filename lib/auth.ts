@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { User } from '@prisma/client'
+import { Admin, Faculty, Student, User } from '@prisma/client'
 import { compare } from 'bcrypt'
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -30,6 +30,11 @@ export const authOptions: NextAuthOptions = {
 					where: {
 						email: credentials.email,
 					},
+					include: {
+						Admin: true,
+						Faculty: true,
+						Student: true,
+					},
 				})
 
 				if (!user) {
@@ -40,17 +45,18 @@ export const authOptions: NextAuthOptions = {
 					credentials.password,
 					user.password
 				)
-				console.log(isPasswordValid)
 
 				if (!isPasswordValid) {
 					return null
 				}
-
 				return {
 					id: String(user.id),
 					email: user.email,
 					name: user.name,
 					role: user.role,
+					Student: user.Student,
+					Faculty: user.Faculty,
+					Admin: user.Admin,
 				}
 			},
 		}),
@@ -58,11 +64,18 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		jwt: ({ token, user }) => {
 			if (user) {
-				const u = user as unknown as User
+				const u = user as unknown as User & {
+					Admin: Admin | null
+					Faculty: Faculty | null
+					Student: Student | null
+				}
 				return {
 					...token,
 					id: u.id,
 					role: u.role,
+					studentId: u.Student?.id,
+					facultyId: u.Faculty?.id,
+					adminId: u.Admin?.id,
 				}
 			}
 			return token
@@ -74,6 +87,9 @@ export const authOptions: NextAuthOptions = {
 					...session.user,
 					id: token.id,
 					role: token.role,
+					studentId: token.studentId,
+					facultyId: token.facultyId,
+					adminId: token.adminId,
 				},
 			}
 		},

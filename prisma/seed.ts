@@ -15,12 +15,12 @@ async function main() {
 		},
 		{
 			email: 'admin@example.com',
-			name: 'Admin User',
+			name: 'Alice',
 			role: UserRole.ADMIN,
 		},
 		{
 			email: 'faculty@example.com',
-			name: 'Faculty User',
+			name: 'Bob',
 			role: UserRole.FACULTY,
 		},
 	]

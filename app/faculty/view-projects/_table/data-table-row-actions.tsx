@@ -10,14 +10,17 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { redirect, useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface DataTableRowActionsProps<TData> {
 	row: Row<TData>
 }
 
-export function DataTableRowActions<TData>({
+export function DataTableRowActions<TData extends { id: string }>({
 	row,
 }: DataTableRowActionsProps<TData>) {
+	const router = useRouter()
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -30,8 +33,10 @@ export function DataTableRowActions<TData>({
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end' className='w-[160px]'>
-				<DropdownMenuItem onClick={() => console.log(row.original)}>
-					View detail
+				<DropdownMenuItem
+					onClick={() => router.push(`/faculty/project/${row.original.id}`)}
+				>
+					Edit
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

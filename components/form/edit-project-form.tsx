@@ -7,7 +7,6 @@ import { PROGRAMMES } from '@/config/programmes'
 import { toast } from 'sonner'
 import { useSession } from 'next-auth/react'
 import { User } from 'next-auth'
-import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -20,6 +19,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useForm } from 'react-hook-form'
 import {
 	Select,
 	SelectContent,
@@ -28,6 +28,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { Project } from '@prisma/client'
 
 const formSchema = z.object({
 	title: z
@@ -53,26 +54,41 @@ const formSchema = z.object({
 
 type ProposalFormValues = z.infer<typeof formSchema>
 
-export function AddProjectForm() {
+const defaultValues: Partial<ProposalFormValues> = {}
+
+export function EditProjectForm({ data }: { data: Project }) {
 	const session = useSession()
 	const user = session?.data?.user
+	const projectId = data.id
 
 	const form = useForm<ProposalFormValues>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {},
+		defaultValues: {
+			title: data.title,
+			programme: data.programme,
+			numberOfStudents: data.numberOfStudents,
+			description: data.description,
+		},
 	})
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		async function postProject(user: User | undefined) {
 			try {
+				const facultyId = await fetch(`/api/faculty/id?userId=${user?.id}`, {
+					method: 'GET',
+				})
+					.then((res) => res.json())
+					.then((res) => res.facultyId)
+
 				const response = await fetch('/api/faculty/project', {
-					method: 'POST',
+					method: 'PUT',
 					body: JSON.stringify({
 						title: values.title,
 						description: values.description,
 						numberOfStudents: values.numberOfStudents,
 						programme: values.programme,
-						facultyId: user?.facultyId,
+						facultyId: facultyId,
+						projectId: projectId,
 					}),
 				})
 
@@ -122,7 +138,10 @@ export function AddProjectForm() {
 						render={({ field }) => (
 							<FormItem className='md:col-span-1'>
 								<FormLabel>Number of Students</FormLabel>
-								<Select onValueChange={field.onChange}>
+								<Select
+									onValueChange={field.onChange}
+									defaultValue={data.numberOfStudents.toString()}
+								>
 									<FormControl>
 										<SelectTrigger>
 											<SelectValue placeholder='Select number of students' />
@@ -144,7 +163,10 @@ export function AddProjectForm() {
 						render={({ field }) => (
 							<FormItem className='md:col-span-2'>
 								<FormLabel>Programme</FormLabel>
-								<Select onValueChange={field.onChange}>
+								<Select
+									onValueChange={field.onChange}
+									defaultValue={data.programme}
+								>
 									<FormControl>
 										<SelectTrigger>
 											<SelectValue placeholder='Thematic programme for the project' />

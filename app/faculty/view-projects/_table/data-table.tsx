@@ -27,15 +27,6 @@ import {
 } from '@/components/ui/table'
 
 import { Button } from '@/components/ui/button'
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
-
-import { ChevronDown } from 'lucide-react'
 import { DataTableToolbar } from './data-table-toolbar'
 
 interface DataTableProps<TData, TValue> {

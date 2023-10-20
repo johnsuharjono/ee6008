@@ -17,19 +17,12 @@ export type Project = z.infer<typeof projectSchema>
 
 export const columns: ColumnDef<Project>[] = [
 	{
-		accessorKey: 'id',
-		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Id' />
-		},
-		cell: ({ row }) => <div className='capitalize'>{row.getValue('id')}</div>,
-	},
-	{
 		accessorKey: 'title',
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title='Title' />
 		},
 		cell: ({ row }) => (
-			<div className='capitalize min-w-[500px]'>{row.getValue('title')}</div>
+			<div className='capitalize min-w-[300px]'>{row.getValue('title')}</div>
 		),
 	},
 	{
@@ -39,7 +32,7 @@ export const columns: ColumnDef<Project>[] = [
 		),
 		cell: ({ row }) => {
 			const status = statuses.find(
-				(status) => status.value === row.getValue('status')
+				(status) => status.value.toUpperCase() === row.getValue('status')
 			)
 
 			if (!status) {
@@ -58,6 +51,26 @@ export const columns: ColumnDef<Project>[] = [
 		filterFn: (row, id, value) => {
 			return value.includes(row.getValue(id))
 		},
+	},
+	{
+		enableSorting: false,
+		accessorKey: 'numberOfStudents',
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title='Group size' />
+		},
+		cell: ({ row }) => (
+			<div className='capitalize'>{row.getValue('numberOfStudents')}</div>
+		),
+	},
+	{
+		enableSorting: false,
+		accessorKey: 'programme',
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title='Programme' />
+		},
+		cell: ({ row }) => (
+			<div className='capitalize'>{row.getValue('programme')}</div>
+		),
 	},
 	{
 		id: 'actions',
