@@ -43,10 +43,12 @@ export const facultyConfig: FacultyConfig = {
 
 export const adminConfig: AdminConfig = {
 	homeUrl: '/admin',
-	mainNav: [
+	mainNav: [],
+	sideNav: [
 		{
-			title: 'Project proposals',
-			href: '/faculty/proposals',
+			title: 'Users management',
+			href: '/admin/users',
+			icon: 'home',
 		},
 	],
 }

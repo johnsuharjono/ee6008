@@ -27,6 +27,7 @@ export type FacultyConfig = {
 export type AdminConfig = {
 	homeUrl: string
 	mainNav: MainNavItem[]
+	sideNav: SidebarNavItem[]
 }
 
 export type SidebarNavItem = {

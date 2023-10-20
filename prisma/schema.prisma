@@ -27,7 +27,7 @@ model User {
   id       String   @id @default(uuid())
   email    String   @unique
   password String
-  name     String?
+  name     String
   role     UserRole @default(STUDENT)
   Admin    Admin?
   Faculty  Faculty?
