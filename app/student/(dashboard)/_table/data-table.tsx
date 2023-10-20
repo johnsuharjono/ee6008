@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 
+import { DataTableToolbar } from './data-table-toolbar'
 import {
 	ColumnDef,
 	ColumnFiltersState,
@@ -25,12 +26,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
-
 import { Button } from '@/components/ui/button'
-
-import { DataTableToolbar } from './data-table-toolbar'
-import { useSession } from 'next-auth/react'
-import { authOptions } from '@/lib/auth'
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -71,12 +67,8 @@ export function DataTable<TData, TValue>({
 		getFacetedUniqueValues: getFacetedUniqueValues(),
 	})
 
-	// temporary test code
-	const session = useSession()
-
 	return (
 		<div className='w-full'>
-			{JSON.stringify(session)}
 			<div className='py-4'>
 				<DataTableToolbar table={table} />
 			</div>

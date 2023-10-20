@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma'
-import { revalidatePath } from 'next/cache'
 
 import { type NextRequest } from 'next/server'
 
@@ -19,8 +18,6 @@ export async function POST(request: NextRequest) {
 			},
 		},
 	})
-
-	revalidatePath('/faculty/view-projects')
 
 	return new Response(JSON.stringify({ project: project }), {
 		status: 200,
@@ -42,7 +39,19 @@ export async function PUT(request: NextRequest) {
 		},
 	})
 
-	revalidatePath('/faculty/view-projects')
+	return new Response(JSON.stringify({ project: project }), {
+		status: 200,
+	})
+}
+
+export async function DELETE(request: NextRequest) {
+	const body = await request.json()
+
+	const project = await prisma.project.delete({
+		where: {
+			id: body.projectId,
+		},
+	})
 
 	return new Response(JSON.stringify({ project: project }), {
 		status: 200,

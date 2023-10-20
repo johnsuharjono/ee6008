@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Project } from '@prisma/client'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
 	title: z
@@ -54,9 +55,8 @@ const formSchema = z.object({
 
 type ProposalFormValues = z.infer<typeof formSchema>
 
-const defaultValues: Partial<ProposalFormValues> = {}
-
 export function EditProjectForm({ data }: { data: Project }) {
+	const router = useRouter()
 	const session = useSession()
 	const user = session?.data?.user
 	const projectId = data.id
@@ -107,7 +107,9 @@ export function EditProjectForm({ data }: { data: Project }) {
 		toast.promise(postProject(user), {
 			loading: 'Loading...',
 			success: () => {
-				return `${values.title} proposals has been added`
+				router.push('/faculty/view-projects')
+				router.refresh()
+				return `${values.title} proposals has been updated`
 			},
 			error: 'Error',
 		})

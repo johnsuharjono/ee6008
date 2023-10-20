@@ -1,13 +1,10 @@
 import { DataTable } from './_table/data-table'
 import { columns } from './_table/columns'
-import { getProjects } from './_table/data/helper'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
 const CreateProposal = async () => {
-	const projects = await getProjects()
-
 	const session = await getServerSession(authOptions)
 	const user = session?.user
 
@@ -22,8 +19,6 @@ const CreateProposal = async () => {
 			},
 		},
 	})
-
-	console.log(myProjects)
 
 	return (
 		<div className='space-y-8'>
