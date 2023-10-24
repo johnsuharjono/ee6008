@@ -22,9 +22,9 @@ const StudentUser = async () => {
 	})
 
 	return (
-		<div>
+		<>
 			<DataTable columns={columns} data={dataSanitized} />
-		</div>
+		</>
 	)
 }
 

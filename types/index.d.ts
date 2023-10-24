@@ -30,18 +30,16 @@ export type AdminConfig = {
 	sideNav: SidebarNavItem[]
 }
 
-export type SidebarNavItem = {
-	title: string
-	disabled?: boolean
-	external?: boolean
-	icon?: keyof typeof Icons
-} & (
+export type SidebarNavItem =
 	| {
+			title: string
+			type: 'link'
+			disabled?: boolean
+			external?: boolean
 			href: string
-			items?: never
+			icon?: keyof typeof Icons
 	  }
 	| {
-			href?: string
-			items: NavLink[]
+			title: string
+			type: 'header'
 	  }
-)

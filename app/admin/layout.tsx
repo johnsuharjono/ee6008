@@ -1,6 +1,4 @@
-import Link from 'next/link'
-
-import { adminConfig, facultyConfig, studentConfig } from '@/config/nav-config'
+import { adminConfig } from '@/config/nav-config'
 import { MainNav } from '@/components/main-nav'
 
 import { ModeToggle } from '@/components/mode-toggle'
@@ -14,7 +12,7 @@ interface AdminLayoutProps {
 
 export default async function AdminLayout({ children }: AdminLayoutProps) {
 	return (
-		<div className='flex min-h-screen flex-col bg-background/50 space-y-6'>
+		<div className='flex min-h-screen flex-col bg-background/20 space-y-6'>
 			<header className='z-40 border-b'>
 				<div className='container flex h-16 items-center justify-between py-6'>
 					<MainNav items={adminConfig.mainNav} homeUrl={adminConfig.homeUrl} />
@@ -25,7 +23,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 					</nav>
 				</div>
 			</header>
-			<div className='container grid flex-1 gap-12 md:grid-cols-[200px_1fr]'>
+			<div className='container grid flex-1 gap-8 md:grid-cols-[200px_1fr]'>
 				<aside className='hidden w-[200px] flex-col md:flex'>
 					<SideNav items={adminConfig.sideNav} />
 				</aside>
