@@ -15,21 +15,21 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { AlertDialog, AlertDialogContent } from '@/components/ui/alert-dialog'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
 import { useState } from 'react'
-import ModalWrapper from '../../modals/modal-wrapper'
 import EditUserDataModal from '../../modals/edit-user-data-modal'
+import DeleteUserModal from '../../modals/delete-user-modal'
 
 interface DataTableRowActionsProps<TData> {
 	row: Row<TData>
 }
 
+type dialogToShow = 'name' | 'email' | 'password' | 'delete'
+
 export function DataTableRowActions<TData extends { id: string }>({
 	row,
 }: DataTableRowActionsProps<TData>) {
 	const [isModalOpen, setModalOpen] = useState<boolean>(false)
-	const [dialogToShow, setDialogToShow] = useState<string | null>(null)
+	const [dialogToShow, setDialogToShow] = useState<dialogToShow | null>(null)
 
 	return (
 		<AlertDialog open={isModalOpen}>
@@ -77,13 +77,25 @@ export function DataTableRowActions<TData extends { id: string }>({
 						</DropdownMenuPortal>
 					</DropdownMenuSub>
 
-					<DropdownMenuItem>Delete</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={() => {
+							setDialogToShow('delete')
+							setModalOpen(true)
+						}}
+					>
+						Delete
+					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
 
-			{/* Delete user modal */}
+			{/* Edit and delete user modal */}
 			<AlertDialogContent>
-				<ModalWrapper>
+				{dialogToShow === 'delete' ? (
+					<DeleteUserModal
+						setModalOpen={setModalOpen}
+						userId={row.original.id}
+					/>
+				) : (
 					<EditUserDataModal
 						field={dialogToShow}
 						setModalOpen={setModalOpen}
@@ -93,7 +105,7 @@ export function DataTableRowActions<TData extends { id: string }>({
 							userId: row.original.id,
 						}}
 					/>
-				</ModalWrapper>
+				)}
 			</AlertDialogContent>
 		</AlertDialog>
 	)

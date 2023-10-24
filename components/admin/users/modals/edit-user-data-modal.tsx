@@ -18,8 +18,8 @@ import { useEffect } from 'react'
 
 interface EditUserDataModalProps {
 	initialValue: { name?: string; userId: string; email?: string }
-	setModalOpen: (bool: boolean) => void
 	field: string | null
+	setModalOpen: (bool: boolean) => void
 }
 
 const initialState = {
@@ -62,7 +62,7 @@ const EditUserDataModal = ({
 	useEffect(() => {
 		if (state.status == 'OK') toast.success(state.message)
 		else if (state.status === 'ERROR') toast.error(state.message)
-	}, [state, toast])
+	}, [state.status, toast])
 
 	return (
 		<>

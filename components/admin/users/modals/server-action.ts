@@ -95,3 +95,29 @@ export async function editPassword(prevState: any, formData: FormData) {
 		return { message: `${err}`, status: 'ERROR' }
 	}
 }
+
+export async function deleteUser(prevState: any, formData: FormData) {
+	const schema = z.object({
+		userId: z.string().uuid(),
+	})
+
+	const data = schema.parse({
+		userId: formData.get('userId'),
+	})
+
+	try {
+		const user = await prisma.user.delete({
+			where: {
+				id: data.userId,
+			},
+		})
+		revalidatePath('/admin/users/manage-students/')
+
+		return {
+			message: `${user.name} deleted successfully!`,
+			status: 'OK',
+		}
+	} catch (err) {
+		return { message: `${err}`, status: 'ERROR' }
+	}
+}

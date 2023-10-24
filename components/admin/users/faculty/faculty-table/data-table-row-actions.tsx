@@ -8,66 +8,31 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuPortal,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { useRouter } from 'next/navigation'
-import { User } from 'next-auth'
-import { toast } from 'sonner'
+import { AlertDialog, AlertDialogContent } from '@/components/ui/alert-dialog'
+import { useState } from 'react'
+import EditUserDataModal from '../../modals/edit-user-data-modal'
+import DeleteUserModal from '../../modals/delete-user-modal'
 
 interface DataTableRowActionsProps<TData> {
 	row: Row<TData>
 }
 
+type dialogToShow = 'name' | 'email' | 'password' | 'delete'
+
 export function DataTableRowActions<TData extends { id: string }>({
 	row,
 }: DataTableRowActionsProps<TData>) {
-	const router = useRouter()
-
-	const handleDelete = async (row: Row<TData>) => {
-		async function deleteProject(projectId: string) {
-			try {
-				const response = await fetch('/api/faculty/project', {
-					method: 'DELETE',
-					body: JSON.stringify({
-						projectId,
-					}),
-				})
-
-				if (!response.ok) {
-					throw new Error('Network response was not ok')
-				}
-
-				const data = await response.json()
-				return data
-			} catch (error) {
-				console.error('Error:', error)
-				throw error
-			}
-		}
-
-		toast.promise(deleteProject(row.original.id), {
-			loading: 'Loading...',
-			success: (data) => {
-				router.refresh()
-				return `${data.project.title} proposals has been deleted`
-			},
-			error: 'Error',
-		})
-	}
+	const [isModalOpen, setModalOpen] = useState<boolean>(false)
+	const [dialogToShow, setDialogToShow] = useState<dialogToShow | null>(null)
 
 	return (
-		<AlertDialog>
+		<AlertDialog open={isModalOpen}>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
@@ -78,36 +43,69 @@ export function DataTableRowActions<TData extends { id: string }>({
 						<span className='sr-only'>Open menu</span>
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align='end' className='w-[160px]'>
-					<DropdownMenuItem
-						onClick={() => router.push(`/faculty/project/${row.original.id}`)}
-					>
-						Edit
-					</DropdownMenuItem>
 
-					<AlertDialogTrigger asChild>
-						<DropdownMenuItem>Delete</DropdownMenuItem>
-					</AlertDialogTrigger>
-				</DropdownMenuContent>
-			</DropdownMenu>
-			<AlertDialogContent>
-				<AlertDialogHeader>
-					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-					<AlertDialogDescription>
-						This action cannot be undone. This will permanently delete your
-						proposals.
-					</AlertDialogDescription>
-				</AlertDialogHeader>
-				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction
+				<DropdownMenuContent align='end' className='w-[160px]'>
+					<DropdownMenuSub>
+						<DropdownMenuSubTrigger>Edit</DropdownMenuSubTrigger>
+						<DropdownMenuPortal>
+							<DropdownMenuSubContent>
+								<DropdownMenuItem
+									onClick={() => {
+										setDialogToShow('name')
+										setModalOpen(true)
+									}}
+								>
+									Name
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() => {
+										setDialogToShow('email')
+										setModalOpen(true)
+									}}
+								>
+									Email
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() => {
+										setDialogToShow('password')
+										setModalOpen(true)
+									}}
+								>
+									Password
+								</DropdownMenuItem>
+							</DropdownMenuSubContent>
+						</DropdownMenuPortal>
+					</DropdownMenuSub>
+
+					<DropdownMenuItem
 						onClick={() => {
-							handleDelete(row)
+							setDialogToShow('delete')
+							setModalOpen(true)
 						}}
 					>
-						Continue
-					</AlertDialogAction>
-				</AlertDialogFooter>
+						Delete
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
+
+			{/* Edit and delete user modal */}
+			<AlertDialogContent>
+				{dialogToShow === 'delete' ? (
+					<DeleteUserModal
+						setModalOpen={setModalOpen}
+						userId={row.original.id}
+					/>
+				) : (
+					<EditUserDataModal
+						field={dialogToShow}
+						setModalOpen={setModalOpen}
+						initialValue={{
+							name: row.getValue('name'),
+							email: row.getValue('email'),
+							userId: row.original.id,
+						}}
+					/>
+				)}
 			</AlertDialogContent>
 		</AlertDialog>
 	)

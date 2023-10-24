@@ -17,14 +17,6 @@ export type Project = z.infer<typeof projectSchema>
 
 export const columns: ColumnDef<Project>[] = [
 	{
-		enableSorting: false,
-		accessorKey: 'id',
-		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Id' />
-		},
-		cell: ({ row }) => <div>{row.getValue('id')}</div>,
-	},
-	{
 		accessorKey: 'name',
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title='Name' />
@@ -40,14 +32,6 @@ export const columns: ColumnDef<Project>[] = [
 			return <DataTableColumnHeader column={column} title='Email' />
 		},
 		cell: ({ row }) => <div>{row.getValue('email')}</div>,
-	},
-	{
-		enableSorting: false,
-		accessorKey: 'facultyId',
-		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Faculty Id' />
-		},
-		cell: ({ row }) => <div>{row.getValue('facultyId')}</div>,
 	},
 	{
 		id: 'actions',

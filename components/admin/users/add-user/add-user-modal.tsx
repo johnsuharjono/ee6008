@@ -64,7 +64,7 @@ export const AddUserModal = ({
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			await fetch(`/api/users`, {
+			const res = await fetch(`/api/users`, {
 				body: JSON.stringify({
 					name: values.name,
 					email: values.email,
@@ -73,7 +73,22 @@ export const AddUserModal = ({
 				}),
 				method: 'POST',
 			})
-			toast.success('User created successfully.')
+
+			const data = await res.json()
+			console.log(data)
+
+			if (res.status === 200) {
+				toast.success(`User created succesfully`)
+			}
+
+			if (res.status === 409) {
+				toast.error('User already exists.')
+			}
+
+			if (res.status === 400) {
+				toast.error(data.message)
+			}
+
 			setModalOpen(false)
 			form.reset()
 			router.refresh()

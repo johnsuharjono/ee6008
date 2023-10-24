@@ -17,7 +17,7 @@ const StudentUser = async () => {
 			id: user.id,
 			name: user.name,
 			email: user.email,
-			facultyId: user.Student?.id || '',
+			studentId: user.Student?.id || '',
 		}
 	})
 
