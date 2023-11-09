@@ -10,10 +10,12 @@ import { statuses } from './data/config'
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>
+	semesterOptions: { label: string; value: string }[]
 }
 
 export function DataTableToolbar<TData>({
 	table,
+	semesterOptions,
 }: DataTableToolbarProps<TData>) {
 	const isFiltered = table.getState().columnFilters.length > 0
 
@@ -31,8 +33,15 @@ export function DataTableToolbar<TData>({
 				{table.getColumn('status') && (
 					<DataTableFacetedFilter
 						column={table.getColumn('status')}
-						title='Priority'
+						title='Status'
 						options={statuses}
+					/>
+				)}
+				{table.getColumn('semester') && (
+					<DataTableFacetedFilter
+						column={table.getColumn('semester')}
+						title='Semester'
+						options={semesterOptions}
 					/>
 				)}
 				{isFiltered && (

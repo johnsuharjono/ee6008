@@ -31,7 +31,7 @@ export const facultyConfig: FacultyConfig = {
 			type: 'link',
 		},
 		{
-			title: 'View all project',
+			title: 'View your project',
 			href: '/faculty/view-projects',
 			icon: 'viewProject',
 			type: 'link',

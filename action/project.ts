@@ -2,34 +2,49 @@
 
 import { prisma } from '@/lib/prisma'
 import {
+	AddProjectFormSchema,
 	AddTimelineDataFormSchema,
-	EditTimelineDataFormSchema,
+	EditProjectFormSchema,
 } from '@/lib/schema'
 import { z } from 'zod'
 
-export async function editTimeline(
-	data: z.infer<typeof EditTimelineDataFormSchema>
-) {
-	const formData = EditTimelineDataFormSchema.parse(data)
+export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
+	const {
+		description,
+		numberOfStudents,
+		programme,
+		semesterId,
+		title,
+		facultyId,
+	} = data
 
 	try {
-		await prisma.semesterTimeline.update({
-			where: {
-				semesterId: formData.semesterId,
-			},
+		const data = await prisma.project.create({
 			data: {
-				facultyProposalSubmissionStart: formData.facultyProposalSubmission.from,
-				facultyProposalSubmissionEnd: formData.facultyProposalSubmission.to,
-				studentRegistrationStart: formData.studentRegistration.from,
-				studentRegistrationEnd: formData.studentRegistration.to,
-				facultyMarkEntryStart: formData.markEntry.from,
-				facultyMarkEntryEnd: formData.markEntry.to,
-				studentPeerReviewStart: formData.peerReview.from,
-				studentPeerReviewEnd: formData.peerReview.to,
+				title,
+				description,
+				numberOfStudents,
+				faculty: {
+					connect: {
+						id: facultyId,
+					},
+				},
+				Programme: {
+					connect: {
+						name_semesterId: {
+							name: programme,
+							semesterId,
+						},
+					},
+				},
 			},
 		})
 
-		return { message: `Timeline updated successfully!`, status: 'OK' }
+		return {
+			message: `Project proposa successfully created!`,
+			status: 'OK',
+			data,
+		}
 	} catch (error) {
 		return { message: `${error}`, status: 'ERROR' }
 	}
@@ -64,6 +79,46 @@ export async function createSemesterTimeline(
 			message: `Semester timeline created successfully!`,
 			status: 'OK',
 			data: semester,
+		}
+	} catch (error) {
+		return { message: `${error}`, status: 'ERROR' }
+	}
+}
+
+export async function editProject(data: z.infer<typeof EditProjectFormSchema>) {
+	const {
+		description,
+		numberOfStudents,
+		programme,
+		semesterId,
+		title,
+		projectId,
+	} = data
+
+	try {
+		const data = await prisma.project.update({
+			where: {
+				id: projectId,
+			},
+			data: {
+				title,
+				description,
+				numberOfStudents,
+				Programme: {
+					connect: {
+						name_semesterId: {
+							name: programme,
+							semesterId,
+						},
+					},
+				},
+			},
+		})
+
+		return {
+			message: `Project successfully updated!`,
+			status: 'OK',
+			data,
 		}
 	} catch (error) {
 		return { message: `${error}`, status: 'ERROR' }

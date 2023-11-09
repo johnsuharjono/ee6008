@@ -13,10 +13,24 @@ const EditProjectPage = async ({ params }: { params: { slug: string } }) => {
 			id: params.slug,
 			facultyId: session.user.facultyId,
 		},
+		include: {
+			Programme: {
+				select: {
+					name: true,
+					semesterId: true,
+				},
+			},
+		},
 	})
 
 	if (!projectDetail) {
 		return null
+	}
+
+	const sanitizedProjectDetail = {
+		...projectDetail,
+		semesterId: projectDetail.Programme.semesterId,
+		programme: projectDetail.Programme.name,
 	}
 
 	return (
@@ -25,7 +39,7 @@ const EditProjectPage = async ({ params }: { params: { slug: string } }) => {
 				<h1 className='text-3xl font-semibold'>Edit Project</h1>
 			</div>
 			<div>
-				<EditProjectForm data={projectDetail} />
+				<EditProjectForm data={sanitizedProjectDetail} />
 			</div>
 		</div>
 	)

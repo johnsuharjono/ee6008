@@ -1,3 +1,4 @@
+import { ProgrammeName } from '@prisma/client'
 import { z } from 'zod'
 
 export const EditTimelineDataFormSchema = z.object({
@@ -44,4 +45,22 @@ export const AddTimelineDataFormSchema = z.object({
 		from: z.date(),
 		to: z.date(),
 	}),
+})
+
+export const AddProjectFormSchema = z.object({
+	title: z.string(),
+	description: z.string(),
+	semesterId: z.string(),
+	numberOfStudents: z.number(),
+	programme: z.nativeEnum(ProgrammeName),
+	facultyId: z.string(),
+})
+
+export const EditProjectFormSchema = z.object({
+	title: z.string(),
+	description: z.string(),
+	semesterId: z.string(),
+	numberOfStudents: z.number(),
+	programme: z.nativeEnum(ProgrammeName),
+	projectId: z.string(),
 })

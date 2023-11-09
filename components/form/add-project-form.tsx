@@ -6,7 +6,6 @@ import * as z from 'zod'
 import { PROGRAMMES } from '@/config/programmes'
 import { toast } from 'sonner'
 import { useSession } from 'next-auth/react'
-import { User } from 'next-auth'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
@@ -28,6 +27,9 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { addProject } from '@/action/project'
+import { ProgrammeName } from '@prisma/client'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
 	title: z
@@ -38,8 +40,10 @@ const formSchema = z.object({
 		.max(50, {
 			message: 'Title must not be longer than 50 characters.',
 		}),
-	programme: z.string({
-		required_error: 'Please select a thematic programme for the project.',
+	programme: z.nativeEnum(ProgrammeName, {
+		errorMap: () => {
+			return { message: 'Please select correct programme' }
+		},
 	}),
 	numberOfStudents: z.coerce
 		.number({
@@ -49,57 +53,52 @@ const formSchema = z.object({
 		.gte(3, 'Must be greater than 3')
 		.lte(5, 'Must be less than 5'),
 	description: z.string().max(1000).min(1),
+	semesterId: z.string(),
 })
 
 type ProposalFormValues = z.infer<typeof formSchema>
 
-export function AddProjectForm() {
+export function AddProjectForm({ semesterId }: { semesterId: string }) {
+	const router = useRouter()
 	const session = useSession()
 	const user = session?.data?.user
 
 	const form = useForm<ProposalFormValues>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {},
+		defaultValues: {
+			title: '',
+			semesterId,
+		},
 	})
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		async function postProject(user: User | undefined) {
-			try {
-				const response = await fetch('/api/faculty/project', {
-					method: 'POST',
-					body: JSON.stringify({
-						title: values.title,
-						description: values.description,
-						numberOfStudents: values.numberOfStudents,
-						programme: values.programme,
-						facultyId: user?.facultyId,
-					}),
-				})
-
-				if (!response.ok) {
-					throw new Error('Network response was not ok')
-				}
-
-				const data = await response.json()
-				return data
-			} catch (error) {
-				console.error('Error:', error)
-				throw error
-			}
+		if (!user?.facultyId) return
+		const response = await addProject({ ...values, facultyId: user?.facultyId })
+		if (response.status === 'ERROR') {
+			toast.error(response.message)
+		} else {
+			toast.success(response.message)
+			router.push(`/faculty/view-projects`)
+			router.refresh()
 		}
-
-		toast.promise(postProject(user), {
-			loading: 'Loading...',
-			success: () => {
-				return `${values.title} proposals has been added`
-			},
-			error: 'Error',
-		})
 	}
 
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+				<FormField
+					control={form.control}
+					name='semesterId'
+					render={({ field }) => (
+						<FormItem className='hidden m-0'>
+							<FormLabel>Title</FormLabel>
+							<FormControl>
+								<Input {...field} />
+							</FormControl>
+						</FormItem>
+					)}
+				/>
+
 				<FormField
 					control={form.control}
 					name='title'
@@ -152,8 +151,8 @@ export function AddProjectForm() {
 									</FormControl>
 									<SelectContent>
 										{PROGRAMMES.map((programme) => (
-											<SelectItem key={programme} value={programme}>
-												{programme}
+											<SelectItem key={programme.value} value={programme.value}>
+												{programme.name}
 											</SelectItem>
 										))}
 									</SelectContent>

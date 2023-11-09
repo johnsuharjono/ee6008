@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation'
 import { SidebarNavItem } from '@/types'
 import { cn } from '@/lib/utils'
 import { Icons } from '@/components/icons'
-import { Separator } from './ui/separator'
 
 interface DashboardNavProps {
 	items: SidebarNavItem[]
@@ -23,7 +22,7 @@ export function SideNav({ items }: DashboardNavProps) {
 		<nav className='grid items-start gap-2'>
 			{items.map((item, index) => {
 				if (item.type === 'link' && item.href) {
-					const isActive = path?.startsWith(item.href)
+					const isActive = path === item.href
 					const Icon = Icons[item.icon || 'arrowRight']
 					return (
 						item.href && (
@@ -34,6 +33,7 @@ export function SideNav({ items }: DashboardNavProps) {
 									isActive && 'bg-muted/50 border-border text-foreground',
 									item.disabled && 'pointer-events-none opacity-60'
 								)}
+								key={index}
 							>
 								<Icon className='mr-2 h-4 w-4' />
 								<span>{item.title}</span>

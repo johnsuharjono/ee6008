@@ -6,11 +6,15 @@ import { DataTableRowActions } from './data-table-row-actions'
 import { statuses } from './data/config'
 
 import { z } from 'zod'
+import { PROGRAMMES } from '@/config/programmes'
 
 export const projectSchema = z.object({
 	id: z.string(),
 	title: z.string(),
 	status: z.string(),
+	programme: z.string(),
+	reviewer: z.string(),
+	semester: z.string(),
 })
 
 export type Project = z.infer<typeof projectSchema>
@@ -22,7 +26,7 @@ export const columns: ColumnDef<Project>[] = [
 			return <DataTableColumnHeader column={column} title='Title' />
 		},
 		cell: ({ row }) => (
-			<div className='capitalize min-w-[300px]'>{row.getValue('title')}</div>
+			<div className='capitalize'>{row.getValue('title')}</div>
 		),
 	},
 	{
@@ -49,18 +53,22 @@ export const columns: ColumnDef<Project>[] = [
 			)
 		},
 		filterFn: (row, id, value) => {
-			return value.includes(row.getValue(id))
+			const rowValue = row.getValue(id) as string
+			return value.includes(rowValue.toLowerCase())
 		},
 	},
 	{
 		enableSorting: false,
-		accessorKey: 'numberOfStudents',
+		accessorKey: 'semester',
 		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Group size' />
+			return <DataTableColumnHeader column={column} title='Semester' />
 		},
 		cell: ({ row }) => (
-			<div className='capitalize'>{row.getValue('numberOfStudents')}</div>
+			<div className='capitalize'>{row.getValue('semester')}</div>
 		),
+		filterFn: (row, id, value) => {
+			return value.includes(row.getValue(id))
+		},
 	},
 	{
 		enableSorting: false,
@@ -68,8 +76,20 @@ export const columns: ColumnDef<Project>[] = [
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title='Programme' />
 		},
+		cell: ({ row }) => {
+			const value = row.getValue('programme')
+			const mapping = PROGRAMMES.find((programme) => programme.value === value)
+			return <div className='capitalize'>{mapping?.name}</div>
+		},
+	},
+	{
+		enableSorting: false,
+		accessorKey: 'reviewer',
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title='Reviewer' />
+		},
 		cell: ({ row }) => (
-			<div className='capitalize'>{row.getValue('programme')}</div>
+			<div className='capitalize'>{row.getValue('reviewer')}</div>
 		),
 	},
 	{

@@ -1,16 +1,33 @@
+import { SelectSemesterWrapper } from '@/components/admin/timeline/select-semester-wrapper'
+import CreateProjectButton from '@/components/faculty/create-project-button'
 import { AddProjectForm } from '@/components/form/add-project-form'
+import { Header } from '@/components/header'
+import { prisma } from '@/lib/prisma'
 
-const CreateProposal = () => {
+const CreateProposal = async () => {
+	const AY = '23S1'
+	const semester = await prisma.semester.findUnique({
+		where: {
+			name: AY,
+		},
+		select: {
+			id: true,
+		},
+	})
+
+	if (!semester) return null
+
 	return (
 		<div className='space-y-8'>
 			<div className='flex w-full flex-col gap-1'>
-				<h1 className='text-3xl font-semibold'>Create Proposal</h1>
-				<h2 className='text-muted-foreground'>
-					Start creating your proposal by filling form below
-				</h2>
+				<Header
+					title='Create a proposal'
+					description='Start by choosing semester to add project to'
+				/>
 			</div>
+
 			<div>
-				<AddProjectForm />
+				<AddProjectForm semesterId={semester.id} />
 			</div>
 		</div>
 	)

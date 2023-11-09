@@ -28,10 +28,13 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Project } from '@prisma/client'
+import { ProgrammeName, Project } from '@prisma/client'
 import { useRouter } from 'next/navigation'
+import { editProject } from '@/action/project'
 
 const formSchema = z.object({
+	projectId: z.string(),
+	semesterId: z.string(),
 	title: z
 		.string()
 		.min(2, {
@@ -40,8 +43,10 @@ const formSchema = z.object({
 		.max(50, {
 			message: 'Title must not be longer than 50 characters.',
 		}),
-	programme: z.string({
-		required_error: 'Please select a thematic programme for the project.',
+	programme: z.nativeEnum(ProgrammeName, {
+		errorMap: () => {
+			return { message: 'Please select correct programme' }
+		},
 	}),
 	numberOfStudents: z.coerce
 		.number({
@@ -55,69 +60,71 @@ const formSchema = z.object({
 
 type ProposalFormValues = z.infer<typeof formSchema>
 
-export function EditProjectForm({ data }: { data: Project }) {
+export function EditProjectForm({
+	data,
+}: {
+	data: Project & { semesterId: string }
+}) {
 	const router = useRouter()
 	const session = useSession()
 	const user = session?.data?.user
-	const projectId = data.id
+
+	const mapper = PROGRAMMES.find(
+		(programme) => programme.value === data.programme
+	)
 
 	const form = useForm<ProposalFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: data.title,
-			programme: data.programme,
+			programme: mapper?.value as ProgrammeName,
 			numberOfStudents: data.numberOfStudents,
 			description: data.description,
+			projectId: data.id,
+			semesterId: data.semesterId,
 		},
 	})
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		async function postProject(user: User | undefined) {
-			try {
-				const facultyId = await fetch(`/api/faculty/id?userId=${user?.id}`, {
-					method: 'GET',
-				})
-					.then((res) => res.json())
-					.then((res) => res.facultyId)
+		console.log(values)
+		const response = await editProject(values)
 
-				const response = await fetch('/api/faculty/project', {
-					method: 'PUT',
-					body: JSON.stringify({
-						title: values.title,
-						description: values.description,
-						numberOfStudents: values.numberOfStudents,
-						programme: values.programme,
-						facultyId: facultyId,
-						projectId: projectId,
-					}),
-				})
-
-				if (!response.ok) {
-					throw new Error('Network response was not ok')
-				}
-
-				const data = await response.json()
-				return data
-			} catch (error) {
-				console.error('Error:', error)
-				throw error
-			}
+		if (response.status === 'ERROR') {
+			toast.error(response.message)
+		} else {
+			toast.success(response.message)
+			router.push(`/faculty/view-projects`)
+			router.refresh()
 		}
-
-		toast.promise(postProject(user), {
-			loading: 'Loading...',
-			success: () => {
-				router.push('/faculty/view-projects')
-				router.refresh()
-				return `${values.title} proposals has been updated`
-			},
-			error: 'Error',
-		})
 	}
 
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+				{/* Hidden field */}
+				<FormField
+					control={form.control}
+					name='projectId'
+					render={({ field }) => (
+						<FormItem className='hidden m-0'>
+							<FormControl>
+								<Input {...field} />
+							</FormControl>
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='semesterId'
+					render={({ field }) => (
+						<FormItem className='hidden m-0'>
+							<FormControl>
+								<Input {...field} />
+							</FormControl>
+						</FormItem>
+					)}
+				/>
+
 				<FormField
 					control={form.control}
 					name='title'
@@ -176,8 +183,8 @@ export function EditProjectForm({ data }: { data: Project }) {
 									</FormControl>
 									<SelectContent>
 										{PROGRAMMES.map((programme) => (
-											<SelectItem key={programme} value={programme}>
-												{programme}
+											<SelectItem key={programme.value} value={programme.value}>
+												{programme.name}
 											</SelectItem>
 										))}
 									</SelectContent>
