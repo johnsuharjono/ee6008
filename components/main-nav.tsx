@@ -24,7 +24,11 @@ export function MainNav({ items, homeUrl, children }: MainNavProps) {
 		<div className='flex gap-6 md:gap-10'>
 			<Link href={homeUrl} className='hidden items-center space-x-2 md:flex'>
 				<Icons.logo />
-				<span className='hidden font-bold sm:inline-block'>
+				<span
+					className={cn(
+						`text-xl tracking-tight hidden font-semibold sm:inline-block`
+					)}
+				>
 					{siteConfig.name}
 				</span>
 			</Link>

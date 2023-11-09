@@ -12,24 +12,25 @@ interface AdminLayoutProps {
 
 export default async function AdminLayout({ children }: AdminLayoutProps) {
 	return (
-		<div className='flex min-h-screen flex-col bg-background/20 space-y-6'>
-			<header className='z-40 border-b'>
-				<div className='container flex h-16 items-center justify-between py-6'>
+		<div className='flex min-h-screen flex-col bg-background/20 space-y-6 p-4 lg:p-8'>
+			<header className='container z-40'>
+				<Shell className='bg-background/70 flex w-full items-center justify-between px-3 py-3 backdrop-blur-lg md:px-6 md:py-3'>
 					<MainNav items={adminConfig.mainNav} homeUrl={adminConfig.homeUrl} />
-
 					<nav className='flex items-center justify-end gap-4'>
 						<UserNav />
 						<ModeToggle />
 					</nav>
-				</div>
+				</Shell>
 			</header>
-			<div className='container grid flex-1 gap-8 md:grid-cols-[200px_1fr]'>
-				<aside className='hidden w-[200px] flex-col md:flex'>
+			<div className='container flex w-full flex-1 gap-6 lg:gap-8'>
+				<Shell className='hidden max-h-[calc(100vh-9rem)] w-[300px] shrink-0 lg:block'>
 					<SideNav items={adminConfig.sideNav} />
-				</aside>
-				<main className='flex w-full flex-1 flex-col overflow-hidden'>
-					<Shell>{children}</Shell>
-				</main>
+				</Shell>
+				<Shell>
+					<main className='flex w-full flex-1 flex-col overflow-hidden p-1'>
+						{children}
+					</main>
+				</Shell>
 			</div>
 		</div>
 	)

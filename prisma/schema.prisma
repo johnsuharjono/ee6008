@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,6 +5,130 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Admin     Admin?
+  Faculty   Faculty?
+  Student   Student?
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Faculty {
+  id        String      @id @default(uuid())
+  userId    String      @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Project   Project[]
+  Programme Programme[]
+}
+
+model Student {
+  id           String         @id @default(uuid())
+  userId       String         @unique
+  projectId    String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  projectPlan  ProjectPlan[]
+  Registration Registration[]
+  Project      Project?       @relation(fields: [projectId], references: [id])
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Programme {
+  id         String        @id @default(uuid())
+  name       ProgrammeName
+  semesterId String
+  Semester   Semester      @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  leader     String
+  Leader     Faculty       @relation(fields: [leader], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Project   Project[]
+}
+
+model Project {
+  id               String         @id @default(uuid())
+  title            String
+  description      String
+  status           ProjectStatus  @default(PENDING)
+  numberOfStudents Int
+  programme        String
+  Programme        Programme      @relation(fields: [programme], references: [id])
+  facultyId        String
+  faculty          Faculty        @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  project_plan     ProjectPlan[]
+  Registration     Registration[]
+  students         Student[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProjectPlan {
+  id        String   @id @default(uuid())
+  studentId String
+  projectId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id])
+  student   Student  @relation(fields: [studentId], references: [id])
+
+  @@unique([studentId, projectId])
+}
+
+model Registration {
+  id        String   @id @default(uuid())
+  studentId String
+  projectId String
+  priority  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id])
+  student   Student  @relation(fields: [studentId], references: [id])
+
+  @@unique([studentId, projectId])
+}
+
+model Semester {
+  id               String            @id @default(uuid())
+  name             String            @unique
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  SemesterTimeline SemesterTimeline?
+  Programme        Programme[]
+}
+
+model SemesterTimeline {
+  id                             String   @id @default(uuid())
+  semesterId                     String   @unique
+  facultyProposalSubmissionStart DateTime
+  facultyProposalSubmissionEnd   DateTime
+  studentRegistrationStart       DateTime
+  studentRegistrationEnd         DateTime
+  facultyMarkEntryStart          DateTime
+  facultyMarkEntryEnd            DateTime
+  studentPeerReviewStart         DateTime
+  studentPeerReviewEnd           DateTime
+  createdAt                      DateTime @default(now())
+  updatedAt                      DateTime @updatedAt
+  Semester                       Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
 }
 
 enum UserRole {
@@ -23,111 +144,10 @@ enum ProjectStatus {
   COMPLETED
 }
 
-model User {
-  id       String   @id @default(uuid())
-  email    String   @unique
-  password String
-  name     String
-  role     UserRole @default(STUDENT)
-  Admin    Admin?
-  Faculty  Faculty?
-  Student  Student?
-
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  FacultyRole FacultyRole[]
-}
-
-model Admin {
-  id     String @id @default(uuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Faculty {
-  id     String @id @default(uuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // one faculty member can have many project
-  Project Project[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model FacultyRole {
-  id        String  @id @default(uuid())
-  facultyId String
-  faculty   User    @relation(fields: [facultyId], references: [id])
-  role      String
-  programme String?
-}
-
-model Student {
-  id     String @id @default(uuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  Project   Project? @relation(fields: [projectId], references: [id])
-  projectId String?
-
-  projectPlan ProjectPlan[]
-
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Registration Registration[]
-}
-
-model Project {
-  id               String        @id @default(uuid())
-  title            String
-  description      String
-  programme        String
-  numberOfStudents Int
-  status           ProjectStatus @default(PENDING)
-
-  // one project handled by one faculty member
-  faculty   Faculty @relation(fields: [facultyId], references: [id])
-  facultyId String
-
-  // one project can have multiple student
-  students Student[]
-
-  // the project can be wishlisted by multiple students
-  project_plan ProjectPlan[]
-
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Registration Registration[]
-}
-
-model ProjectPlan {
-  id        String  @id @default(uuid())
-  studentId String
-  projectId String
-  student   Student @relation(fields: [studentId], references: [id])
-  project   Project @relation(fields: [projectId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([studentId, projectId])
-}
-
-model Registration {
-  id        String  @id @default(uuid())
-  studentId String
-  projectId String
-  student   Student @relation(fields: [studentId], references: [id])
-  project   Project @relation(fields: [projectId], references: [id])
-  priority  Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([studentId, projectId])
+enum ProgrammeName {
+  CommunicationsEngineering
+  ComputerControlAndAutomation
+  Electronics
+  PowerEngineering
+  SignalProcessing
 }

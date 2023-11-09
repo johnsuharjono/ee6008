@@ -23,6 +23,7 @@ import {
 	FilePlus,
 	List,
 	Pen,
+	Calendar,
 } from 'lucide-react'
 
 import type { LucideIcon } from 'lucide-react'
@@ -54,4 +55,5 @@ export const Icons = {
 	addProject: FilePlus,
 	viewProject: List,
 	mark: Pen,
+	calendar: Calendar,
 }

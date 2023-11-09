@@ -65,5 +65,15 @@ export const adminConfig: AdminConfig = {
 			icon: 'user',
 			type: 'link',
 		},
+		{
+			title: 'Timeline',
+			type: 'header',
+		},
+		{
+			title: 'Manage',
+			href: '/admin/timeline',
+			icon: 'calendar',
+			type: 'link',
+		},
 	],
 }

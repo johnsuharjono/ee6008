@@ -43,7 +43,12 @@ const DeleteUserModal = ({ setModalOpen, userId }: DeleteUserModalProps) => {
 					account and remove your data from our servers.
 				</AlertDialogDescription>
 			</AlertDialogHeader>
-			<form action={formAction}>
+			<form
+				action={(payload) => {
+					formAction(payload)
+					setModalOpen(false)
+				}}
+			>
 				<Input type='hidden' defaultValue={userId} name='userId' />
 				<AlertDialogFooter>
 					<AlertDialogCancel onClick={() => setModalOpen(false)}>
