@@ -30,7 +30,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { ProgrammeName, Project } from '@prisma/client'
 import { useRouter } from 'next/navigation'
-import { editProject } from '@/action/project'
+import { editProject } from '@/actions/project'
 
 const formSchema = z.object({
 	projectId: z.string(),

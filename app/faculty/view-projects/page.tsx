@@ -1,5 +1,5 @@
-import { DataTable } from './_table/data-table'
-import { columns } from './_table/columns'
+import { DataTable } from '@/components/faculty/view-my-projects-table/data-table'
+import { columns } from '@/components/faculty/view-my-projects-table/columns'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'

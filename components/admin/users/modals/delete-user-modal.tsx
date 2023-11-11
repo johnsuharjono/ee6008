@@ -12,7 +12,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { deleteUser } from './server-action'
+import { deleteUser } from '@/actions/user'
 import { Input } from '@/components/ui/input'
 
 interface DeleteUserModalProps {

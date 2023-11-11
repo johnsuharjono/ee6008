@@ -27,7 +27,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { addProject } from '@/action/project'
+import { addProject } from '@/actions/project'
 import { ProgrammeName } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 

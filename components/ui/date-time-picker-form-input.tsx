@@ -30,23 +30,25 @@ const DateTimePickerFormInput = ({
 					<Button
 						variant={'outline'}
 						className={cn(
-							'w-[500px] justify-start text-left font-normal',
+							'max-w-[490px] justify-start text-left font-normal h-fit flex gap-1',
 							!value && 'text-muted-foreground'
 						)}
 					>
 						<CalendarIcon className='mr-2 h-4 w-4' />
-						{value?.from ? (
-							value.to ? (
-								<>
-									{format(value.from, 'PPP HH:mm:ss')} -{' '}
-									{format(value.to, 'PPP HH:mm:ss')}
-								</>
+						<div className='min-h-fit'>
+							{value?.from ? (
+								value.to ? (
+									<>
+										{format(value.from, 'PPP HH:mm:ss')} -{' '}
+										{format(value.to, 'PPP HH:mm:ss')}
+									</>
+								) : (
+									format(value.from, 'PPP HH:mm:ss')
+								)
 							) : (
-								format(value.from, 'PPP HH:mm:ss')
-							)
-						) : (
-							<span>Pick a date</span>
-						)}
+								<span>Pick a date</span>
+							)}
+						</div>
 					</Button>
 				</FormControl>
 			</PopoverTrigger>

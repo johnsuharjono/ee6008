@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { editEmail, editName, editPassword } from './server-action'
+import { editEmail, editName, editPassword } from '@/actions/user'
 import {
 	experimental_useFormStatus as useFormStatus,
 	experimental_useFormState as useFormState,

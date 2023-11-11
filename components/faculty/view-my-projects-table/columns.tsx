@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
-import { statuses } from './data/config'
+import { statuses } from './config'
 
 import { z } from 'zod'
 import { PROGRAMMES } from '@/config/programmes'

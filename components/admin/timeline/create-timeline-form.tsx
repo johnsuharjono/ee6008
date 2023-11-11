@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/form'
 import DateTimePickerFormInput from '@/components/ui/date-time-picker-form-input'
 import { AddTimelineDataFormSchema } from '@/lib/schema'
-import { createSemesterTimeline } from './server-action/edit-timeline'
+import { createSemesterTimeline } from '@/actions/timeline'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
@@ -63,79 +63,76 @@ export function CreateTimelineForm() {
 						</FormItem>
 					)}
 				/>
-				<div className='grid xl:grid-cols-2 gap-y-8'>
-					<FormField
-						control={form.control}
-						name='facultyProposalSubmission'
-						render={({ field }) => (
-							<FormItem className='flex flex-col'>
-								<FormLabel>Staff Proposal Submission</FormLabel>
-								<DateTimePickerFormInput
-									value={field.value}
-									onChange={field.onChange}
-								/>
-								<FormDescription>
-									Period for when faculty member can submit proposals
-								</FormDescription>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='studentRegistration'
-						render={({ field }) => (
-							<FormItem className='flex flex-col'>
-								<FormLabel>Student Selection</FormLabel>
-								<DateTimePickerFormInput
-									value={field.value}
-									onChange={field.onChange}
-								/>
-								<FormDescription>
-									Period for when students can select projects
-								</FormDescription>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
 
-				<div className='grid xl:grid-cols-2 gap-y-8'>
-					<FormField
-						control={form.control}
-						name='markEntry'
-						render={({ field }) => (
-							<FormItem className='flex flex-col'>
-								<FormLabel>Mark Entry</FormLabel>
-								<DateTimePickerFormInput
-									value={field.value}
-									onChange={field.onChange}
-								/>
-								<FormDescription>
-									Period for when staff can mark entry
-								</FormDescription>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='peerReview'
-						render={({ field }) => (
-							<FormItem className='flex flex-col'>
-								<FormLabel>Peer review</FormLabel>
-								<DateTimePickerFormInput
-									value={field.value}
-									onChange={field.onChange}
-								/>
-								<FormDescription>
-									Period for when students can do peer review
-								</FormDescription>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
+				<FormField
+					control={form.control}
+					name='facultyProposalSubmission'
+					render={({ field }) => (
+						<FormItem className='flex flex-col'>
+							<FormLabel>Staff Proposal Submission</FormLabel>
+							<DateTimePickerFormInput
+								value={field.value}
+								onChange={field.onChange}
+							/>
+							<FormDescription>
+								Period for when faculty member can submit proposals
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='studentRegistration'
+					render={({ field }) => (
+						<FormItem className='flex flex-col'>
+							<FormLabel>Student Selection</FormLabel>
+							<DateTimePickerFormInput
+								value={field.value}
+								onChange={field.onChange}
+							/>
+							<FormDescription>
+								Period for when students can select projects
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name='markEntry'
+					render={({ field }) => (
+						<FormItem className='flex flex-col'>
+							<FormLabel>Mark Entry</FormLabel>
+							<DateTimePickerFormInput
+								value={field.value}
+								onChange={field.onChange}
+							/>
+							<FormDescription>
+								Period for when staff can mark entry
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='peerReview'
+					render={({ field }) => (
+						<FormItem className='flex flex-col'>
+							<FormLabel>Peer review</FormLabel>
+							<DateTimePickerFormInput
+								value={field.value}
+								onChange={field.onChange}
+							/>
+							<FormDescription>
+								Period for when students can do peer review
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
 				<Button type='submit'>Submit</Button>
 			</form>

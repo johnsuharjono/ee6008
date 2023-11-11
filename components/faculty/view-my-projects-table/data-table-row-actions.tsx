@@ -22,7 +22,6 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { useRouter } from 'next/navigation'
-import { User } from 'next-auth'
 import { toast } from 'sonner'
 
 interface DataTableRowActionsProps<TData> {
