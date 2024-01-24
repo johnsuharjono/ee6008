@@ -7,7 +7,7 @@ function Shell({ children, className }: ShellProps) {
 		<div
 			className={cn(
 				'border-border border backdrop-blur-[2px]',
-				'w-full rounded-lg px-3 py-4 md:p-8',
+				'w-full rounded-lg px-3 py-4 md:p-6',
 				className
 			)}
 		>

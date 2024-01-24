@@ -1,5 +1,7 @@
+import { redirect } from 'next/navigation'
+
 const AdminPage = () => {
-	return <div>hello</div>
+	redirect('/admin/users/manage-faculty')
 }
 
 export default AdminPage

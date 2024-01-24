@@ -1,3 +1,6 @@
+// @ts-ignore
+import { useFormStatus, useFormState } from 'react-dom'
+
 import {
 	AlertDialogFooter,
 	AlertDialogHeader,
@@ -8,11 +11,8 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+
 import { editEmail, editName, editPassword } from '@/actions/user'
-import {
-	experimental_useFormStatus as useFormStatus,
-	experimental_useFormState as useFormState,
-} from 'react-dom'
 import { toast } from 'sonner'
 import { useEffect } from 'react'
 

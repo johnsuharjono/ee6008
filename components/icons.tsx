@@ -24,6 +24,8 @@ import {
 	List,
 	Pen,
 	Calendar,
+	GraduationCap,
+	Joystick,
 } from 'lucide-react'
 
 import type { LucideIcon } from 'lucide-react'
@@ -56,4 +58,6 @@ export const Icons = {
 	viewProject: List,
 	mark: Pen,
 	calendar: Calendar,
+	student: GraduationCap,
+	joystick: Joystick,
 }

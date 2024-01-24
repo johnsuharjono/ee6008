@@ -30,7 +30,7 @@ const DateTimePickerFormInput = ({
 					<Button
 						variant={'outline'}
 						className={cn(
-							'max-w-[490px] justify-start text-left font-normal h-fit flex gap-1',
+							'justify-start text-left font-normal h-fit flex gap-1',
 							!value && 'text-muted-foreground'
 						)}
 					>

@@ -23,6 +23,7 @@ export const facultyConfig: FacultyConfig = {
 			href: '/faculty',
 			icon: 'home',
 			type: 'link',
+			disabled: true,
 		},
 		{
 			title: 'Add project',
@@ -41,6 +42,7 @@ export const facultyConfig: FacultyConfig = {
 			href: '/faculty/marking',
 			icon: 'mark',
 			type: 'link',
+			disabled: true,
 		},
 	],
 }
@@ -50,10 +52,6 @@ export const adminConfig: AdminConfig = {
 	mainNav: [],
 	sideNav: [
 		{
-			title: 'Users management',
-			type: 'header',
-		},
-		{
 			title: 'Faculty',
 			href: '/admin/users/manage-faculty',
 			icon: 'user',
@@ -62,16 +60,12 @@ export const adminConfig: AdminConfig = {
 		{
 			title: 'Student',
 			href: '/admin/users/manage-student',
-			icon: 'user',
+			icon: 'student',
 			type: 'link',
 		},
 		{
-			title: 'Timeline',
-			type: 'header',
-		},
-		{
-			title: 'Manage',
-			href: '/admin/timeline',
+			title: 'Semester',
+			href: '/admin/semester',
 			icon: 'calendar',
 			type: 'link',
 		},

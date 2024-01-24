@@ -4,8 +4,7 @@ import type { Metadata } from 'next'
 import Background from '@/components/background'
 import { Toaster } from 'sonner'
 import SessionProvider from '@/components/session-provider'
-import { GeistSans } from 'geist/font'
-
+import { GeistSans } from 'geist/font/sans'
 export const metadata: Metadata = {
 	title: 'NTU EE6008',
 	description: 'Project Management System for EE6008',

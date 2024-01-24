@@ -74,24 +74,27 @@ export async function TimelineTable({
 	]
 
 	return (
-		<Table>
-			<TableCaption>{semester} semester timeline</TableCaption>
-			<TableHeader>
-				<TableRow>
-					<TableHead>Period</TableHead>
-					<TableHead>From</TableHead>
-					<TableHead>To</TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				{timelineData.map((period, index) => (
-					<TableRow key={index}>
-						<TableCell>{period.title}</TableCell>
-						<TableCell>{format(period.from, 'PPP HH:mm:ss')}</TableCell>
-						<TableCell>{format(period.to, 'PPP HH:mm:ss')}</TableCell>
+		<>
+			<h1 className='text-lg md:text-xl font-semibold'>Timeline</h1>
+			<Table>
+				<TableCaption>{semester} semester timeline</TableCaption>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Period</TableHead>
+						<TableHead>From</TableHead>
+						<TableHead>To</TableHead>
 					</TableRow>
-				))}
-			</TableBody>
-		</Table>
+				</TableHeader>
+				<TableBody>
+					{timelineData.map((period, index) => (
+						<TableRow key={index}>
+							<TableCell>{period.title}</TableCell>
+							<TableCell>{format(period.from, 'PPP HH:mm:ss')}</TableCell>
+							<TableCell>{format(period.to, 'PPP HH:mm:ss')}</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</>
 	)
 }

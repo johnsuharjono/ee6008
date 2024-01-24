@@ -41,7 +41,7 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
 		})
 
 		return {
-			message: `Project proposa successfully created!`,
+			message: `Project proposal successfully created!`,
 			status: 'OK',
 			data,
 		}

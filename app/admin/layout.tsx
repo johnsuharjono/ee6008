@@ -23,7 +23,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 				</Shell>
 			</header>
 			<div className='container flex w-full flex-1 gap-6 lg:gap-8'>
-				<Shell className='hidden max-h-[calc(100vh-9rem)] w-[300px] shrink-0 lg:block'>
+				<Shell className='hidden max-h-[calc(100vh-9rem)] w-fit shrink-0 lg:block'>
 					<SideNav items={adminConfig.sideNav} />
 				</Shell>
 				<Shell>

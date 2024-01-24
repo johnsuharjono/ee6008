@@ -1,7 +1,5 @@
-import {
-	experimental_useFormStatus as useFormStatus,
-	experimental_useFormState as useFormState,
-} from 'react-dom'
+// @ts-ignore
+import { useFormStatus, useFormState } from 'react-dom'
 import { toast } from 'sonner'
 import { useEffect } from 'react'
 import {

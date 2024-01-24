@@ -1,12 +1,10 @@
-import EditTimelineButton from '@/components/admin/timeline/edit-timeline-button'
+import EditProgrammeButton from '@/components/admin/programme/edit-programme-button'
 import { SelectSemesterWrapper } from '@/components/admin/timeline/select-semester-wrapper'
-import { TimelineTable } from '@/components/admin/timeline/timeline-table'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { Suspense } from 'react'
 
-const Timeline = async ({
+const Programme = async ({
 	searchParams,
 }: {
 	searchParams?: {
@@ -16,11 +14,11 @@ const Timeline = async ({
 	return (
 		<div className='space-y-4'>
 			<Header
-				title='Timeline Management'
-				description='Create edit or view timeline period!'
+				title='Programme Management'
+				description='Create edit or view programme available!'
 				actions={
 					<Button>
-						<Link href='./timeline/create'>Create</Link>
+						<Link href='./programme/create'>Create</Link>
 					</Button>
 				}
 			/>
@@ -29,14 +27,11 @@ const Timeline = async ({
 				<h1 className='text-xl font-medium'>Choose semester</h1>
 				<div className='flex justify-between'>
 					<SelectSemesterWrapper searchParams={searchParams} />
-					<EditTimelineButton semester={searchParams?.semester} />
+					<EditProgrammeButton semester={searchParams?.semester} />
 				</div>
-				<Suspense fallback={<h1>Loading...</h1>}>
-					<TimelineTable searchParams={searchParams} />
-				</Suspense>
 			</div>
 		</div>
 	)
 }
 
-export default Timeline
+export default Programme

@@ -22,6 +22,36 @@ export const EditTimelineDataFormSchema = z.object({
 })
 const semesterNameRegex = /^[0-9]{2}[S][0-9]{1}$/
 
+export const AddSemesterDataFormSchema = z.object({
+	semesterName: z
+		.string()
+		.refine(
+			(value) => semesterNameRegex.test(value),
+			'Semester name must be in the format {YY}{S}{#}'
+		),
+	facultyProposalSubmission: z.object({
+		from: z.date(),
+		to: z.date(),
+	}),
+	studentRegistration: z.object({
+		from: z.date(),
+		to: z.date(),
+	}),
+	markEntry: z.object({
+		from: z.date(),
+		to: z.date(),
+	}),
+	peerReview: z.object({
+		from: z.date(),
+		to: z.date(),
+	}),
+	communicationsEngineeringLead: z.string(),
+	computerControlAndAutomationLead: z.string(),
+	electronicsLead: z.string(),
+	powerEngineeringLead: z.string(),
+	signalProcessingLead: z.string(),
+})
+
 export const AddTimelineDataFormSchema = z.object({
 	semesterName: z
 		.string()

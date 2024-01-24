@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { SidebarNavItem } from '@/types'
 import { cn } from '@/lib/utils'
 import { Icons } from '@/components/icons'
+import { Badge } from './ui/badge'
 
 interface DashboardNavProps {
 	items: SidebarNavItem[]
@@ -19,7 +20,7 @@ export function SideNav({ items }: DashboardNavProps) {
 	}
 
 	return (
-		<nav className='grid items-start gap-2'>
+		<nav className='grid items-start gap-1 min-w-[200px] tracking-wide'>
 			{items.map((item, index) => {
 				if (item.type === 'link' && item.href) {
 					const isActive = path === item.href
@@ -29,7 +30,7 @@ export function SideNav({ items }: DashboardNavProps) {
 							<Link
 								href={item.href}
 								className={cn(
-									'text-md hover:bg-muted/50 hover:text-foreground text-muted-foreground group flex w-full min-w-[200px] items-center rounded-md border border-transparent px-3 py-1',
+									'text-md hover:bg-muted/50 hover:text-foreground text-muted-foreground group flex w-full items-center rounded-md border border-transparent px-3 py-1',
 									isActive && 'bg-muted/50 border-border text-foreground',
 									item.disabled && 'pointer-events-none opacity-60'
 								)}
@@ -37,6 +38,11 @@ export function SideNav({ items }: DashboardNavProps) {
 							>
 								<Icon className='mr-2 h-4 w-4' />
 								<span>{item.title}</span>
+								{item.disabled && (
+									<span className='ml-auto'>
+										<Badge>WIP</Badge>
+									</span>
+								)}
 							</Link>
 						)
 					)
@@ -44,7 +50,7 @@ export function SideNav({ items }: DashboardNavProps) {
 					return (
 						<span
 							key={index}
-							className={cn('text-lg mb-1 font-semibold', index > 0 && 'mt-4')}
+							className={cn('mb-1 font-medium', index > 0 && 'mt-2')}
 						>
 							<span>{item.title}</span>
 						</span>
