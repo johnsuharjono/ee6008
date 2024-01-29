@@ -69,14 +69,14 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
 			toast.error(result.message)
 		} else {
 			toast.success(result.message)
-			router.push(`/admin/timeline?semester=${data.semesterName}`)
+			router.push(`/admin/semester?semester=${data.semesterName}`)
 			router.refresh()
 		}
 	}
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2 my-2'>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
 				<FormField
 					control={form.control}
 					name='semesterName'
@@ -245,7 +245,9 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
 					</AccordionItem>
 				</Accordion>
 
-				<Button type='submit'>Submit</Button>
+				<Button className='mt-4' type='submit'>
+					Submit
+				</Button>
 			</form>
 		</Form>
 	)

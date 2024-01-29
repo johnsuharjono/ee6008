@@ -1,11 +1,9 @@
-import { SelectSemesterWrapper } from '@/components/admin/timeline/select-semester-wrapper'
-import CreateProjectButton from '@/components/faculty/create-project-button'
 import { AddProjectForm } from '@/components/form/add-project-form'
 import { Header } from '@/components/header'
 import { prisma } from '@/lib/prisma'
 
 const CreateProposal = async () => {
-	const AY = '23S1'
+	const AY = '23S2'
 	const semester = await prisma.semester.findUnique({
 		where: {
 			name: AY,

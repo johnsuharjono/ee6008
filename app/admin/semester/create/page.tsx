@@ -15,7 +15,7 @@ const AddSemester = async () => {
 	})
 
 	return (
-		<div className='space-y-4'>
+		<div className='space-y-8'>
 			<Header
 				title='Add new semester'
 				description='Configure the timeline, programme and programme leader!'

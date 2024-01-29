@@ -1,16 +1,44 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
-import { Project, columns } from './_table/columns'
-import { DataTable } from './_table/data-table'
-import { projectsData } from './_seed'
-
-async function getData(): Promise<Project[]> {
-	return projectsData
-}
+import { columns } from '@/components/student/projects/columns'
+import { DataTable } from '@/components/student/projects/data-table'
+import { prisma } from '@/lib/prisma'
 
 export default async function Home() {
-	const data = await getData()
+	const data = await prisma.project.findMany({
+		include: {
+			faculty: {
+				include: {
+					User: {
+						select: {
+							name: true,
+						},
+					},
+				},
+			},
+			Programme: {
+				include: {
+					Semester: {
+						select: {
+							name: true,
+						},
+					},
+				},
+			},
+		},
+	})
+
+	const projects = data.map((project) => ({
+		id: project.id,
+		title: project.title,
+		description: project.description,
+		programme: project.Programme.name,
+		semester: project.Programme.Semester.name,
+		supervisor: project.faculty.User.name,
+		numberOfStudents: project.numberOfStudents,
+	}))
+
 	const session = await getServerSession(authOptions)
 
 	return (
@@ -22,7 +50,7 @@ export default async function Home() {
 				<h3 className='text-muted-foreground text-lg tracking-tight'>
 					Here are the list of projects available:
 				</h3>
-				<DataTable columns={columns} data={data} />
+				<DataTable columns={columns} data={projects} />
 			</div>
 		</section>
 	)

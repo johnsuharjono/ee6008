@@ -9,6 +9,7 @@ import {
 	TableRow,
 } from '@/components/ui/table'
 import { PROGRAMMES } from '@/config/programmes'
+import { convertProgrammeName } from '@/lib/helper'
 import { prisma } from '@/lib/prisma'
 import format from 'date-fns/format'
 
@@ -82,9 +83,7 @@ export async function ProgrammeLeaderTable({
 				<TableBody>
 					{sanitizedData.map((lead, index) => (
 						<TableRow key={index}>
-							<TableCell>
-								{PROGRAMMES.find((p) => p.value === lead.programme)?.name}
-							</TableCell>
+							<TableCell>{convertProgrammeName(lead.programme)}</TableCell>
 							<TableCell>{lead.name}</TableCell>
 						</TableRow>
 					))}

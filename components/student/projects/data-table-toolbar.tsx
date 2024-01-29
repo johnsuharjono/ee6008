@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { DataTableViewOptions } from './data-table-view-options'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { Icons } from '@/components/icons'
-import { thematicsFilterOptions } from './config'
+import { programmeFilterOptions } from './config'
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>
@@ -28,11 +28,11 @@ export function DataTableToolbar<TData>({
 					}
 					className='h-8 w-[150px] lg:w-[250px]'
 				/>
-				{table.getColumn('thematic') && (
+				{table.getColumn('programme') && (
 					<DataTableFacetedFilter
-						column={table.getColumn('thematic')}
-						title='Thematic'
-						options={thematicsFilterOptions}
+						column={table.getColumn('programme')}
+						title='Programme'
+						options={programmeFilterOptions}
 					/>
 				)}
 				{isFiltered && (

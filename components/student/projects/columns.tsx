@@ -4,6 +4,8 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
+import { PROGRAMMES } from '@/config/programmes'
+import { convertProgrammeName } from '@/lib/helper'
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -11,7 +13,10 @@ export type Project = {
 	id: string
 	title: string
 	supervisor: string
-	thematic: string
+	programme: string
+	semester: string
+	description: string
+	numberOfStudents: number
 }
 
 export const columns: ColumnDef<Project>[] = [
@@ -35,19 +40,12 @@ export const columns: ColumnDef<Project>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: 'id',
-		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Id' />
-		},
-		cell: ({ row }) => <div className='capitalize'>{row.getValue('id')}</div>,
-	},
-	{
 		accessorKey: 'title',
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title='Title' />
 		},
 		cell: ({ row }) => (
-			<div className='capitalize min-w-[500px]'>{row.getValue('title')}</div>
+			<div className='capitalize'>{row.getValue('title')}</div>
 		),
 	},
 	{
@@ -58,16 +56,17 @@ export const columns: ColumnDef<Project>[] = [
 		cell: ({ row }) => <div>{row.getValue('supervisor')}</div>,
 	},
 	{
-		accessorKey: 'thematic',
+		accessorKey: 'programme',
 		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Thematic' />
+			return <DataTableColumnHeader column={column} title='Programme' />
 		},
-		cell: ({ row }) => <div>{row.getValue('thematic')}</div>,
+		cell: ({ row }) => (
+			<div>{convertProgrammeName(row.getValue('programme'))}</div>
+		),
 		filterFn: (row, id, value) => {
 			return value.includes(row.getValue(id))
 		},
 	},
-
 	{
 		id: 'actions',
 		enableHiding: false,

@@ -15,20 +15,40 @@ import {
 	SortableContext,
 } from '@dnd-kit/sortable'
 
-import { ProjectCard } from './project-card'
+import { ProjectCard } from '@/components/student/planner/project-card'
 import { Button } from '@/components/ui/button'
+import { registerProjects } from '@/actions/student/register'
+import { useSession } from 'next-auth/react'
+import { toast } from 'sonner'
 
 export type TItem = {
 	id: string
 	title: string
-	faculty: string
+	supervisor: string
 	programme: string
 }
 
 export function CardContainer({ plans }: { plans: TItem[] }) {
+	const studentId = useSession().data?.user?.studentId
 	const [items, setItems] = useState<TItem[]>(plans)
 
 	const sensors = useSensors(useSensor(PointerSensor))
+
+	if (!studentId) return null
+
+	const handleRegister = async () => {
+		const sanitizedRegister = items.map((item, i) => ({
+			id: item.id,
+			priority: i + 1,
+		}))
+		const result = await registerProjects(sanitizedRegister, studentId)
+
+		if (result.status === 'ERROR') {
+			toast.error(result.message)
+		} else {
+			toast.success(result.message)
+		}
+	}
 
 	return (
 		<DndContext
@@ -45,7 +65,7 @@ export function CardContainer({ plans }: { plans: TItem[] }) {
 			</SortableContext>
 
 			<div className='flex justify-end mt-8'>
-				<Button>Register</Button>
+				<Button onClick={handleRegister}>Register</Button>
 			</div>
 		</DndContext>
 	)

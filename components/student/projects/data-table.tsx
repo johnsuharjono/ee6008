@@ -27,6 +27,9 @@ import {
 	TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
+import { addProjectPlan } from '@/actions/student/project-plan'
+import { useSession } from 'next-auth/react'
+import { toast } from 'sonner'
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -37,6 +40,8 @@ export function DataTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
+	const studentId = useSession().data?.user?.studentId
+
 	const [sorting, setSorting] = React.useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
@@ -66,6 +71,23 @@ export function DataTable<TData, TValue>({
 		getFacetedRowModel: getFacetedRowModel(),
 		getFacetedUniqueValues: getFacetedUniqueValues(),
 	})
+
+	if (!studentId) return null
+
+	const handleAddToPlan = async () => {
+		const result = await addProjectPlan(
+			table
+				.getFilteredSelectedRowModel()
+				.rows.map((row) => (row.original as { id: string }).id),
+			studentId
+		)
+
+		if (result.status === 'ERROR') {
+			toast.error(result.message)
+		} else {
+			toast.success(result.message)
+		}
+	}
 
 	return (
 		<div className='w-full'>
@@ -145,6 +167,10 @@ export function DataTable<TData, TValue>({
 						Next
 					</Button>
 				</div>
+			</div>
+
+			<div className='flex justify-end'>
+				<Button onClick={handleAddToPlan}>Add to plan</Button>
 			</div>
 		</div>
 	)

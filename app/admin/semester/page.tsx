@@ -20,9 +20,9 @@ const Semester = async ({
 				title='Semester Management'
 				description='Create or edit semester timeline and programme!'
 				actions={
-					<Button>
-						<Link href='./semester/create'>Create</Link>
-					</Button>
+					<Link href='./semester/create'>
+						<Button>Create </Button>
+					</Link>
 				}
 			/>
 

@@ -1,16 +1,51 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CardContainer } from './_components/card-container'
-import { getPlans } from './_data/helper'
+import { CardContainer } from '@/components/student/planner/card-container'
 import { Grip } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+import { convertProgrammeName } from '@/lib/helper'
 
 const ProjectPlan = async () => {
 	const session = await getServerSession(authOptions)
 	const user = session?.user
 	if (!user) return null
 
-	const plans = await getPlans()
+	const data = await prisma.projectPlan.findMany({
+		where: {
+			studentId: user.studentId,
+		},
+		include: {
+			project: {
+				include: {
+					Programme: {
+						select: {
+							name: true,
+						},
+					},
+					faculty: {
+						include: {
+							User: {
+								select: {
+									name: true,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+
+	const sanitizedData = data.map((plan) => {
+		return {
+			id: plan.projectId,
+			title: plan.project.title,
+			supervisor: plan.project.faculty.User.name,
+			programme: convertProgrammeName(plan.project.Programme.name),
+		}
+	})
+
 	return (
 		<section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
 			<div className='container flex max-w-[80rem] flex-col gap-4'>
@@ -30,7 +65,9 @@ const ProjectPlan = async () => {
 						</p>
 					</AlertDescription>
 				</Alert>
-				<CardContainer plans={plans} />
+
+				{sanitizedData.length === 0 && <p>No project in your plan exist</p>}
+				<CardContainer plans={sanitizedData} />
 			</div>
 		</section>
 	)

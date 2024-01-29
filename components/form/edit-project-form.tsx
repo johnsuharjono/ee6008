@@ -67,7 +67,6 @@ export function EditProjectForm({
 }) {
 	const router = useRouter()
 	const session = useSession()
-	const user = session?.data?.user
 
 	const mapper = PROGRAMMES.find(
 		(programme) => programme.value === data.programme
