@@ -92,7 +92,7 @@ export function EditProjectForm({
 			toast.error(response.message)
 		} else {
 			toast.success(response.message)
-			router.push(`/faculty/view-projects`)
+			router.push(`/faculty/view-my-projects`)
 			router.refresh()
 		}
 	}

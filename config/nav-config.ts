@@ -32,9 +32,15 @@ export const facultyConfig: FacultyConfig = {
 			type: 'link',
 		},
 		{
-			title: 'View your project',
-			href: '/faculty/view-projects',
+			title: 'View your projects',
+			href: '/faculty/view-my-projects',
 			icon: 'viewProject',
+			type: 'link',
+		},
+		{
+			title: 'View all projects',
+			href: '/faculty/view-all-projects',
+			icon: 'viewAllProjects',
 			type: 'link',
 		},
 		{
