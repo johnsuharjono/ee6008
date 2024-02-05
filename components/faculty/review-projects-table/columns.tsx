@@ -3,18 +3,19 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
+import { statuses } from './config'
 
 import { z } from 'zod'
-import { PROGRAMMES } from '@/config/programmes'
 
 export const projectSchema = z.object({
 	id: z.string(),
 	title: z.string(),
-	programme: z.string(),
+	status: z.string(),
 	proposer: z.string(),
-	semester: z.string(),
 	numberOfStudents: z.number(),
 	description: z.string(),
+	semester: z.string(),
+	programme: z.string(),
 })
 
 export type Project = z.infer<typeof projectSchema>
@@ -28,6 +29,34 @@ export const columns: ColumnDef<Project>[] = [
 		cell: ({ row }) => (
 			<div className='capitalize'>{row.getValue('title')}</div>
 		),
+	},
+	{
+		accessorKey: 'status',
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title='Status' />
+		),
+		cell: ({ row }) => {
+			const status = statuses.find(
+				(status) => status.value.toUpperCase() === row.getValue('status')
+			)
+
+			if (!status) {
+				return null
+			}
+
+			return (
+				<div className='flex w-[100px] items-center'>
+					{status.icon && (
+						<status.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+					)}
+					<span>{status.label}</span>
+				</div>
+			)
+		},
+		filterFn: (row, id, value) => {
+			const rowValue = row.getValue(id) as string
+			return value.includes(rowValue.toLowerCase())
+		},
 	},
 	{
 		enableSorting: false,
@@ -51,18 +80,6 @@ export const columns: ColumnDef<Project>[] = [
 		cell: ({ row }) => (
 			<div className='capitalize'>{row.getValue('proposer')}</div>
 		),
-	},
-	{
-		enableSorting: false,
-		accessorKey: 'programme',
-		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Programme' />
-		},
-		cell: ({ row }) => {
-			const value = row.getValue('programme')
-			const mapping = PROGRAMMES.find((programme) => programme.value === value)
-			return <div className='capitalize'>{mapping?.name}</div>
-		},
 	},
 	{
 		id: 'actions',

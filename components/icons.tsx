@@ -27,6 +27,7 @@ import {
 	GraduationCap,
 	Joystick,
 	GanttChart,
+	ScanEye,
 } from 'lucide-react'
 
 import type { LucideIcon } from 'lucide-react'
@@ -62,4 +63,5 @@ export const Icons = {
 	student: GraduationCap,
 	joystick: Joystick,
 	viewAllProjects: GanttChart,
+	reviewProjects: ScanEye,
 }

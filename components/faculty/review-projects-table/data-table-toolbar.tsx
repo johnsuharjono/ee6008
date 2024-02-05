@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { DataTableViewOptions } from './data-table-view-options'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { Icons } from '@/components/icons'
+import { statuses } from './config'
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>
@@ -29,6 +30,13 @@ export function DataTableToolbar<TData>({
 					}
 					className='h-8 w-[150px] lg:w-[250px]'
 				/>
+				{table.getColumn('status') && (
+					<DataTableFacetedFilter
+						column={table.getColumn('status')}
+						title='Status'
+						options={statuses}
+					/>
+				)}
 				{table.getColumn('semester') && (
 					<DataTableFacetedFilter
 						column={table.getColumn('semester')}

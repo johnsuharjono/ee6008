@@ -8,13 +8,13 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -24,6 +24,9 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Project } from './columns'
 import { convertProgrammeName } from '@/lib/helper'
+import { DropdownMenuGroup } from '@radix-ui/react-dropdown-menu'
+import { approveProject, rejectProject } from '@/actions/review'
+import { toast } from 'sonner'
 
 interface DataTableRowActionsProps<TData> {
 	row: Row<TData>
@@ -33,6 +36,27 @@ export function DataTableRowActions<TData>({
 	row,
 }: DataTableRowActionsProps<TData>) {
 	const projectData = row.original as Project
+
+	const handleApprove = async (row: Row<TData>) => {
+		const result = await approveProject(projectData.id)
+
+		if (result.status === 'ERROR') {
+			toast.error(result.message)
+		} else {
+			toast.success(result.message)
+		}
+	}
+
+	const handleReject = async (row: Row<TData>) => {
+		const result = await rejectProject(projectData.id)
+
+		if (result.status === 'ERROR') {
+			toast.error(result.message)
+		} else {
+			toast.success(result.message)
+		}
+	}
+
 	return (
 		<Dialog>
 			<DropdownMenu>
@@ -49,6 +73,11 @@ export function DataTableRowActions<TData>({
 					<DialogTrigger asChild>
 						<DropdownMenuItem>View detail</DropdownMenuItem>
 					</DialogTrigger>
+					<DropdownMenuSeparator />
+					<DropdownMenuGroup>
+						<DropdownMenuItem onClick={handleApprove}>Approve</DropdownMenuItem>
+						<DropdownMenuItem onClick={handleReject}>Reject</DropdownMenuItem>
+					</DropdownMenuGroup>
 				</DropdownMenuContent>
 			</DropdownMenu>
 
@@ -56,11 +85,11 @@ export function DataTableRowActions<TData>({
 				<DialogHeader className='space-y-4'>
 					<DialogTitle>{projectData.title}</DialogTitle>
 					<Badge className='max-w-fit'>
-						{convertProgrammeName((row.original as any).programme)}
+						{convertProgrammeName((row.original as Project).programme)}
 					</Badge>
 					<div className='flex justify-between items-center text-foreground'>
 						<div>{projectData.semester}</div>
-						<div className='fle	x items-center gap-1'>
+						<div className='flex items-center gap-1'>
 							{projectData.numberOfStudents}
 							<UsersIcon />
 						</div>

@@ -4,7 +4,6 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
-import { PROGRAMMES } from '@/config/programmes'
 import { convertProgrammeName } from '@/lib/helper'
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

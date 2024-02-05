@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { SidebarNavItem } from '@/types'
 import { cn } from '@/lib/utils'
 import { Icons } from '@/components/icons'
-import { Badge } from './ui/badge'
+import { Badge } from '@/components/ui/badge'
 
 interface DashboardNavProps {
 	items: SidebarNavItem[]

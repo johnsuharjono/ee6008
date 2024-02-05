@@ -1,12 +1,12 @@
-import { DataTable } from '@/components/faculty/view-all-projects-table/data-table'
-import { columns } from '@/components/faculty/view-all-projects-table/columns'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { Header } from '@/components/header'
 import _ from 'lodash'
+import { DataTable } from '@/components/faculty/review-projects-table/data-table'
+import { columns } from '@/components/faculty/review-projects-table/columns'
 
-const CreateProposal = async () => {
+const ReviewProjects = async () => {
 	const session = await getServerSession(authOptions)
 	const user = session?.user
 
@@ -14,8 +14,8 @@ const CreateProposal = async () => {
 
 	const data = await prisma.project.findMany({
 		where: {
-			status: {
-				in: ['APPROVED'],
+			Programme: {
+				leaderId: user.facultyId,
 			},
 		},
 		include: {
@@ -63,11 +63,11 @@ const CreateProposal = async () => {
 		return {
 			id: project.id,
 			title: project.title,
-			numberOfStudents: project.numberOfStudents,
-			semester: project.Programme?.Semester?.name,
-			programme: project.Programme?.name,
-			proposer: project.faculty.User.name,
 			description: project.description,
+			programme: project.Programme?.name,
+			numberOfStudents: project.numberOfStudents,
+			proposer: project.faculty.User.name,
+			semester: project.Programme?.Semester?.name,
 			status: project.status,
 		}
 	})
@@ -76,10 +76,9 @@ const CreateProposal = async () => {
 		<div className='space-y-8'>
 			<div className='flex w-full flex-col gap-1'>
 				<Header
-					title='View your projects'
-					description='Check the status of your project below'
+					title='Review projects!'
+					description='Approve or reject project under your programme'
 				/>
-
 				<DataTable
 					columns={columns}
 					data={projectSanitized}
@@ -90,4 +89,4 @@ const CreateProposal = async () => {
 	)
 }
 
-export default CreateProposal
+export default ReviewProjects

@@ -1,6 +1,6 @@
 'use client'
 
-import { MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal, UsersIcon } from 'lucide-react'
 import { Row } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
@@ -10,63 +10,32 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+
 import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+	DialogClose,
+} from '@/components/ui/dialog'
+import { Badge } from '@/components/ui/badge'
+import { Project } from './columns'
+import { convertProgrammeName } from '@/lib/helper'
 
 interface DataTableRowActionsProps<TData> {
 	row: Row<TData>
 }
 
-export function DataTableRowActions<TData extends { id: string }>({
+export function DataTableRowActions<TData>({
 	row,
 }: DataTableRowActionsProps<TData>) {
-	const router = useRouter()
-
-	const handleDelete = async (row: Row<TData>) => {
-		async function deleteProject(projectId: string) {
-			try {
-				const response = await fetch('/api/faculty/project', {
-					method: 'DELETE',
-					body: JSON.stringify({
-						projectId,
-					}),
-				})
-
-				if (!response.ok) {
-					throw new Error('Network response was not ok')
-				}
-
-				const data = await response.json()
-				return data
-			} catch (error) {
-				console.error('Error:', error)
-				throw error
-			}
-		}
-
-		toast.promise(deleteProject(row.original.id), {
-			loading: 'Loading...',
-			success: (data) => {
-				router.refresh()
-				return `${data.project.title} proposals has been deleted`
-			},
-			error: 'Error',
-		})
-	}
+	const projectData = row.original as Project
 
 	return (
-		<AlertDialog>
+		<Dialog>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
@@ -78,36 +47,35 @@ export function DataTableRowActions<TData extends { id: string }>({
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align='end' className='w-[160px]'>
-					<DropdownMenuItem
-						onClick={() => router.push(`/faculty/project/${row.original.id}`)}
-					>
-						Edit
-					</DropdownMenuItem>
-
-					<AlertDialogTrigger asChild>
-						<DropdownMenuItem>Delete</DropdownMenuItem>
-					</AlertDialogTrigger>
+					<DialogTrigger asChild>
+						<DropdownMenuItem>View detail</DropdownMenuItem>
+					</DialogTrigger>
 				</DropdownMenuContent>
 			</DropdownMenu>
-			<AlertDialogContent>
-				<AlertDialogHeader>
-					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-					<AlertDialogDescription>
-						This action cannot be undone. This will permanently delete your
-						proposals.
-					</AlertDialogDescription>
-				</AlertDialogHeader>
-				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction
-						onClick={() => {
-							handleDelete(row)
-						}}
-					>
-						Continue
-					</AlertDialogAction>
-				</AlertDialogFooter>
-			</AlertDialogContent>
-		</AlertDialog>
+
+			<DialogContent className='md:min-w-[600px]'>
+				<DialogHeader className='space-y-4'>
+					<DialogTitle>{projectData.title}</DialogTitle>
+					<Badge className='max-w-fit'>
+						{convertProgrammeName((row.original as any).programme)}
+					</Badge>
+					<div className='flex justify-between items-center text-foreground'>
+						<div>{projectData.semester}</div>
+						<div className='flex items-center gap-1'>
+							{projectData.numberOfStudents}
+							<UsersIcon />
+						</div>
+					</div>
+					<div>{projectData.description}</div>
+				</DialogHeader>
+				<DialogFooter className='sm:justify-start'>
+					<DialogClose asChild>
+						<Button type='button' variant='secondary'>
+							Close
+						</Button>
+					</DialogClose>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	)
 }

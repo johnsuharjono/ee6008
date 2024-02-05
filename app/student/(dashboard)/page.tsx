@@ -7,6 +7,9 @@ import { prisma } from '@/lib/prisma'
 
 export default async function Home() {
 	const data = await prisma.project.findMany({
+		where: {
+			status: 'APPROVED',
+		},
 		include: {
 			faculty: {
 				include: {

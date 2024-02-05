@@ -34,8 +34,8 @@ model Faculty {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   User      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Project   Project[]
   Programme Programme[]
+  Project   Project[]
 }
 
 model Student {
@@ -54,13 +54,12 @@ model Programme {
   id         String        @id @default(uuid())
   name       ProgrammeName
   semesterId String
+  leaderId   String
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  Leader     Faculty       @relation(fields: [leaderId], references: [id])
   Semester   Semester      @relation(fields: [semesterId], references: [id], onDelete: Cascade)
-  leader     String
-  Leader     Faculty?      @relation(fields: [leader], references: [id])
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Project   Project[]
+  Project    Project[]
 
   @@unique([name, semesterId])
 }
@@ -69,18 +68,17 @@ model Project {
   id               String         @id @default(uuid())
   title            String
   description      String
-  status           ProjectStatus  @default(PENDING)
-  numberOfStudents Int
   programme        String
-  Programme        Programme      @relation(fields: [programme], references: [id])
+  status           ProjectStatus  @default(PENDING)
   facultyId        String
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  numberOfStudents Int
   faculty          Faculty        @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  Programme        Programme      @relation(fields: [programme], references: [id])
   project_plan     ProjectPlan[]
   Registration     Registration[]
   students         Student[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model ProjectPlan {
@@ -113,8 +111,8 @@ model Semester {
   name             String            @unique
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
-  SemesterTimeline SemesterTimeline?
   Programme        Programme[]
+  SemesterTimeline SemesterTimeline?
 }
 
 model SemesterTimeline {
