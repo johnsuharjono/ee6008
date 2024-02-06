@@ -170,7 +170,14 @@ export function DataTable<TData, TValue>({
 			</div>
 
 			<div className='flex justify-end'>
-				<Button onClick={handleAddToPlan}>Add to plan</Button>
+				<Button
+					disabled={
+						table.getFilteredSelectedRowModel().rows.length === 0 ? true : false
+					}
+					onClick={handleAddToPlan}
+				>
+					Add to plan
+				</Button>
 			</div>
 		</div>
 	)

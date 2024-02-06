@@ -9,34 +9,12 @@ import {
 } from '@/components/ui/table'
 import { prisma } from '@/lib/prisma'
 import format from 'date-fns/format'
+import { TypographyH4 } from '../typography'
 
-export async function TimelineTable({
-	searchParams,
-}: {
-	searchParams?: {
-		semester: string
-	}
-}) {
-	const semester = searchParams?.semester
-
-	if (!semester) {
-		return (
-			<Table>
-				<TableCaption>Select a semester</TableCaption>
-				<TableHeader>
-					<TableRow>
-						<TableHead>Period</TableHead>
-						<TableHead>From</TableHead>
-						<TableHead>To</TableHead>
-					</TableRow>
-				</TableHeader>
-				<TableBody></TableBody>
-			</Table>
-		)
-	}
-	const semesterData = await prisma.semester.findUnique({
+export async function SemesterTimeline() {
+	const semesterData = await prisma.semester.findFirst({
 		where: {
-			name: semester,
+			active: true,
 		},
 		include: {
 			SemesterTimeline: true,
@@ -79,9 +57,8 @@ export async function TimelineTable({
 
 	return (
 		<>
-			<h1 className='text-lg md:text-xl font-semibold'>Timeline</h1>
+			<TypographyH4>{semesterData.name} semester timeline</TypographyH4>
 			<Table>
-				<TableCaption>{semester} semester timeline</TableCaption>
 				<TableHeader>
 					<TableRow>
 						<TableHead>Period</TableHead>

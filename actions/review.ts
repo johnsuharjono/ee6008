@@ -1,7 +1,6 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
-import {} from '@/lib/schema'
 import { revalidatePath } from 'next/cache'
 
 export async function approveProject(id: string) {

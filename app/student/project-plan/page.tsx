@@ -23,7 +23,7 @@ const ProjectPlan = async () => {
 							name: true,
 						},
 					},
-					faculty: {
+					Faculty: {
 						include: {
 							User: {
 								select: {
@@ -41,7 +41,7 @@ const ProjectPlan = async () => {
 		return {
 			id: plan.projectId,
 			title: plan.project.title,
-			supervisor: plan.project.faculty.User.name,
+			supervisor: plan.project.Faculty.User.name,
 			programme: convertProgrammeName(plan.project.Programme.name),
 		}
 	})

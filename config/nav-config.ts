@@ -8,6 +8,10 @@ export const studentConfig: StudentConfig = {
 			href: '/student/project-plan',
 		},
 		{
+			title: 'Project Registration',
+			href: '/student/project-registration',
+		},
+		{
 			title: 'FAQ',
 			href: '/student/faq',
 		},
@@ -23,7 +27,6 @@ export const facultyConfig: FacultyConfig = {
 			href: '/faculty',
 			icon: 'home',
 			type: 'link',
-			disabled: true,
 		},
 		{
 			title: 'Add project',

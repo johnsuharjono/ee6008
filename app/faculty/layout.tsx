@@ -21,11 +21,9 @@ export default async function FacultyLayout({ children }: FacultyLayoutProps) {
 
 	if (!facultyId) return null
 
-	// TODO: get semester from dropdown
-	const semester = '23S2'
+	// get active semester for faculty member
 	const semesterData = await prisma.semester.findFirst({
-		where: { name: semester },
-		select: { id: true },
+		where: { active: true },
 	})
 	const semesterId = semesterData?.id
 

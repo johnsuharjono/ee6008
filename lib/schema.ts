@@ -7,6 +7,10 @@ export const EditTimelineDataFormSchema = z.object({
 		from: z.date(),
 		to: z.date(),
 	}),
+	facultyProposalReview: z.object({
+		from: z.date(),
+		to: z.date(),
+	}),
 	studentRegistration: z.object({
 		from: z.date(),
 		to: z.date(),
@@ -33,6 +37,10 @@ export const AddSemesterDataFormSchema = z.object({
 		from: z.date(),
 		to: z.date(),
 	}),
+	facultyProposalReview: z.object({
+		from: z.date(),
+		to: z.date(),
+	}),
 	studentRegistration: z.object({
 		from: z.date(),
 		to: z.date(),
@@ -50,31 +58,6 @@ export const AddSemesterDataFormSchema = z.object({
 	electronicsLead: z.string(),
 	powerEngineeringLead: z.string(),
 	signalProcessingLead: z.string(),
-})
-
-export const AddTimelineDataFormSchema = z.object({
-	semesterName: z
-		.string()
-		.refine(
-			(value) => semesterNameRegex.test(value),
-			'Semester name must be in the format {YY}{S}{#}'
-		),
-	facultyProposalSubmission: z.object({
-		from: z.date(),
-		to: z.date(),
-	}),
-	studentRegistration: z.object({
-		from: z.date(),
-		to: z.date(),
-	}),
-	markEntry: z.object({
-		from: z.date(),
-		to: z.date(),
-	}),
-	peerReview: z.object({
-		from: z.date(),
-		to: z.date(),
-	}),
 })
 
 export const AddProjectFormSchema = z.object({

@@ -85,7 +85,6 @@ export function EditProjectForm({
 	})
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values)
 		const response = await editProject(values)
 
 		if (response.status === 'ERROR') {

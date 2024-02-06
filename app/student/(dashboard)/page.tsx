@@ -11,7 +11,7 @@ export default async function Home() {
 			status: 'APPROVED',
 		},
 		include: {
-			faculty: {
+			Faculty: {
 				include: {
 					User: {
 						select: {
@@ -38,7 +38,7 @@ export default async function Home() {
 		description: project.description,
 		programme: project.Programme.name,
 		semester: project.Programme.Semester.name,
-		supervisor: project.faculty.User.name,
+		supervisor: project.Faculty.User.name,
 		numberOfStudents: project.numberOfStudents,
 	}))
 

@@ -3,13 +3,13 @@ import { Header } from '@/components/header'
 import { prisma } from '@/lib/prisma'
 
 const CreateProposal = async () => {
-	const AY = '23S2'
-	const semester = await prisma.semester.findUnique({
+	const semester = await prisma.semester.findFirst({
 		where: {
-			name: AY,
+			active: true,
 		},
 		select: {
 			id: true,
+			name: true,
 		},
 	})
 
@@ -20,7 +20,7 @@ const CreateProposal = async () => {
 			<div className='flex w-full flex-col gap-1'>
 				<Header
 					title='Create a proposal'
-					description='Start by choosing semester to add project to'
+					description={`Proposal created will be for the semester: ${semester.name}`}
 				/>
 			</div>
 

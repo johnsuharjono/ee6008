@@ -37,7 +37,7 @@ export function CardContainer({ plans }: { plans: TItem[] }) {
 	if (!studentId) return null
 
 	const handleRegister = async () => {
-		const sanitizedRegister = items.map((item, i) => ({
+		const sanitizedRegister = items.slice(0, 3).map((item, i) => ({
 			id: item.id,
 			priority: i + 1,
 		}))

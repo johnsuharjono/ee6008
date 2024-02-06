@@ -122,6 +122,23 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
 							/>
 							<FormField
 								control={form.control}
+								name='facultyProposalReview'
+								render={({ field }) => (
+									<FormItem className='flex flex-col'>
+										<FormLabel>Proposal Review</FormLabel>
+										<DateTimePickerFormInput
+											value={field.value}
+											onChange={field.onChange}
+										/>
+										<FormDescription>
+											Period for when faculty member can submit proposals
+										</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
 								name='studentRegistration'
 								render={({ field }) => (
 									<FormItem className='flex flex-col'>

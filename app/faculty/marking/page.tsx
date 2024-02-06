@@ -1,4 +1,3 @@
-import { CreateProposalForm } from '@/components/form/add-project-form'
 import { Separator } from '@/components/ui/separator'
 
 const CreateProposal = () => {

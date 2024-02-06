@@ -1,4 +1,3 @@
-import { Skeleton } from '@/components/ui/skeleton'
 import {
 	Table,
 	TableBody,
@@ -8,10 +7,8 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
-import { PROGRAMMES } from '@/config/programmes'
 import { convertProgrammeName } from '@/lib/helper'
 import { prisma } from '@/lib/prisma'
-import format from 'date-fns/format'
 
 export async function ProgrammeLeaderTable({
 	searchParams,
@@ -57,8 +54,6 @@ export async function ProgrammeLeaderTable({
 			},
 		},
 	})
-
-	console.log(programmeLeaders)
 
 	if (!programmeLeaders) {
 		return <div>No timeline data exist for this semesteer</div>

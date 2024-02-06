@@ -75,7 +75,6 @@ export const AddUserModal = ({
 			})
 
 			const data = await res.json()
-			console.log(data)
 
 			if (res.status === 200) {
 				toast.success(`User created succesfully`)

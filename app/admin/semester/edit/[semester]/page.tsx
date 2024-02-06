@@ -42,6 +42,10 @@ const EditTimeline = async ({ params }: { params: { semester: string } }) => {
 				from: semesterTimelineData.facultyProposalSubmissionStart,
 				to: semesterTimelineData.facultyProposalSubmissionEnd,
 			},
+			facultyProposalReview: {
+				from: semesterTimelineData.facultyProposalReviewStart,
+				to: semesterTimelineData.facultyProposalReviewEnd,
+			},
 			studentRegistration: {
 				from: semesterTimelineData.studentRegistrationStart,
 				to: semesterTimelineData.studentRegistrationEnd,

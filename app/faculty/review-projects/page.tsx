@@ -5,12 +5,20 @@ import { Header } from '@/components/header'
 import _ from 'lodash'
 import { DataTable } from '@/components/faculty/review-projects-table/data-table'
 import { columns } from '@/components/faculty/review-projects-table/columns'
+import { Badge } from '@/components/ui/badge'
+import { convertProgrammeName } from '@/lib/helper'
 
 const ReviewProjects = async () => {
 	const session = await getServerSession(authOptions)
 	const user = session?.user
 
 	if (!user) return null
+
+	const programmeUnderFaculty = await prisma.programme.findMany({
+		where: {
+			leaderId: user.facultyId,
+		},
+	})
 
 	const data = await prisma.project.findMany({
 		where: {
@@ -19,7 +27,7 @@ const ReviewProjects = async () => {
 			},
 		},
 		include: {
-			faculty: {
+			Faculty: {
 				select: {
 					User: {
 						select: {
@@ -66,25 +74,32 @@ const ReviewProjects = async () => {
 			description: project.description,
 			programme: project.Programme?.name,
 			numberOfStudents: project.numberOfStudents,
-			proposer: project.faculty.User.name,
+			proposer: project.Faculty.User.name,
 			semester: project.Programme?.Semester?.name,
 			status: project.status,
 		}
 	})
 
 	return (
-		<div className='space-y-8'>
-			<div className='flex w-full flex-col gap-1'>
-				<Header
-					title='Review projects!'
-					description='Approve or reject project under your programme'
-				/>
-				<DataTable
-					columns={columns}
-					data={projectSanitized}
-					semesterOptions={semesterOptionsSanitized}
-				/>
+		<div className='space-y-4'>
+			<Header
+				title='Review projects!'
+				description='Approve or reject project under your programme'
+			/>
+
+			<div className='flex gap-2 items-center'>
+				{programmeUnderFaculty.map((programme) => (
+					<Badge className='max-w-fit' key={programme.id}>
+						{convertProgrammeName(programme.name)}
+					</Badge>
+				))}
 			</div>
+
+			<DataTable
+				columns={columns}
+				data={projectSanitized}
+				semesterOptions={semesterOptionsSanitized}
+			/>
 		</div>
 	)
 }
