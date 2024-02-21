@@ -9,6 +9,11 @@ export default async function Home() {
 	const data = await prisma.project.findMany({
 		where: {
 			status: 'APPROVED',
+			Programme: {
+				Semester: {
+					active: true,
+				},
+			},
 		},
 		include: {
 			Faculty: {
@@ -21,12 +26,8 @@ export default async function Home() {
 				},
 			},
 			Programme: {
-				include: {
-					Semester: {
-						select: {
-							name: true,
-						},
-					},
+				select: {
+					name: true,
 				},
 			},
 		},
@@ -37,10 +38,12 @@ export default async function Home() {
 		title: project.title,
 		description: project.description,
 		programme: project.Programme.name,
-		semester: project.Programme.Semester.name,
 		faculty: project.Faculty.User.name,
-		numberOfStudents: project.numberOfStudents,
 	}))
+
+	const programmeFilterOptions = Array.from(
+		new Set(projects.map((project) => project.programme))
+	).map((programme) => ({ label: programme, value: programme }))
 
 	const session = await getServerSession(authOptions)
 
@@ -53,7 +56,11 @@ export default async function Home() {
 				<h3 className='text-muted-foreground text-lg tracking-tight'>
 					Here are the list of projects available:
 				</h3>
-				<DataTable columns={columns} data={projects} />
+				<DataTable
+					columns={columns}
+					data={projects}
+					programmeFilterOptions={programmeFilterOptions}
+				/>
 			</div>
 		</section>
 	)

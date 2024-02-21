@@ -194,7 +194,6 @@ async function projectSeed() {
 					id: randomFaculty,
 				},
 			},
-			numberOfStudents: getRandomNumber(3, 5),
 			status: ProjectStatus.APPROVED,
 		}
 	}

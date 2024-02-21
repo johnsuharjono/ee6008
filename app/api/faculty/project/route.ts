@@ -11,7 +11,6 @@ export async function PUT(request: NextRequest) {
 		},
 		data: {
 			description: body.description,
-			numberOfStudents: body.numberOfStudents,
 			programme: body.programme,
 			title: body.title,
 		},

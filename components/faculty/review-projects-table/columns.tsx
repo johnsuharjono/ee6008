@@ -12,7 +12,6 @@ export const projectSchema = z.object({
 	title: z.string(),
 	status: z.string(),
 	proposer: z.string(),
-	numberOfStudents: z.number(),
 	description: z.string(),
 	semester: z.string(),
 	programme: z.string(),

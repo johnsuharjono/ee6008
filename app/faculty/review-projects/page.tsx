@@ -6,7 +6,6 @@ import _ from 'lodash'
 import { DataTable } from '@/components/faculty/review-projects-table/data-table'
 import { columns } from '@/components/faculty/review-projects-table/columns'
 import { Badge } from '@/components/ui/badge'
-import { convertProgrammeName } from '@/lib/helper'
 
 const ReviewProjects = async () => {
 	const session = await getServerSession(authOptions)
@@ -73,7 +72,6 @@ const ReviewProjects = async () => {
 			title: project.title,
 			description: project.description,
 			programme: project.Programme?.name,
-			numberOfStudents: project.numberOfStudents,
 			proposer: project.Faculty.User.name,
 			semester: project.Programme?.Semester?.name,
 			status: project.status,
@@ -90,7 +88,7 @@ const ReviewProjects = async () => {
 			<div className='flex gap-2 items-center'>
 				{programmeUnderFaculty.map((programme) => (
 					<Badge className='max-w-fit' key={programme.id}>
-						{convertProgrammeName(programme.name)}
+						{programme.name}
 					</Badge>
 				))}
 			</div>

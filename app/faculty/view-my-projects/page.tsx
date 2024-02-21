@@ -51,7 +51,6 @@ const CreateProposal = async () => {
 			id: project.id,
 			title: project.title,
 			status: project.status,
-			numberOfStudents: project.numberOfStudents,
 			semester: project.Programme?.Semester?.name,
 			programme: project.Programme?.name,
 			reviewer: project.Programme?.Leader?.User?.name,

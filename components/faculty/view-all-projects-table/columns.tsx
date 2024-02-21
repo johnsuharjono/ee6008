@@ -5,7 +5,6 @@ import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
 
 import { z } from 'zod'
-import { PROGRAMMES } from '@/config/programmes'
 
 export const projectSchema = z.object({
 	id: z.string(),
@@ -13,7 +12,6 @@ export const projectSchema = z.object({
 	programme: z.string(),
 	faculty: z.string(),
 	semester: z.string(),
-	numberOfStudents: z.number(),
 	description: z.string(),
 })
 
@@ -59,9 +57,7 @@ export const columns: ColumnDef<Project>[] = [
 			return <DataTableColumnHeader column={column} title='Programme' />
 		},
 		cell: ({ row }) => {
-			const value = row.getValue('programme')
-			const mapping = PROGRAMMES.find((programme) => programme.value === value)
-			return <div className='capitalize'>{mapping?.name}</div>
+			return <div className='capitalize'>{row.getValue('programme')}</div>
 		},
 	},
 	{

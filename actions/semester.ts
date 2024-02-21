@@ -3,9 +3,8 @@
 import { prisma } from '@/lib/prisma'
 import {
 	AddSemesterDataFormSchema,
-	EditTimelineDataFormSchema,
+	EditSemesterDataFormSchema,
 } from '@/lib/schema'
-import { ProgrammeName } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
@@ -37,11 +36,22 @@ export async function setActiveSemester(semesterId: string) {
 }
 
 export async function editSemester(
-	data: z.infer<typeof EditTimelineDataFormSchema>
+	data: z.infer<typeof EditSemesterDataFormSchema>
 ) {
-	const formData = EditTimelineDataFormSchema.parse(data)
+	const formData = EditSemesterDataFormSchema.parse(data)
 
 	try {
+		await prisma.semester.update({
+			where: {
+				id: formData.semesterId,
+			},
+			data: {
+				minimumGroupSize: formData.minimumGroupSize,
+				maximumGroupSize: formData.maximumGroupSize,
+				projectApplicationsLimit: formData.projectApplicationsLimit,
+			},
+		})
+
 		await prisma.semesterTimeline.update({
 			where: {
 				semesterId: formData.semesterId,
@@ -67,7 +77,8 @@ export async function editSemester(
 export async function createSemester(
 	data: z.infer<typeof AddSemesterDataFormSchema>
 ) {
-	const formData = AddSemesterDataFormSchema.parse(data)
+	const formData: z.infer<typeof AddSemesterDataFormSchema> =
+		AddSemesterDataFormSchema.parse(data)
 
 	try {
 		const semester = await prisma.semester.create({
@@ -92,34 +103,15 @@ export async function createSemester(
 		})
 
 		const semesterId = semester.id
+		const programmeData = formData.programmeLeaders.map((programme) => {
+			return {
+				semesterId,
+				leaderId: programme.faculty,
+				name: programme.programmeName,
+			}
+		})
 		await prisma.programme.createMany({
-			data: [
-				{
-					leaderId: formData.communicationsEngineeringLead,
-					name: ProgrammeName.CommunicationsEngineering,
-					semesterId,
-				},
-				{
-					leaderId: formData.computerControlAndAutomationLead,
-					name: ProgrammeName.ComputerControlAndAutomation,
-					semesterId,
-				},
-				{
-					leaderId: formData.electronicsLead,
-					name: ProgrammeName.Electronics,
-					semesterId,
-				},
-				{
-					leaderId: formData.powerEngineeringLead,
-					name: ProgrammeName.PowerEngineering,
-					semesterId,
-				},
-				{
-					leaderId: formData.signalProcessingLead,
-					name: ProgrammeName.SignalProcessing,
-					semesterId,
-				},
-			],
+			data: programmeData,
 		})
 
 		return {

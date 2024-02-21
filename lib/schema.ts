@@ -1,8 +1,10 @@
-import { ProgrammeName } from '@prisma/client'
 import { z } from 'zod'
 
-export const EditTimelineDataFormSchema = z.object({
+export const EditSemesterDataFormSchema = z.object({
 	semesterId: z.string(),
+	minimumGroupSize: z.coerce.number().min(1),
+	maximumGroupSize: z.coerce.number().min(1),
+	projectApplicationsLimit: z.coerce.number().min(1),
 	facultyProposalSubmission: z.object({
 		from: z.date(),
 		to: z.date(),
@@ -33,6 +35,9 @@ export const AddSemesterDataFormSchema = z.object({
 			(value) => semesterNameRegex.test(value),
 			'Semester name must be in the format {YY}{S}{#}'
 		),
+	minimumGroupSize: z.coerce.number().min(1),
+	maximumGroupSize: z.coerce.number().min(1),
+	projectApplicationsLimit: z.coerce.number().min(1),
 	facultyProposalSubmission: z.object({
 		from: z.date(),
 		to: z.date(),
@@ -53,19 +58,21 @@ export const AddSemesterDataFormSchema = z.object({
 		from: z.date(),
 		to: z.date(),
 	}),
-	communicationsEngineeringLead: z.string(),
-	computerControlAndAutomationLead: z.string(),
-	electronicsLead: z.string(),
-	powerEngineeringLead: z.string(),
-	signalProcessingLead: z.string(),
+	programmeLeaders: z.array(
+		z.object({
+			programmeName: z
+				.string()
+				.min(1, { message: 'Programme name is required' }),
+			faculty: z.string().min(1, { message: 'Faculty name is required' }),
+		})
+	),
 })
 
 export const AddProjectFormSchema = z.object({
 	title: z.string(),
 	description: z.string(),
 	semesterId: z.string(),
-	numberOfStudents: z.number(),
-	programme: z.nativeEnum(ProgrammeName),
+	programme: z.string(),
 	facultyId: z.string(),
 })
 
@@ -73,7 +80,6 @@ export const EditProjectFormSchema = z.object({
 	title: z.string(),
 	description: z.string(),
 	semesterId: z.string(),
-	numberOfStudents: z.number(),
-	programme: z.nativeEnum(ProgrammeName),
+	programme: z.string(),
 	projectId: z.string(),
 })

@@ -34,11 +34,13 @@ import { toast } from 'sonner'
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
+	programmeFilterOptions: { label: string; value: string }[]
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	programmeFilterOptions,
 }: DataTableProps<TData, TValue>) {
 	const studentId = useSession().data?.user?.studentId
 
@@ -92,7 +94,10 @@ export function DataTable<TData, TValue>({
 	return (
 		<div className='w-full'>
 			<div className='py-4'>
-				<DataTableToolbar table={table} />
+				<DataTableToolbar
+					table={table}
+					programmeFilterOptions={programmeFilterOptions}
+				/>
 			</div>
 			<div className='rounded-md border'>
 				<Table>

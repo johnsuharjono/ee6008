@@ -1,4 +1,3 @@
-import { convertProgrammeName } from '@/lib/helper'
 import { TypographyH2 } from '../typography'
 import { Badge } from '../ui/badge'
 import {
@@ -17,7 +16,6 @@ export const projectSchema = z.object({
 	programme: z.string(),
 	faculty: z.string(),
 	semester: z.string(),
-	numberOfStudents: z.number(),
 	description: z.string(),
 })
 
@@ -31,9 +29,7 @@ const ProjectDetailModal = ({ projectData }: { projectData: Project }) => {
 					<TypographyH2>{projectData.title}</TypographyH2>
 				</DialogTitle>
 				<div className='flex items-center gap-2'>
-					<Badge className='max-w-fit'>
-						{convertProgrammeName(projectData.programme)}
-					</Badge>
+					<Badge className='max-w-fit'>{projectData.programme}</Badge>
 					<Badge className='max-w-fit'>
 						<div>{projectData.semester}</div>
 					</Badge>
@@ -41,9 +37,6 @@ const ProjectDetailModal = ({ projectData }: { projectData: Project }) => {
 				<div className='flex justify-between items-center text-foreground'>
 					<div className='text-sm lg:text-md'>
 						Faculty member: {projectData.faculty}
-					</div>
-					<div className='text-sm lg:text-md'>
-						Number of students: {projectData.numberOfStudents}
 					</div>
 				</div>
 				<div>{projectData.description}</div>

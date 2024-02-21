@@ -3,10 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
-import { PROGRAMMES } from '@/config/programmes'
 import { toast } from 'sonner'
 import { useSession } from 'next-auth/react'
-import { User } from 'next-auth'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -28,7 +26,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { ProgrammeName, Project } from '@prisma/client'
+import { Project } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 import { editProject } from '@/actions/project'
 
@@ -43,18 +41,9 @@ const formSchema = z.object({
 		.max(50, {
 			message: 'Title must not be longer than 50 characters.',
 		}),
-	programme: z.nativeEnum(ProgrammeName, {
-		errorMap: () => {
-			return { message: 'Please select correct programme' }
-		},
+	programme: z.string().min(1, {
+		message: 'Please select a programme',
 	}),
-	numberOfStudents: z.coerce
-		.number({
-			invalid_type_error: 'Please select a number of students',
-			required_error: 'Please select a number of students.',
-		})
-		.gte(3, 'Must be greater than 3')
-		.lte(5, 'Must be less than 5'),
 	description: z.string().max(1000).min(1),
 })
 
@@ -62,22 +51,18 @@ type ProposalFormValues = z.infer<typeof formSchema>
 
 export function EditProjectForm({
 	data,
+	programmeOptions,
 }: {
 	data: Project & { semesterId: string }
+	programmeOptions: string[]
 }) {
 	const router = useRouter()
-	const session = useSession()
-
-	const mapper = PROGRAMMES.find(
-		(programme) => programme.value === data.programme
-	)
 
 	const form = useForm<ProposalFormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: data.title,
-			programme: mapper?.value as ProgrammeName,
-			numberOfStudents: data.numberOfStudents,
+			programme: data.programme,
 			description: data.description,
 			projectId: data.id,
 			semesterId: data.semesterId,
@@ -137,61 +122,33 @@ export function EditProjectForm({
 						</FormItem>
 					)}
 				/>
-
-				<div className='grid gap-y-8 md:grid-cols-3 md:gap-4'>
-					<FormField
-						control={form.control}
-						name='numberOfStudents'
-						render={({ field }) => (
-							<FormItem className='md:col-span-1'>
-								<FormLabel>Number of Students</FormLabel>
-								<Select
-									onValueChange={field.onChange}
-									defaultValue={data.numberOfStudents.toString()}
-								>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										<SelectItem value='3'>3</SelectItem>
-										<SelectItem value='4'>4</SelectItem>
-										<SelectItem value='5'>5</SelectItem>
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='programme'
-						render={({ field }) => (
-							<FormItem className='md:col-span-2'>
-								<FormLabel>Programme</FormLabel>
-								<Select
-									onValueChange={field.onChange}
-									defaultValue={data.programme}
-								>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{PROGRAMMES.map((programme) => (
-											<SelectItem key={programme.value} value={programme.value}>
-												{programme.name}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
+				<FormField
+					control={form.control}
+					name='programme'
+					render={({ field }) => (
+						<FormItem className='md:col-span-2'>
+							<FormLabel>Programme</FormLabel>
+							<Select
+								onValueChange={field.onChange}
+								defaultValue={data.programme}
+							>
+								<FormControl>
+									<SelectTrigger>
+										<SelectValue />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									{programmeOptions.map((programme) => (
+										<SelectItem key={programme} value={programme}>
+											{programme}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<FormField
 					control={form.control}
 					name='description'

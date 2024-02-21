@@ -51,34 +51,33 @@ model Student {
 }
 
 model Programme {
-  id         String        @id @default(uuid())
-  name       ProgrammeName
+  id         String    @id @default(uuid())
+  name       String
   semesterId String
   leaderId   String
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  Leader     Faculty       @relation(fields: [leaderId], references: [id])
-  Semester   Semester      @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Leader     Faculty   @relation(fields: [leaderId], references: [id])
+  Semester   Semester  @relation(fields: [semesterId], references: [id], onDelete: Cascade)
   Project    Project[]
 
   @@unique([name, semesterId])
 }
 
 model Project {
-  id               String         @id @default(uuid())
-  title            String
-  description      String
-  programme        String
-  status           ProjectStatus  @default(PENDING)
-  facultyId        String
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  numberOfStudents Int
-  Faculty          Faculty        @relation(fields: [facultyId], references: [id], onDelete: Cascade)
-  Programme        Programme      @relation(fields: [programme], references: [id])
-  project_plan     ProjectPlan[]
-  Registration     Registration[]
-  students         Student[]
+  id           String         @id @default(uuid())
+  title        String
+  description  String
+  programme    String
+  status       ProjectStatus  @default(PENDING)
+  facultyId    String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Faculty      Faculty        @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  Programme    Programme      @relation(fields: [programme], references: [id])
+  project_plan ProjectPlan[]
+  Registration Registration[]
+  students     Student[]
 }
 
 model ProjectPlan {
@@ -113,6 +112,8 @@ model Semester {
   updatedAt                DateTime          @updatedAt
   active                   Boolean           @default(false)
   projectApplicationsLimit Int               @default(3)
+  minimumGroupSize         Int               @default(3)
+  maximumGroupSize         Int               @default(5)
   Programme                Programme[]
   SemesterTimeline         SemesterTimeline?
 }
@@ -146,12 +147,4 @@ enum ProjectStatus {
   APPROVED
   REJECTED
   COMPLETED
-}
-
-enum ProgrammeName {
-  CommunicationsEngineering
-  ComputerControlAndAutomation
-  Electronics
-  PowerEngineering
-  SignalProcessing
 }

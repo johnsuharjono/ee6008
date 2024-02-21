@@ -5,21 +5,13 @@ import { AddProjectFormSchema, EditProjectFormSchema } from '@/lib/schema'
 import { z } from 'zod'
 
 export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
-	const {
-		description,
-		numberOfStudents,
-		programme,
-		semesterId,
-		title,
-		facultyId,
-	} = data
+	const { description, programme, semesterId, title, facultyId } = data
 
 	try {
 		const data = await prisma.project.create({
 			data: {
 				title,
 				description,
-				numberOfStudents,
 				Faculty: {
 					connect: {
 						id: facultyId,
@@ -47,14 +39,7 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
 }
 
 export async function editProject(data: z.infer<typeof EditProjectFormSchema>) {
-	const {
-		description,
-		numberOfStudents,
-		programme,
-		semesterId,
-		title,
-		projectId,
-	} = data
+	const { description, programme, semesterId, title, projectId } = data
 
 	try {
 		const data = await prisma.project.update({
@@ -64,7 +49,6 @@ export async function editProject(data: z.infer<typeof EditProjectFormSchema>) {
 			data: {
 				title,
 				description,
-				numberOfStudents,
 				Programme: {
 					connect: {
 						name_semesterId: {

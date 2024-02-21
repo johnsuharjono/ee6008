@@ -63,7 +63,6 @@ const CreateProposal = async () => {
 		return {
 			id: project.id,
 			title: project.title,
-			numberOfStudents: project.numberOfStudents,
 			semester: project.Programme?.Semester?.name,
 			programme: project.Programme?.name,
 			faculty: project.Faculty.User.name,
@@ -76,8 +75,8 @@ const CreateProposal = async () => {
 		<div className='space-y-8'>
 			<div className='flex w-full flex-col gap-1'>
 				<Header
-					title='View your projects'
-					description='Check the status of your project below'
+					title='View all projects'
+					description='All approved projects are listed below.'
 				/>
 
 				<DataTable

@@ -1,8 +1,9 @@
-import { EditTimelineForm } from '@/components/admin/timeline/edit-timeline-form'
-import { Header } from '@/components/header'
-import { Badge } from '@/components/ui/badge'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
+
+import { EditSemesterForm } from '@/components/admin/semester/edit-semester-form'
+import { Header } from '@/components/header'
+import { Badge } from '@/components/ui/badge'
 
 const EditTimeline = async ({ params }: { params: { semester: string } }) => {
 	if (!validateSemesterFormat(params.semester)) {
@@ -37,6 +38,9 @@ const EditTimeline = async ({ params }: { params: { semester: string } }) => {
 		)
 	} else {
 		sanitizedDefaultValues = {
+			minimumGroupSize: data.minimumGroupSize,
+			maximumGroupSize: data.maximumGroupSize,
+			projectApplicationsLimit: data.projectApplicationsLimit,
 			semesterId: semesterId,
 			facultyProposalSubmission: {
 				from: semesterTimelineData.facultyProposalSubmissionStart,
@@ -69,7 +73,7 @@ const EditTimeline = async ({ params }: { params: { semester: string } }) => {
 			/>
 
 			<Badge className='text-md px-4 py-2 rounded-xl'>{params.semester}</Badge>
-			<EditTimelineForm
+			<EditSemesterForm
 				defaultValues={sanitizedDefaultValues}
 				semesterName={params.semester}
 			/>

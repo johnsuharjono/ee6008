@@ -3,7 +3,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
-import { PROGRAMMES } from '@/config/programmes'
 import { toast } from 'sonner'
 import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
@@ -28,7 +27,6 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { addProject } from '@/actions/project'
-import { ProgrammeName } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
@@ -40,25 +38,24 @@ const formSchema = z.object({
 		.max(50, {
 			message: 'Title must not be longer than 50 characters.',
 		}),
-	programme: z.nativeEnum(ProgrammeName, {
-		errorMap: () => {
-			return { message: 'Please select correct programme' }
-		},
+	programme: z.string().min(1, {
+		message: 'Please select a programme',
 	}),
-	numberOfStudents: z.coerce
-		.number({
-			invalid_type_error: 'Please select a number of students',
-			required_error: 'Please select a number of students.',
-		})
-		.gte(3, 'Must be greater than 3')
-		.lte(5, 'Must be less than 5'),
 	description: z.string().max(1000).min(1),
 	semesterId: z.string(),
 })
 
 type ProposalFormValues = z.infer<typeof formSchema>
 
-export function AddProjectForm({ semesterId }: { semesterId: string }) {
+interface AddProjectFormProps {
+	semesterId: string
+	programmeOptions: string[]
+}
+
+export function AddProjectForm({
+	semesterId,
+	programmeOptions,
+}: AddProjectFormProps) {
 	const router = useRouter()
 	const session = useSession()
 	const user = session?.data?.user
@@ -85,7 +82,7 @@ export function AddProjectForm({ semesterId }: { semesterId: string }) {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
 				<FormField
 					control={form.control}
 					name='semesterId'
@@ -114,54 +111,31 @@ export function AddProjectForm({ semesterId }: { semesterId: string }) {
 					)}
 				/>
 
-				<div className='grid gap-y-8 md:grid-cols-3 md:gap-4'>
-					<FormField
-						control={form.control}
-						name='numberOfStudents'
-						render={({ field }) => (
-							<FormItem className='md:col-span-1'>
-								<FormLabel>Number of Students</FormLabel>
-								<Select onValueChange={field.onChange}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										<SelectItem value='3'>3</SelectItem>
-										<SelectItem value='4'>4</SelectItem>
-										<SelectItem value='5'>5</SelectItem>
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='programme'
-						render={({ field }) => (
-							<FormItem className='md:col-span-2'>
-								<FormLabel>Programme</FormLabel>
-								<Select onValueChange={field.onChange}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{PROGRAMMES.map((programme) => (
-											<SelectItem key={programme.value} value={programme.value}>
-												{programme.name}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
+				<FormField
+					control={form.control}
+					name='programme'
+					render={({ field }) => (
+						<FormItem className='md:col-span-2'>
+							<FormLabel>Programme</FormLabel>
+							<Select onValueChange={field.onChange}>
+								<FormControl>
+									<SelectTrigger>
+										<SelectValue />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									{programmeOptions.map((programme) => (
+										<SelectItem key={programme} value={programme}>
+											{programme}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
 				<FormField
 					control={form.control}
 					name='description'

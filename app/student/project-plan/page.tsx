@@ -4,7 +4,6 @@ import { Grip } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { convertProgrammeName } from '@/lib/helper'
 
 const ProjectPlan = async () => {
 	const session = await getServerSession(authOptions)
@@ -42,7 +41,7 @@ const ProjectPlan = async () => {
 			id: plan.projectId,
 			title: plan.project.title,
 			faculty: plan.project.Faculty.User.name,
-			programme: convertProgrammeName(plan.project.Programme.name),
+			programme: plan.project.Programme.name,
 		}
 	})
 

@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Project } from './columns'
-import { convertProgrammeName } from '@/lib/helper'
 import { DropdownMenuGroup } from '@radix-ui/react-dropdown-menu'
 import { approveProject, rejectProject } from '@/actions/review'
 import { toast } from 'sonner'
@@ -85,15 +84,9 @@ export function DataTableRowActions<TData>({
 				<DialogHeader className='space-y-4'>
 					<DialogTitle>{projectData.title}</DialogTitle>
 					<Badge className='max-w-fit'>
-						{convertProgrammeName((row.original as Project).programme)}
+						{(row.original as Project).programme}
 					</Badge>
-					<div className='flex justify-between items-center text-foreground'>
-						<div>{projectData.semester}</div>
-						<div className='flex items-center gap-1'>
-							{projectData.numberOfStudents}
-							<UsersIcon />
-						</div>
-					</div>
+					<div className='text-foreground'>{projectData.semester}</div>
 					<div>{projectData.description}</div>
 				</DialogHeader>
 				<DialogFooter className='sm:justify-start'>

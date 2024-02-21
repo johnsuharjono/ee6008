@@ -2,10 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-import { Check, ChevronsUpDown } from 'lucide-react'
+import { Check, ChevronsUpDown, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
 	Form,
@@ -40,7 +40,6 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import { PROGRAMMES } from '@/config/programmes'
 import { createSemester } from '@/actions/semester'
 
 interface CreateSemesterFormProps {
@@ -58,9 +57,35 @@ interface CreateSemesterFormProps {
 }
 
 export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
+	const defaultValues: Partial<z.infer<typeof AddSemesterDataFormSchema>> = {
+		programmeLeaders: [
+			{
+				faculty: '',
+				programmeName: 'Communications Engineering',
+			},
+			{
+				faculty: '',
+				programmeName: 'Computer Control & Automation',
+			},
+			{
+				faculty: '',
+				programmeName: 'Electronics',
+			},
+			{
+				faculty: '',
+				programmeName: 'Power Engineering',
+			},
+			{
+				faculty: '',
+				programmeName: 'Signal Processing',
+			},
+		],
+	}
+
 	const router = useRouter()
 	const form = useForm<z.infer<typeof AddSemesterDataFormSchema>>({
 		resolver: zodResolver(AddSemesterDataFormSchema),
+		defaultValues: defaultValues,
 	})
 
 	async function onSubmit(data: z.infer<typeof AddSemesterDataFormSchema>) {
@@ -74,32 +99,83 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
 		}
 	}
 
+	const { fields, append, remove } = useFieldArray({
+		name: 'programmeLeaders',
+		control: form.control,
+	})
+
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-				<FormField
-					control={form.control}
-					name='semesterName'
-					render={({ field }) => (
-						<FormItem className='flex flex-col'>
-							<FormLabel>Semester name</FormLabel>
-							<FormControl>
-								<Input
-									placeholder='Input semester name'
-									className='max-w-[250px]'
-									{...field}
-								/>
-							</FormControl>
-							<FormDescription>
-								Must be in format of XXSY where X is start year and Y is
-								semester.
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
+			<form onSubmit={form.handleSubmit(onSubmit)}>
 				<Accordion type='single' collapsible className='w-full'>
+					<AccordionItem value='semester-setting'>
+						<AccordionTrigger>Semester Setting</AccordionTrigger>
+						<AccordionContent className='space-y-4'>
+							<FormField
+								control={form.control}
+								name='semesterName'
+								render={({ field }) => (
+									<FormItem className='flex flex-col'>
+										<FormLabel>Semester name</FormLabel>
+										<FormControl>
+											<Input
+												placeholder='Input semester name'
+												className='max-w-[250px] ml-1'
+												{...field}
+											/>
+										</FormControl>
+										<FormDescription>
+											Must be in format of XXSY where X is start year and Y is
+											semester.
+										</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name='minimumGroupSize'
+								render={({ field }) => (
+									<FormItem className='flex flex-col'>
+										<FormLabel>Minimum group size</FormLabel>
+										<FormControl>
+											<Input className='max-w-[250px] ml-1' {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name='maximumGroupSize'
+								render={({ field }) => (
+									<FormItem className='flex flex-col'>
+										<FormLabel>Maximum group size</FormLabel>
+										<FormControl>
+											<Input className='max-w-[250px] ml-1' {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name='projectApplicationsLimit'
+								render={({ field }) => (
+									<FormItem className='flex flex-col'>
+										<FormLabel>Project Application Limit</FormLabel>
+										<FormControl>
+											<Input className='max-w-[250px] ml-1' {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</AccordionContent>
+					</AccordionItem>
+
 					<AccordionItem value='timeline-setting'>
 						<AccordionTrigger>Configure Timeline</AccordionTrigger>
 						<AccordionContent className='space-y-4'>
@@ -194,70 +270,120 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
 
 					<AccordionItem value='programme-leader'>
 						<AccordionTrigger>Programme Director (Delegate)</AccordionTrigger>
-						<AccordionContent className='grid lg:grid-cols-2 gap-4'>
-							{PROGRAMMES.map((programme) => (
-								<FormField
-									key={programme.formKey}
-									control={form.control}
-									name={programme.formKey}
-									render={({ field }) => (
-										<FormItem className='flex flex-col'>
-											<FormLabel>{programme.name}</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl>
-														<Button
-															variant='outline'
-															role='combobox'
-															className={cn(
-																'w-[300px] justify-between',
-																!field.value && 'text-muted-foreground'
-															)}
-														>
-															{field.value
-																? faculties.find(
-																		(faculty) => faculty.id === field.value
-																  )?.User.name
-																: 'Select faculty'}
-															<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent className='w-[300px] p-0'>
-													<Command>
-														<CommandInput placeholder='Search faculty...' />
-														<CommandEmpty>
-															No faculty member found.
-														</CommandEmpty>
-														<CommandGroup>
-															{faculties.map((faculty) => (
-																<CommandItem
-																	value={faculty.User.id}
-																	key={faculty.User.id}
-																	onSelect={() => {
-																		form.setValue(programme.formKey, faculty.id)
-																	}}
-																>
-																	<Check
+						<AccordionContent>
+							<div className='space-y-2'>
+								{fields.map((field, index) => (
+									<div
+										className='grid md:grid-cols-12 gap-x-4 px-1'
+										key={field.id}
+									>
+										<FormField
+											control={form.control}
+											name={`programmeLeaders.${index}.faculty`}
+											render={({ field }) => (
+												<FormItem className='md:col-span-5'>
+													<FormLabel className={cn(index !== 0 && 'sr-only')}>
+														Faculty
+													</FormLabel>
+													<div>
+														<Popover>
+															<PopoverTrigger asChild>
+																<FormControl>
+																	<Button
+																		variant='outline'
+																		role='combobox'
 																		className={cn(
-																			'mr-2 h-4 w-4',
-																			faculty.User.name === field.value
-																				? 'opacity-100'
-																				: 'opacity-0'
+																			!field.value && 'text-muted-foreground',
+																			'w-full flex justify-between items-center'
 																		)}
-																	/>
-																	{faculty.User.name}
-																</CommandItem>
-															))}
-														</CommandGroup>
-													</Command>
-												</PopoverContent>
-											</Popover>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							))}
+																	>
+																		{field.value
+																			? faculties.find(
+																					(faculty) =>
+																						faculty.id === field.value
+																			  )?.User.name
+																			: 'Select faculty'}
+																		<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+																	</Button>
+																</FormControl>
+															</PopoverTrigger>
+															<PopoverContent className='w-[300px] p-0'>
+																<Command>
+																	<CommandInput placeholder='Search faculty...' />
+																	<CommandEmpty>
+																		No faculty member found.
+																	</CommandEmpty>
+																	<CommandGroup>
+																		{faculties.map((faculty) => (
+																			<CommandItem
+																				value={faculty.User.name}
+																				key={faculty.User.id}
+																				onSelect={() => {
+																					form.setValue(
+																						`programmeLeaders.${index}.faculty`,
+																						faculty.id
+																					)
+																				}}
+																			>
+																				<Check
+																					className={cn(
+																						'mr-2 h-4 w-4',
+																						faculty.User.name === field.value
+																							? 'opacity-100'
+																							: 'opacity-0'
+																					)}
+																				/>
+																				{faculty.User.name}
+																			</CommandItem>
+																		))}
+																	</CommandGroup>
+																</Command>
+															</PopoverContent>
+														</Popover>
+													</div>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name={`programmeLeaders.${index}.programmeName`}
+											render={({ field }) => (
+												<FormItem className='md:col-span-5'>
+													<FormLabel className={cn(index !== 0 && 'sr-only')}>
+														Programme Name
+													</FormLabel>
+													<FormControl>
+														<Input {...field} />
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<div className='md:col-span-2 self-end'>
+											<Button
+												type='button'
+												variant='outline'
+												size='icon'
+												onClick={() => remove(index)}
+											>
+												<Trash2 className='h-4 w-4' />
+											</Button>
+										</div>
+									</div>
+								))}
+								<div className='flex justify-center'>
+									<Button
+										type='button'
+										variant='outline'
+										size='sm'
+										className='my-4'
+										onClick={() => append({ faculty: '', programmeName: '' })}
+									>
+										Add Programme
+									</Button>
+								</div>
+							</div>
 						</AccordionContent>
 					</AccordionItem>
 				</Accordion>

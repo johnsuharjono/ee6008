@@ -7,7 +7,6 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
-import { convertProgrammeName } from '@/lib/helper'
 import { prisma } from '@/lib/prisma'
 
 export async function ProgrammeLeaderTable({
@@ -78,7 +77,7 @@ export async function ProgrammeLeaderTable({
 				<TableBody>
 					{sanitizedData.map((lead, index) => (
 						<TableRow key={index}>
-							<TableCell>{convertProgrammeName(lead.programme)}</TableCell>
+							<TableCell>{lead.programme}</TableCell>
 							<TableCell>{lead.name}</TableCell>
 						</TableRow>
 					))}

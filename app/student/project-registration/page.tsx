@@ -1,7 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { convertProgrammeName } from '@/lib/helper'
 import { TypographyH2 } from '@/components/typography'
 
 // Table component
@@ -52,7 +51,7 @@ const ProjectRegistration = async () => {
 			title: project.project.title,
 			priority: project.priority,
 			faculty: project.project.Faculty.User.name,
-			programme: convertProgrammeName(project.project.Programme.name),
+			programme: project.project.Programme.name,
 		}
 	})
 

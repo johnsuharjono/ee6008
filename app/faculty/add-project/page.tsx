@@ -45,6 +45,18 @@ const CreateProposal = async () => {
 		)
 	}
 
+	// check available programme for the semester
+	const programmeData = await prisma.programme.findMany({
+		where: {
+			semesterId: semester.id,
+		},
+		select: {
+			name: true,
+		},
+	})
+
+	const programmeOptions = programmeData.map((programme) => programme.name)
+
 	return (
 		<div className='space-y-8'>
 			<div className='flex w-full flex-col gap-1'>
@@ -55,7 +67,10 @@ const CreateProposal = async () => {
 			</div>
 
 			<div>
-				<AddProjectForm semesterId={semester.id} />
+				<AddProjectForm
+					semesterId={semester.id}
+					programmeOptions={programmeOptions}
+				/>
 			</div>
 		</div>
 	)

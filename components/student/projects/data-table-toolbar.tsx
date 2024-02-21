@@ -6,14 +6,15 @@ import { Input } from '@/components/ui/input'
 import { DataTableViewOptions } from './data-table-view-options'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { Icons } from '@/components/icons'
-import { programmeFilterOptions } from './config'
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>
+	programmeFilterOptions: { label: string; value: string }[]
 }
 
 export function DataTableToolbar<TData>({
 	table,
+	programmeFilterOptions,
 }: DataTableToolbarProps<TData>) {
 	const isFiltered = table.getState().columnFilters.length > 0
 
