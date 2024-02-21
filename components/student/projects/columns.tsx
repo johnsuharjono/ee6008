@@ -11,7 +11,7 @@ import { convertProgrammeName } from '@/lib/helper'
 export type Project = {
 	id: string
 	title: string
-	supervisor: string
+	faculty: string
 	programme: string
 	semester: string
 	description: string
@@ -48,11 +48,11 @@ export const columns: ColumnDef<Project>[] = [
 		),
 	},
 	{
-		accessorKey: 'supervisor',
+		accessorKey: 'faculty',
 		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Supervisor' />
+			return <DataTableColumnHeader column={column} title='Faculty' />
 		},
-		cell: ({ row }) => <div>{row.getValue('supervisor')}</div>,
+		cell: ({ row }) => <div>{row.getValue('faculty')}</div>,
 	},
 	{
 		accessorKey: 'programme',

@@ -19,8 +19,8 @@ interface DeleteUserModalProps {
 }
 
 const initialState = {
-	message: null,
-	status: null,
+	message: '',
+	status: '',
 }
 
 const DeleteUserModal = ({ setModalOpen, userId }: DeleteUserModalProps) => {

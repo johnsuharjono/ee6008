@@ -183,7 +183,7 @@ async function projectSeed() {
 
 		return {
 			title: faker.person.jobTitle(),
-			description: faker.hacker.phrase(),
+			description: faker.lorem.paragraph(7),
 			Programme: {
 				connect: {
 					id: randomProgramme.id,

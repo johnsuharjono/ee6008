@@ -1,5 +1,6 @@
 import AddUser from '@/components/admin/users/add-user/add-user'
 import StudentUser from '@/components/admin/users/student/student-user'
+import FileUpload from '@/components/file-upload'
 import { Header } from '@/components/header'
 import { UserRole } from '@prisma/client'
 
@@ -12,6 +13,8 @@ const UserPage = () => {
 			/>
 			<StudentUser />
 			<AddUser role={UserRole.STUDENT} />
+
+			<FileUpload />
 		</div>
 	)
 }

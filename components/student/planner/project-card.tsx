@@ -10,7 +10,7 @@ interface Props {
 	data: {
 		id: string
 		title: string
-		supervisor: string
+		faculty: string
 		programme: string
 	}
 	index: number
@@ -45,7 +45,7 @@ export function ProjectCard({ data, index }: Props) {
 					</div>
 				</div>
 				<div className='space-y-2'>
-					<h2 className='text-muted-foreground'>{data.supervisor}</h2>
+					<h2 className='text-muted-foreground'>{data.faculty}</h2>
 					<div className='flex justify-between'>
 						<Badge>{data.programme}</Badge>
 						{index < 3 && (

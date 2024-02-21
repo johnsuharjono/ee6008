@@ -40,7 +40,7 @@ export function EditTimelineForm({
 			toast.error(result.message)
 		} else {
 			toast.success(result.message)
-			router.push(`/admin/timeline?semester=${semesterName}`)
+			router.push(`/admin/semester?semester=${semesterName}`)
 			router.refresh()
 		}
 	}

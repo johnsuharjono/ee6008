@@ -51,7 +51,7 @@ const ProjectRegistration = async () => {
 			id: project.projectId,
 			title: project.project.title,
 			priority: project.priority,
-			supervisor: project.project.Faculty.User.name,
+			faculty: project.project.Faculty.User.name,
 			programme: convertProgrammeName(project.project.Programme.name),
 		}
 	})
@@ -70,7 +70,7 @@ const ProjectRegistration = async () => {
 						<TableHeader>
 							<TableRow>
 								<TableHead>Title</TableHead>
-								<TableHead>Supervisor</TableHead>
+								<TableHead>Faculty</TableHead>
 								<TableHead>Programme</TableHead>
 								<TableHead>Priority</TableHead>
 							</TableRow>
@@ -79,7 +79,7 @@ const ProjectRegistration = async () => {
 							{sanitizedData.map((project) => (
 								<TableRow key={project.id}>
 									<TableCell className='font-medium'>{project.title}</TableCell>
-									<TableCell>{project.supervisor}</TableCell>
+									<TableCell>{project.faculty}</TableCell>
 									<TableCell>{project.programme}</TableCell>
 									<TableCell>{project.priority}</TableCell>
 								</TableRow>

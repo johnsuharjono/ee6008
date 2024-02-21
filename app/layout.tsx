@@ -2,7 +2,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 import type { Metadata } from 'next'
 import Background from '@/components/background'
-import { Toaster } from 'sonner'
+import { Toaster } from '@/components/ui/sonner'
 import SessionProvider from '@/components/session-provider'
 import { GeistSans } from 'geist/font/sans'
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function RootLayout({
 						>
 							<Background>{children}</Background>
 						</ThemeProvider>
-						<Toaster richColors />
+						<Toaster />
 					</SessionProvider>
 				</body>
 			</html>

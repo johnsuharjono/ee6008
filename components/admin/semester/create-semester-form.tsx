@@ -193,7 +193,7 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
 					</AccordionItem>
 
 					<AccordionItem value='programme-leader'>
-						<AccordionTrigger>Programme Leader</AccordionTrigger>
+						<AccordionTrigger>Programme Director (Delegate)</AccordionTrigger>
 						<AccordionContent className='grid lg:grid-cols-2 gap-4'>
 							{PROGRAMMES.map((programme) => (
 								<FormField

@@ -38,7 +38,7 @@ export default async function Home() {
 		description: project.description,
 		programme: project.Programme.name,
 		semester: project.Programme.Semester.name,
-		supervisor: project.Faculty.User.name,
+		faculty: project.Faculty.User.name,
 		numberOfStudents: project.numberOfStudents,
 	}))
 

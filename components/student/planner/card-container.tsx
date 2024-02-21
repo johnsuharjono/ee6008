@@ -24,7 +24,7 @@ import { toast } from 'sonner'
 export type TItem = {
 	id: string
 	title: string
-	supervisor: string
+	faculty: string
 	programme: string
 }
 

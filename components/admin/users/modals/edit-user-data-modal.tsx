@@ -23,8 +23,8 @@ interface EditUserDataModalProps {
 }
 
 const initialState = {
-	message: null,
-	status: null,
+	message: '',
+	status: '',
 }
 
 const EditUserDataModal = ({

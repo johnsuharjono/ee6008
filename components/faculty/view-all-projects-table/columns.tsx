@@ -11,7 +11,7 @@ export const projectSchema = z.object({
 	id: z.string(),
 	title: z.string(),
 	programme: z.string(),
-	proposer: z.string(),
+	faculty: z.string(),
 	semester: z.string(),
 	numberOfStudents: z.number(),
 	description: z.string(),
@@ -44,12 +44,12 @@ export const columns: ColumnDef<Project>[] = [
 	},
 	{
 		enableSorting: false,
-		accessorKey: 'proposer',
+		accessorKey: 'faculty',
 		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title='Proposer' />
+			return <DataTableColumnHeader column={column} title='Faculty' />
 		},
 		cell: ({ row }) => (
-			<div className='capitalize'>{row.getValue('proposer')}</div>
+			<div className='capitalize'>{row.getValue('faculty')}</div>
 		),
 	},
 	{

@@ -124,7 +124,7 @@ export function AddProjectForm({ semesterId }: { semesterId: string }) {
 								<Select onValueChange={field.onChange}>
 									<FormControl>
 										<SelectTrigger>
-											<SelectValue placeholder='Select number of students' />
+											<SelectValue />
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
@@ -146,7 +146,7 @@ export function AddProjectForm({ semesterId }: { semesterId: string }) {
 								<Select onValueChange={field.onChange}>
 									<FormControl>
 										<SelectTrigger>
-											<SelectValue placeholder='Thematic programme for the project' />
+											<SelectValue />
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>

@@ -10,10 +10,40 @@ const CreateProposal = async () => {
 		select: {
 			id: true,
 			name: true,
+			SemesterTimeline: {
+				select: {
+					facultyProposalSubmissionStart: true,
+					facultyProposalSubmissionEnd: true,
+				},
+			},
 		},
 	})
 
-	if (!semester) return null
+	if (!semester || !semester.SemesterTimeline)
+		return (
+			<Header
+				title='Create a proposal'
+				description={`Currently there is no active semester. Please contact the administrator.`}
+			/>
+		)
+
+	// check the date against the timeline
+	const now = new Date()
+	const start = semester.SemesterTimeline.facultyProposalSubmissionStart
+		? new Date(semester.SemesterTimeline.facultyProposalSubmissionStart)
+		: null
+	const end = semester.SemesterTimeline.facultyProposalSubmissionEnd
+		? new Date(semester.SemesterTimeline.facultyProposalSubmissionEnd)
+		: null
+
+	if (start && end && (now < start || now > end)) {
+		return (
+			<Header
+				title='Create a proposal'
+				description={`Proposal submission is not open yet.`}
+			/>
+		)
+	}
 
 	return (
 		<div className='space-y-8'>

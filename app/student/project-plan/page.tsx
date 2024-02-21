@@ -41,7 +41,7 @@ const ProjectPlan = async () => {
 		return {
 			id: plan.projectId,
 			title: plan.project.title,
-			supervisor: plan.project.Faculty.User.name,
+			faculty: plan.project.Faculty.User.name,
 			programme: convertProgrammeName(plan.project.Programme.name),
 		}
 	})
