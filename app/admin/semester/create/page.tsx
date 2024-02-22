@@ -3,27 +3,27 @@ import { Header } from '@/components/header'
 import { prisma } from '@/lib/prisma'
 
 const AddSemester = async () => {
-	const faculties = await prisma.faculty.findMany({
-		include: {
-			User: {
-				select: {
-					id: true,
-					name: true,
-				},
-			},
-		},
-	})
+  const faculties = await prisma.faculty.findMany({
+    include: {
+      User: {
+        select: {
+          id: true,
+          name: true
+        }
+      }
+    }
+  })
 
-	return (
-		<div className='space-y-8'>
-			<Header
-				title='Add new semester'
-				description='Configure the timeline, programme and programme leader!'
-			/>
+  return (
+    <div className='space-y-8'>
+      <Header
+        title='Add new semester'
+        description='Configure the timeline, programme and programme leader!'
+      />
 
-			<CreateSemesterForm faculties={faculties} />
-		</div>
-	)
+      <CreateSemesterForm faculties={faculties} />
+    </div>
+  )
 }
 
 export default AddSemester

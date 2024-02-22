@@ -5,18 +5,18 @@ import { Header } from '@/components/header'
 import { UserRole } from '@prisma/client'
 
 const UserPage = () => {
-	return (
-		<div className='space-y-4'>
-			<Header
-				title='Manage student user'
-				description='Configure student account!'
-			/>
-			<StudentUser />
-			<AddUser role={UserRole.STUDENT} />
+  return (
+    <div className='space-y-4'>
+      <Header
+        title='Manage student user'
+        description='Configure student account!'
+      />
+      <StudentUser />
+      <AddUser role={UserRole.STUDENT} />
 
-			<FileUpload />
-		</div>
-	)
+      <FileUpload />
+    </div>
+  )
 }
 
 export default UserPage

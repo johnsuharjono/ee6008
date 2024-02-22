@@ -6,32 +6,32 @@ import { Toaster } from '@/components/ui/sonner'
 import SessionProvider from '@/components/session-provider'
 import { GeistSans } from 'geist/font/sans'
 export const metadata: Metadata = {
-	title: 'NTU EE6008',
-	description: 'Project Management System for EE6008',
+  title: 'NTU EE6008',
+  description: 'Project Management System for EE6008'
 }
 
 export default function RootLayout({
-	children,
+  children
 }: {
-	children: React.ReactNode
+  children: React.ReactNode
 }) {
-	return (
-		<>
-			<html lang='en' suppressHydrationWarning>
-				<body className={GeistSans.className} suppressHydrationWarning>
-					<SessionProvider>
-						<ThemeProvider
-							attribute='class'
-							defaultTheme='system'
-							enableSystem
-							disableTransitionOnChange
-						>
-							<Background>{children}</Background>
-						</ThemeProvider>
-						<Toaster />
-					</SessionProvider>
-				</body>
-			</html>
-		</>
-	)
+  return (
+    <>
+      <html lang='en' suppressHydrationWarning>
+        <body className={GeistSans.className} suppressHydrationWarning>
+          <SessionProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Background>{children}</Background>
+            </ThemeProvider>
+            <Toaster />
+          </SessionProvider>
+        </body>
+      </html>
+    </>
+  )
 }

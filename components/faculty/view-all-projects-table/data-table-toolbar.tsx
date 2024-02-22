@@ -8,46 +8,46 @@ import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { Icons } from '@/components/icons'
 
 interface DataTableToolbarProps<TData> {
-	table: Table<TData>
-	semesterOptions: { label: string; value: string }[]
+  table: Table<TData>
+  semesterOptions: { label: string; value: string }[]
 }
 
 export function DataTableToolbar<TData>({
-	table,
-	semesterOptions,
+  table,
+  semesterOptions
 }: DataTableToolbarProps<TData>) {
-	const isFiltered = table.getState().columnFilters.length > 0
+  const isFiltered = table.getState().columnFilters.length > 0
 
-	return (
-		<div className='flex items-center justify-between'>
-			<div className='flex flex-1 items-center space-x-2'>
-				<Input
-					placeholder='Search projects...'
-					value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-					onChange={(event) =>
-						table.getColumn('title')?.setFilterValue(event.target.value)
-					}
-					className='h-8 w-[150px] lg:w-[250px]'
-				/>
-				{table.getColumn('semester') && (
-					<DataTableFacetedFilter
-						column={table.getColumn('semester')}
-						title='Semester'
-						options={semesterOptions}
-					/>
-				)}
-				{isFiltered && (
-					<Button
-						variant='ghost'
-						onClick={() => table.resetColumnFilters()}
-						className='h-8 px-2 lg:px-3'
-					>
-						Reset
-						<Icons.close className='ml-2 h-4 w-4' />
-					</Button>
-				)}
-			</div>
-			<DataTableViewOptions table={table} />
-		</div>
-	)
+  return (
+    <div className='flex items-center justify-between'>
+      <div className='flex flex-1 items-center space-x-2'>
+        <Input
+          placeholder='Search projects...'
+          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          onChange={(event) =>
+            table.getColumn('title')?.setFilterValue(event.target.value)
+          }
+          className='h-8 w-[150px] lg:w-[250px]'
+        />
+        {table.getColumn('semester') && (
+          <DataTableFacetedFilter
+            column={table.getColumn('semester')}
+            title='Semester'
+            options={semesterOptions}
+          />
+        )}
+        {isFiltered && (
+          <Button
+            variant='ghost'
+            onClick={() => table.resetColumnFilters()}
+            className='h-8 px-2 lg:px-3'
+          >
+            Reset
+            <Icons.close className='ml-2 h-4 w-4' />
+          </Button>
+        )}
+      </div>
+      <DataTableViewOptions table={table} />
+    </div>
+  )
 }
