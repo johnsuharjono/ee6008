@@ -15,7 +15,6 @@ export const projectSchema = z.object({
 	title: z.string(),
 	programme: z.string(),
 	faculty: z.string(),
-	semester: z.string(),
 	description: z.string(),
 })
 
@@ -30,9 +29,6 @@ const ProjectDetailModal = ({ projectData }: { projectData: Project }) => {
 				</DialogTitle>
 				<div className='flex items-center gap-2'>
 					<Badge className='max-w-fit'>{projectData.programme}</Badge>
-					<Badge className='max-w-fit'>
-						<div>{projectData.semester}</div>
-					</Badge>
 				</div>
 				<div className='flex justify-between items-center text-foreground'>
 					<div className='text-sm lg:text-md'>

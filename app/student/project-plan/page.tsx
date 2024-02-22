@@ -10,6 +10,24 @@ const ProjectPlan = async () => {
 	const user = session?.user
 	if (!user) return null
 
+	const semesterData = await prisma.semester.findFirst({
+		where: {
+			active: true,
+		},
+		select: {
+			projectApplicationsLimit: true,
+		},
+	})
+
+	if (!semesterData)
+		return (
+			<div>
+				<p>No active semester found</p>
+			</div>
+		)
+
+	const projectApplicationsLimit = semesterData.projectApplicationsLimit
+
 	const data = await prisma.projectPlan.findMany({
 		where: {
 			studentId: user.studentId,
@@ -57,8 +75,8 @@ const ProjectPlan = async () => {
 					<AlertTitle>Heads up!</AlertTitle>
 					<AlertDescription className='mt-2'>
 						<p className='md:text-md'>
-							Drag and drop the projects to your preference. Only the first 3
-							will be submitted.
+							Drag and drop the projects to your preference. Only the first{' '}
+							{projectApplicationsLimit} project will be submitted.
 							<br />
 							Click on the card to view project details
 						</p>
@@ -66,7 +84,10 @@ const ProjectPlan = async () => {
 				</Alert>
 
 				{sanitizedData.length === 0 && <p>No project in your plan exist</p>}
-				<CardContainer plans={sanitizedData} />
+				<CardContainer
+					plans={sanitizedData}
+					projectApplicationLimit={projectApplicationsLimit}
+				/>
 			</div>
 		</section>
 	)

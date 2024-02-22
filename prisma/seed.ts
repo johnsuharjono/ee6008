@@ -213,7 +213,90 @@ async function projectSeed() {
 	await Promise.all(projectPromises)
 }
 
-projectSeed()
+async function projectRegistrationSeed() {
+	const students = await prisma.student.findMany({
+		select: {
+			id: true,
+		},
+	})
+
+	const projects = await prisma.project.findMany({
+		select: {
+			id: true,
+		},
+		where: {
+			Programme: {
+				Semester: {
+					active: true,
+				},
+			},
+		},
+	})
+
+	const getRandomNumber = (min: number, max: number) =>
+		Math.floor(Math.random() * (max - min + 1)) + min
+
+	let projectRegistrationsData: {
+		studentId: string
+		projectId: string
+		priority: number
+	}[] = []
+
+	for (let i = 0; i < students.length; i++) {
+		const student = students[i]
+		const studentProjects = []
+		const numberOfProjects = getRandomNumber(3, 5)
+		const set = new Set()
+		for (let j = 0; j < numberOfProjects; j++) {
+			let randomProjectIndex = getRandomNumber(0, projects.length - 1)
+			if (set.has(randomProjectIndex)) {
+				randomProjectIndex = getRandomNumber(0, projects.length - 1)
+			}
+			set.add(randomProjectIndex)
+			const randomProject = projects[randomProjectIndex]
+			studentProjects.push({
+				studentId: student.id,
+				projectId: randomProject.id,
+				priority: j + 1,
+			})
+		}
+		projectRegistrationsData = [...projectRegistrationsData, ...studentProjects]
+	}
+
+	await prisma.registration.createMany({
+		data: projectRegistrationsData,
+		skipDuplicates: true,
+	})
+}
+
+async function createStudentUsersSeed() {
+	const password: string = await hash('test', 12)
+
+	// use faker.js
+	const studentsData = Array.from({ length: 100 }, () => ({
+		email: faker.internet.email(),
+		name: faker.person.fullName(),
+	}))
+
+	const promiseArray = studentsData.map(async (student) => {
+		await prisma.student.create({
+			data: {
+				User: {
+					create: {
+						email: student.email,
+						name: student.name,
+						password,
+						role: UserRole.STUDENT,
+					},
+				},
+			},
+		})
+	})
+
+	await Promise.all(promiseArray)
+}
+
+projectRegistrationSeed()
 	.then(() => prisma.$disconnect())
 	.catch(async (e) => {
 		console.error(e)

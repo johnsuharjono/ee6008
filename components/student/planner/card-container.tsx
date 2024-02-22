@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
 	DndContext,
 	closestCenter,
@@ -28,7 +28,15 @@ export type TItem = {
 	programme: string
 }
 
-export function CardContainer({ plans }: { plans: TItem[] }) {
+interface CardContainerProps {
+	plans: TItem[]
+	projectApplicationLimit: number
+}
+
+export function CardContainer({
+	plans,
+	projectApplicationLimit,
+}: CardContainerProps) {
 	const studentId = useSession().data?.user?.studentId
 	const [items, setItems] = useState<TItem[]>(plans)
 
@@ -59,7 +67,12 @@ export function CardContainer({ plans }: { plans: TItem[] }) {
 			<SortableContext items={items} strategy={rectSortingStrategy}>
 				<div className='grid md:grid-cols-3 gap-4'>
 					{items.map((item, i) => (
-						<ProjectCard key={item.id} data={item} index={i} />
+						<ProjectCard
+							key={item.id}
+							data={item}
+							index={i}
+							isActive={i < projectApplicationLimit}
+						/>
 					))}
 				</div>
 			</SortableContext>

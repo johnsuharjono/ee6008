@@ -14,9 +14,10 @@ interface Props {
 		programme: string
 	}
 	index: number
+	isActive: boolean
 }
 
-export function ProjectCard({ data, index }: Props) {
+export function ProjectCard({ data, index, isActive }: Props) {
 	const { attributes, listeners, setNodeRef, transform, transition } =
 		useSortable({ id: data.id })
 
@@ -35,7 +36,7 @@ export function ProjectCard({ data, index }: Props) {
 			<Card
 				className={cn(
 					'p-6 flex flex-col justify-between gap-8 min-h-full',
-					index >= 3 && 'opacity-40'
+					!isActive && 'opacity-40'
 				)}
 			>
 				<div className='flex justify-between gap-4'>
@@ -48,7 +49,7 @@ export function ProjectCard({ data, index }: Props) {
 					<h2 className='text-muted-foreground'>{data.faculty}</h2>
 					<div className='flex justify-between'>
 						<Badge>{data.programme}</Badge>
-						{index < 3 && (
+						{isActive && (
 							<Badge variant={'secondary'}>Priority {index + 1}</Badge>
 						)}
 					</div>

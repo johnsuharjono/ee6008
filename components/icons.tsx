@@ -28,6 +28,7 @@ import {
 	Joystick,
 	GanttChart,
 	ScanEye,
+	Computer,
 } from 'lucide-react'
 
 import type { LucideIcon } from 'lucide-react'
@@ -64,4 +65,5 @@ export const Icons = {
 	joystick: Joystick,
 	viewAllProjects: GanttChart,
 	reviewProjects: ScanEye,
+	registration: Computer,
 }

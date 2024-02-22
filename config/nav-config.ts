@@ -78,5 +78,11 @@ export const adminConfig: AdminConfig = {
 			icon: 'calendar',
 			type: 'link',
 		},
+		{
+			title: 'Registration',
+			href: '/admin/registration',
+			icon: 'registration',
+			type: 'link',
+		},
 	],
 }
