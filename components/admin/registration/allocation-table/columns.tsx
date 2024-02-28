@@ -1,27 +1,30 @@
 'use client'
 
-import { ColumnDef } from '@tanstack/react-table'
-import { DataTableColumnHeader } from './data-table-column-header'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { z } from 'zod'
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { ColumnDef } from '@tanstack/react-table'
+
+import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
 
-export const projectSchema = z.object({
+export const projectAllocationSchema = z.object({
   projectId: z.string(),
   projectTitle: z.string(),
-  totalSignUps: z.number(),
-  registrantDetails: z.array(
+  numberOfStudents: z.number(),
+  students: z.array(
     z.object({
       matriculationNumber: z.string(),
       name: z.string(),
-      priority: z.number()
+      studentId: z.string()
     })
-  )
+  ),
+  status: z.union([z.literal('open'), z.literal('cancelled')])
 })
 
-export type Registration = z.infer<typeof projectSchema>
+export type Allocation = z.infer<typeof projectAllocationSchema>
 
-export const columns: ColumnDef<Registration>[] = [
+export const columns: ColumnDef<Allocation>[] = [
   {
     enableSorting: false,
     accessorKey: 'projectId',
@@ -39,12 +42,20 @@ export const columns: ColumnDef<Registration>[] = [
     cell: ({ row }) => <div>{row.getValue('projectTitle')}</div>
   },
   {
-    enableSorting: false,
-    accessorKey: 'totalSignUps',
+    enableSorting: true,
+    accessorKey: 'status',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title='Total Sign Ups' />
+      return <DataTableColumnHeader column={column} title='Status' />
     },
-    cell: ({ row }) => <div>{row.getValue('totalSignUps')}</div>
+    cell: ({ row }) => <div className='capitalize'>{row.getValue('status')}</div>
+  },
+  {
+    enableSorting: true,
+    accessorKey: 'numberOfStudents',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title='Group size' />
+    },
+    cell: ({ row }) => <div>{row.getValue('numberOfStudents')}</div>
   },
   {
     id: 'actions',

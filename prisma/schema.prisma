@@ -39,15 +39,16 @@ model Faculty {
 }
 
 model Student {
-  id           String         @id @default(uuid())
-  userId       String         @unique
-  projectId    String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  projectPlan  ProjectPlan[]
-  Registration Registration[]
-  Project      Project?       @relation(fields: [projectId], references: [id])
-  User         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                  String         @id @default(uuid())
+  userId              String         @unique
+  projectId           String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  matriculationNumber String         @unique
+  projectPlan         ProjectPlan[]
+  Registration        Registration[]
+  Project             Project?       @relation(fields: [projectId], references: [id])
+  User                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Programme {
