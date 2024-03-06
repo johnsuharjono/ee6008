@@ -101,7 +101,9 @@ const FileUpload = ({ submitFunction }: { submitFunction: any }) => {
             <p className='text-sm font-medium'>{methods.watch('file')?.name}</p>
           </div>
         )}
-        <Button type='submit'>Save</Button>
+        <Button disabled={methods.watch('file') === null} type='submit'>
+          Submit
+        </Button>
       </form>
     </FormProvider>
   )

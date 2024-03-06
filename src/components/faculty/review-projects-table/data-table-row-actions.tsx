@@ -3,7 +3,7 @@
 import { MoreHorizontal, UsersIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { approveProject, rejectProject } from '@/src/app/actions/review'
+import { approveProject, rejectProject } from '@/src/app/actions/faculty/review'
 import { Badge } from '@/src/components/ui/badge'
 import { Button } from '@/src/components/ui/button'
 import {
@@ -34,7 +34,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TData>) {
   const projectData = row.original as Project
 
-  const handleApprove = async (row: Row<TData>) => {
+  const handleApprove = async () => {
     const result = await approveProject(projectData.id)
 
     if (result.status === 'ERROR') {
@@ -44,7 +44,7 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
     }
   }
 
-  const handleReject = async (row: Row<TData>) => {
+  const handleReject = async () => {
     const result = await rejectProject(projectData.id)
 
     if (result.status === 'ERROR') {

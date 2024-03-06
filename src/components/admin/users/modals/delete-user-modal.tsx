@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { toast } from 'sonner'
 
-import { deleteUser } from '@/src/app/actions/user'
+import { deleteUser } from '@/src/app/actions/admin/user'
 import {
   AlertDialogAction,
   AlertDialogCancel,

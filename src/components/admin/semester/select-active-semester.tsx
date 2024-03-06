@@ -1,7 +1,7 @@
 'use client'
 import { toast } from 'sonner'
 
-import { setActiveSemester } from '@/src/app/actions/semester'
+import { setActiveSemester } from '@/src/app/actions/admin/semester'
 import {
   Select,
   SelectContent,

@@ -4,6 +4,7 @@ import { MoreHorizontal } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
+import { deleteProject } from '@/src/app/actions/common/project'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,35 +33,13 @@ export function DataTableRowActions<TData extends { id: string }>({ row }: DataT
   const router = useRouter()
 
   const handleDelete = async (row: Row<TData>) => {
-    async function deleteProject(projectId: string) {
-      try {
-        const response = await fetch('/api/faculty/project', {
-          method: 'DELETE',
-          body: JSON.stringify({
-            projectId
-          })
-        })
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-
-        const data = await response.json()
-        return data
-      } catch (error) {
-        console.error('Error:', error)
-        throw error
-      }
+    const result = await deleteProject(row.original.id)
+    if (result.status === 'ERROR') {
+      toast.error(result.message)
+    } else {
+      toast.success(result.message)
+      router.refresh()
     }
-
-    toast.promise(deleteProject(row.original.id), {
-      loading: 'Loading...',
-      success: (data) => {
-        router.refresh()
-        return `${data.project.title} proposals has been deleted`
-      },
-      error: 'Error'
-    })
   }
 
   return (

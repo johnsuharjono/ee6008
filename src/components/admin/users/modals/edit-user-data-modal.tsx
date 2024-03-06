@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { toast } from 'sonner'
 
-import { editEmail, editName, editPassword } from '@/src/app/actions/user'
+import { editEmail, editName, editPassword } from '@/src/app/actions/admin/user'
 import {
   AlertDialogAction,
   AlertDialogCancel,

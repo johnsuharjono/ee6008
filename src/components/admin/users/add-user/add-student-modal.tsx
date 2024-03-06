@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { addStudent } from '@/src/app/actions/user'
+import { addStudent } from '@/src/app/actions/admin/user'
 import { Button } from '@/src/components/ui/button'
 import {
   Dialog,

@@ -20,7 +20,7 @@ export default async function Home() {
     redirect('/student')
   } else if (role === 'FACULTY') {
     redirect('/faculty')
-  } else {
+  } else if (role === 'ADMIN') {
     redirect('/admin')
   }
 }

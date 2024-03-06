@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { addProject } from '@/src/app/actions/project'
+import { addProject } from '@/src/app/actions/common/project'
 import { Button } from '@/src/components/ui/button'
 import {
   Form,
