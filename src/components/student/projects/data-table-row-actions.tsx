@@ -1,10 +1,10 @@
 'use client'
 
-import { MoreHorizontal, UsersIcon } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
 
 import ProjectDetailModal from '@/src/components/common/project-detail-modal'
 import { Button } from '@/src/components/ui/button'
-import { Dialog, DialogTrigger } from '@/src/components/ui/dialog'
+import { Dialog, DialogContent, DialogTrigger } from '@/src/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,7 +37,9 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ProjectDetailModal projectData={projectData} />
+      <DialogContent className='md:min-w-[600px]'>
+        <ProjectDetailModal projectData={projectData} />
+      </DialogContent>
     </Dialog>
   )
 }

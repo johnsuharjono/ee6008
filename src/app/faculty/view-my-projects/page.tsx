@@ -52,7 +52,8 @@ const CreateProposal = async () => {
       status: project.status,
       semester: project.Programme?.Semester?.name,
       programme: project.Programme?.name,
-      reviewer: project.Programme?.Leader?.User?.name
+      reviewer: project.Programme?.Leader?.User?.name,
+      reviewMessage: project.reviewMessage
     }
   })
 

@@ -3,6 +3,8 @@
 import { MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
 
+import DeleteUserModal from '@/src/components/admin/users//modals/delete-user-modal'
+import EditUserDataModal from '@/src/components/admin/users//modals/edit-user-data-modal'
 import { AlertDialog, AlertDialogContent } from '@/src/components/ui/alert-dialog'
 import { Button } from '@/src/components/ui/button'
 import {
@@ -16,9 +18,6 @@ import {
   DropdownMenuTrigger
 } from '@/src/components/ui/dropdown-menu'
 import { Row } from '@tanstack/react-table'
-
-import DeleteUserModal from '../../modals/delete-user-modal'
-import EditUserDataModal from '../../modals/edit-user-data-modal'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>

@@ -7,5 +7,5 @@
   "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 120,
   "importSorter.importStringConfiguration.tabSize": 2,
   "importSorter.importStringConfiguration.quoteMark": "single",
-  "importSorter.importStringConfiguration.hasSemicolon": false
+  "importSorter.importStringConfiguration.hasSemicolon": false,
 }

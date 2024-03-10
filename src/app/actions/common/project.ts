@@ -13,6 +13,7 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
       data: {
         title,
         description,
+        status: 'PENDING',
         Faculty: {
           connect: {
             id: facultyId
@@ -50,6 +51,7 @@ export async function editProject(data: z.infer<typeof EditProjectFormSchema>) {
       data: {
         title,
         description,
+        status: 'PENDING',
         Programme: {
           connect: {
             name_semesterId: {

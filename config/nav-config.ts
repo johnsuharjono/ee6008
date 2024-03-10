@@ -4,12 +4,16 @@ export const studentConfig: StudentConfig = {
   homeUrl: '/student',
   mainNav: [
     {
-      title: 'Project Plan',
-      href: '/student/project-plan'
+      title: 'Plan',
+      href: '/student/plan'
     },
     {
-      title: 'Project Registration',
-      href: '/student/project-registration'
+      title: 'Registration',
+      href: '/student/registration'
+    },
+    {
+      title: 'My Project',
+      href: '/student/my-project'
     },
     {
       title: 'FAQ',
@@ -113,6 +117,16 @@ export const adminConfig: AdminConfig = {
       title: 'Upload',
       href: '/admin/registration/upload',
       icon: 'upload',
+      type: 'link'
+    },
+    {
+      title: 'Project',
+      type: 'header'
+    },
+    {
+      title: 'View',
+      href: '/admin/project/view',
+      icon: 'viewProject',
       type: 'link'
     }
   ]

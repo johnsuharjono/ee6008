@@ -7,7 +7,8 @@ export const getActiveSemester = async () => {
     },
     select: {
       maximumGroupSize: true,
-      minimumGroupSize: true
+      minimumGroupSize: true,
+      projectApplicationsLimit: true
     }
   })
 }

@@ -66,19 +66,20 @@ model Programme {
 }
 
 model Project {
-  id           String         @id @default(uuid())
-  title        String
-  description  String
-  programme    String
-  status       ProjectStatus  @default(PENDING)
-  facultyId    String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Faculty      Faculty        @relation(fields: [facultyId], references: [id], onDelete: Cascade)
-  Programme    Programme      @relation(fields: [programme], references: [id])
-  project_plan ProjectPlan[]
-  Registration Registration[]
-  students     Student[]
+  id            String         @id @default(uuid())
+  title         String
+  description   String
+  programme     String
+  status        ProjectStatus  @default(PENDING)
+  facultyId     String
+  reviewMessage String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Faculty       Faculty        @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  Programme     Programme      @relation(fields: [programme], references: [id])
+  ProjectPlan   ProjectPlan[]
+  Registration  Registration[]
+  students      Student[]
 }
 
 model ProjectPlan {
@@ -87,8 +88,8 @@ model ProjectPlan {
   projectId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  project   Project  @relation(fields: [projectId], references: [id])
-  student   Student  @relation(fields: [studentId], references: [id])
+  Project   Project  @relation(fields: [projectId], references: [id])
+  Student   Student  @relation(fields: [studentId], references: [id])
 
   @@unique([studentId, projectId])
 }
@@ -100,8 +101,8 @@ model Registration {
   priority  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  project   Project  @relation(fields: [projectId], references: [id])
-  student   Student  @relation(fields: [studentId], references: [id])
+  Project   Project  @relation(fields: [projectId], references: [id])
+  Student   Student  @relation(fields: [studentId], references: [id])
 
   @@unique([studentId, projectId])
 }

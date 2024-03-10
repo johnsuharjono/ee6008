@@ -8,7 +8,7 @@ import { prisma } from '@/src/lib/prisma'
 const ViewRegistrationPage = async () => {
   const registrations = await prisma.registration.findMany({
     include: {
-      student: {
+      Student: {
         select: {
           matriculationNumber: true,
           User: {
@@ -18,7 +18,7 @@ const ViewRegistrationPage = async () => {
           }
         }
       },
-      project: {
+      Project: {
         select: {
           title: true
         }
@@ -30,11 +30,11 @@ const ViewRegistrationPage = async () => {
   const projectSignUpMap = Object.entries(groupByProjects).map(([key, value]) => {
     return {
       projectId: key,
-      projectTitle: value[0].project.title,
+      projectTitle: value[0].Project.title,
       totalSignUps: value.length,
       registrantDetails: value.map((item) => ({
-        matriculationNumber: item.student.matriculationNumber,
-        name: item.student.User.name,
+        matriculationNumber: item.Student.matriculationNumber,
+        name: item.Student.User.name,
         priority: item.priority
       }))
     }

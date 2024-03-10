@@ -71,7 +71,7 @@ const ReviewProjects = async () => {
       title: project.title,
       description: project.description,
       programme: project.Programme?.name,
-      proposer: project.Faculty.User.name,
+      faculty: project.Faculty.User.name,
       semester: project.Programme?.Semester?.name,
       status: project.status
     }

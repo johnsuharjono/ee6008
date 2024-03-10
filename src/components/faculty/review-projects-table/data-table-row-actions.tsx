@@ -1,20 +1,13 @@
 'use client'
 
-import { MoreHorizontal, UsersIcon } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { approveProject, rejectProject } from '@/src/app/actions/faculty/review'
-import { Badge } from '@/src/components/ui/badge'
+import ProjectDetailModal from '@/src/components/common/project-detail-modal'
 import { Button } from '@/src/components/ui/button'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/src/components/ui/dialog'
+import { Dialog, DialogContent, DialogTrigger } from '@/src/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +18,7 @@ import {
 import { DropdownMenuGroup } from '@radix-ui/react-dropdown-menu'
 import { Row } from '@tanstack/react-table'
 
+import { RejectProposalModal } from '../reject-proposal-modal'
 import { Project } from './columns'
 
 interface DataTableRowActionsProps<TData> {
@@ -32,6 +26,8 @@ interface DataTableRowActionsProps<TData> {
 }
 
 export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TData>) {
+  const [isModalOpen, setModalOpen] = useState<boolean>(false)
+  const [dialogToShow, setDialogToShow] = useState<'projectDetail' | 'reject' | null>(null)
   const projectData = row.original as Project
 
   const handleApprove = async () => {
@@ -44,18 +40,8 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
     }
   }
 
-  const handleReject = async () => {
-    const result = await rejectProject(projectData.id)
-
-    if (result.status === 'ERROR') {
-      toast.error(result.message)
-    } else {
-      toast.success(result.message)
-    }
-  }
-
   return (
-    <Dialog>
+    <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant='ghost' className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'>
@@ -64,31 +50,35 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
-          <DialogTrigger asChild>
-            <DropdownMenuItem>View detail</DropdownMenuItem>
-          </DialogTrigger>
+          <DropdownMenuItem
+            onClick={() => {
+              setDialogToShow('projectDetail')
+              setModalOpen(true)
+            }}
+          >
+            View detail
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={handleApprove}>Approve</DropdownMenuItem>
-            <DropdownMenuItem onClick={handleReject}>Reject</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setDialogToShow('reject')
+                setModalOpen(true)
+              }}
+            >
+              Reject
+            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
 
       <DialogContent className='md:min-w-[600px]'>
-        <DialogHeader className='space-y-4'>
-          <DialogTitle>{projectData.title}</DialogTitle>
-          <Badge className='max-w-fit'>{(row.original as Project).programme}</Badge>
-          <div className='text-foreground'>{projectData.semester}</div>
-          <div>{projectData.description}</div>
-        </DialogHeader>
-        <DialogFooter className='sm:justify-start'>
-          <DialogClose asChild>
-            <Button type='button' variant='secondary'>
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
+        {dialogToShow === 'projectDetail' ? (
+          <ProjectDetailModal projectData={projectData} />
+        ) : (
+          <RejectProposalModal projectId={projectData.id} setModalOpen={setModalOpen} />
+        )}
       </DialogContent>
     </Dialog>
   )

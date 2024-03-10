@@ -4,21 +4,16 @@ import { getServerSession } from 'next-auth'
 import { CardContainer } from '@/src/components/student/planner/card-container'
 import { Alert, AlertDescription, AlertTitle } from '@/src/components/ui/alert'
 import { authOptions } from '@/src/lib/auth'
-import { prisma } from '@/src/lib/prisma'
+import { getActiveSemester } from '@/src/server/data/semester'
+import { getStudentProjectPlan } from '@/src/server/student'
 
-const ProjectPlan = async () => {
+const StudentPlanPage = async () => {
   const session = await getServerSession(authOptions)
   const user = session?.user
   if (!user) return null
+  if (!user.studentId) return null
 
-  const semesterData = await prisma.semester.findFirst({
-    where: {
-      active: true
-    },
-    select: {
-      projectApplicationsLimit: true
-    }
-  })
+  const semesterData = await getActiveSemester()
 
   if (!semesterData)
     return (
@@ -29,40 +24,7 @@ const ProjectPlan = async () => {
 
   const projectApplicationsLimit = semesterData.projectApplicationsLimit
 
-  const data = await prisma.projectPlan.findMany({
-    where: {
-      studentId: user.studentId
-    },
-    include: {
-      project: {
-        include: {
-          Programme: {
-            select: {
-              name: true
-            }
-          },
-          Faculty: {
-            include: {
-              User: {
-                select: {
-                  name: true
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  })
-
-  const sanitizedData = data.map((plan) => {
-    return {
-      id: plan.projectId,
-      title: plan.project.title,
-      faculty: plan.project.Faculty.User.name,
-      programme: plan.project.Programme.name
-    }
-  })
+  const data = await getStudentProjectPlan(user.studentId)
 
   return (
     <section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
@@ -82,11 +44,11 @@ const ProjectPlan = async () => {
           </AlertDescription>
         </Alert>
 
-        {sanitizedData.length === 0 && <p>No project in your plan exist</p>}
-        <CardContainer plans={sanitizedData} projectApplicationLimit={projectApplicationsLimit} />
+        {data.length === 0 && <p>No project in your plan exist</p>}
+        <CardContainer plans={data} projectApplicationLimit={projectApplicationsLimit} />
       </div>
     </section>
   )
 }
 
-export default ProjectPlan
+export default StudentPlanPage

@@ -11,7 +11,8 @@ export async function approveProject(id: string) {
         id: id
       },
       data: {
-        status: 'APPROVED'
+        status: 'APPROVED',
+        reviewMessage: null
       }
     })
 
@@ -27,14 +28,15 @@ export async function approveProject(id: string) {
   }
 }
 
-export async function rejectProject(id: string) {
+export async function rejectProject(id: string, message: string) {
   try {
     const data = await prisma.project.update({
       where: {
         id: id
       },
       data: {
-        status: 'REJECTED'
+        status: 'REJECTED',
+        reviewMessage: message
       }
     })
     revalidatePath('/faculty/review-projects/')
