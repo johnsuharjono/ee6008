@@ -8,7 +8,7 @@ const UploadAllocationPage = async () => {
   return (
     <div className='space-y-4'>
       <Header title='Upload' description='The excel sheet for student registration' />
-      <FileUpload submitFunction={handleAllocation} />
+      <FileUpload submitFunction={handleAllocation} dropzoneClassName='h-[200px]' />
     </div>
   )
 }

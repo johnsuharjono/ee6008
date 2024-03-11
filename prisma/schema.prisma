@@ -52,15 +52,16 @@ model Student {
 }
 
 model Programme {
-  id         String    @id @default(uuid())
-  name       String
-  semesterId String
-  leaderId   String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  Leader     Faculty   @relation(fields: [leaderId], references: [id])
-  Semester   Semester  @relation(fields: [semesterId], references: [id], onDelete: Cascade)
-  Project    Project[]
+  id            String    @id @default(uuid())
+  name          String
+  semesterId    String
+  leaderId      String
+  programmeCode String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  Leader        Faculty   @relation(fields: [leaderId], references: [id])
+  Semester      Semester  @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  Project       Project[]
 
   @@unique([name, semesterId])
 }
@@ -69,15 +70,16 @@ model Project {
   id            String         @id @default(uuid())
   title         String
   description   String
-  programme     String
+  programmeId   String
   status        ProjectStatus  @default(PENDING)
   facultyId     String
+  projectCode   String
   venueId       String?
   reviewMessage String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   Faculty       Faculty        @relation(fields: [facultyId], references: [id], onDelete: Cascade)
-  Programme     Programme      @relation(fields: [programme], references: [id])
+  Programme     Programme      @relation(fields: [programmeId], references: [id])
   ProjectPlan   ProjectPlan[]
   Registration  Registration[]
   students      Student[]
@@ -90,8 +92,8 @@ model ProjectPlan {
   projectId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Project   Project  @relation(fields: [projectId], references: [id])
-  Student   Student  @relation(fields: [studentId], references: [id])
+  Project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  Student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, projectId])
 }
@@ -103,8 +105,8 @@ model Registration {
   priority  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Project   Project  @relation(fields: [projectId], references: [id])
-  Student   Student  @relation(fields: [studentId], references: [id])
+  Project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  Student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, projectId])
 }

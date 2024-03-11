@@ -32,7 +32,7 @@ const EditProjectPage = async ({ params }: { params: { slug: string } }) => {
   const sanitizedProjectDetail = {
     ...projectDetail,
     semesterId: projectDetail.Programme.semesterId,
-    programme: projectDetail.Programme.name
+    programmeName: projectDetail.Programme.name
   }
 
   // check available programme for the semester

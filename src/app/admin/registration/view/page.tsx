@@ -20,6 +20,7 @@ const ViewRegistrationPage = async () => {
       },
       Project: {
         select: {
+          projectCode: true,
           title: true
         }
       }
@@ -30,6 +31,7 @@ const ViewRegistrationPage = async () => {
   const projectSignUpMap = Object.entries(groupByProjects).map(([key, value]) => {
     return {
       projectId: key,
+      projectCode: value[0].Project.projectCode,
       projectTitle: value[0].Project.title,
       totalSignUps: value.length,
       registrantDetails: value.map((item) => ({

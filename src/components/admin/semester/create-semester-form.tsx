@@ -42,26 +42,31 @@ interface CreateSemesterFormProps {
 
 export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
   const defaultValues: Partial<z.infer<typeof AddSemesterDataFormSchema>> = {
-    programmeLeaders: [
+    programmeDetails: [
       {
         faculty: '',
-        programmeName: 'Communications Engineering'
+        programmeName: 'Communications Engineering',
+        programCode: '1'
       },
       {
         faculty: '',
-        programmeName: 'Computer Control & Automation'
+        programmeName: 'Computer Control & Automation',
+        programCode: '2'
       },
       {
         faculty: '',
-        programmeName: 'Electronics'
+        programmeName: 'Electronics',
+        programCode: '3'
       },
       {
         faculty: '',
-        programmeName: 'Power Engineering'
+        programmeName: 'Power Engineering',
+        programCode: '4'
       },
       {
         faculty: '',
-        programmeName: 'Signal Processing'
+        programmeName: 'Signal Processing',
+        programCode: '5'
       }
     ]
   }
@@ -84,7 +89,7 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
   }
 
   const { fields, append, remove } = useFieldArray({
-    name: 'programmeLeaders',
+    name: 'programmeDetails',
     control: form.control
   })
 
@@ -230,9 +235,9 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                   <div className='grid md:grid-cols-12 gap-x-4 px-1' key={field.id}>
                     <FormField
                       control={form.control}
-                      name={`programmeLeaders.${index}.faculty`}
+                      name={`programmeDetails.${index}.faculty`}
                       render={({ field }) => (
-                        <FormItem className='md:col-span-5'>
+                        <FormItem className='md:col-span-4'>
                           <FormLabel className={cn(index !== 0 && 'sr-only')}>Faculty</FormLabel>
                           <div>
                             <Popover>
@@ -263,7 +268,7 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                                         value={faculty.User.name}
                                         key={faculty.User.id}
                                         onSelect={() => {
-                                          form.setValue(`programmeLeaders.${index}.faculty`, faculty.id)
+                                          form.setValue(`programmeDetails.${index}.faculty`, faculty.id)
                                         }}
                                       >
                                         <Check
@@ -286,7 +291,7 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                     />
                     <FormField
                       control={form.control}
-                      name={`programmeLeaders.${index}.programmeName`}
+                      name={`programmeDetails.${index}.programmeName`}
                       render={({ field }) => (
                         <FormItem className='md:col-span-5'>
                           <FormLabel className={cn(index !== 0 && 'sr-only')}>Programme Name</FormLabel>
@@ -297,7 +302,20 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                         </FormItem>
                       )}
                     />
-                    <div className='md:col-span-2 self-end'>
+                    <FormField
+                      control={form.control}
+                      name={`programmeDetails.${index}.programCode`}
+                      render={({ field }) => (
+                        <FormItem className='md:col-span-2'>
+                          <FormLabel className={cn(index !== 0 && 'sr-only')}>Programme Code</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className='md:col-span-1 self-end'>
                       <Button type='button' variant='outline' size='icon' onClick={() => remove(index)}>
                         <Trash2 className='h-4 w-4' />
                       </Button>
@@ -310,7 +328,7 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                     variant='outline'
                     size='sm'
                     className='my-4'
-                    onClick={() => append({ faculty: '', programmeName: '' })}
+                    onClick={() => append({ faculty: '', programmeName: '', programCode: '' })}
                   >
                     Add Programme
                   </Button>

@@ -17,7 +17,7 @@ type ProjectStatus = { [projectId: string]: 'open' | 'cancelled' }
 interface ProcessAllocationProps {
   studentPreferences: StudentPreferences
   studentMap: { [studentId: string]: { name: string; matriculationNumber: string } }
-  projectMap: { [projectId: string]: string }
+  projectMap: { [projectId: string]: { title: string; projectCode: string } }
   minimumGroupSize: number
   maximumGroupSize: number
 }
@@ -57,7 +57,8 @@ function ProcessAllocation({
   const sanitizedAllocationData = Object.entries(projectAllocations).map(([projectId, studentIds]) => {
     return {
       projectId: projectId,
-      projectTitle: projectMap[projectId],
+      projectCode: projectMap[projectId].projectCode,
+      projectTitle: projectMap[projectId].title,
       students: studentIds.map((studentId) => ({
         name: studentMap[studentId].name,
         matriculationNumber: studentMap[studentId].matriculationNumber,
@@ -69,18 +70,15 @@ function ProcessAllocation({
   })
 
   const downloadData: {
-    projectId: string
-    projectTitle: string
-    studentId: string
-    name: string
+    projectCode: string
     matriculationNumber: string
   }[] = []
   for (const projectId in projectAllocations) {
-    const projectTitle = projectMap[projectId]
+    const projectCode = projectMap[projectId].projectCode
 
     for (const studentId of projectAllocations[projectId]) {
       const { name, matriculationNumber } = studentMap[studentId]
-      downloadData.push({ projectId, projectTitle, studentId, name, matriculationNumber })
+      downloadData.push({ projectCode, matriculationNumber })
     }
   }
 
