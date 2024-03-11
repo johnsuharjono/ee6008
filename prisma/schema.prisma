@@ -72,6 +72,7 @@ model Project {
   programme     String
   status        ProjectStatus  @default(PENDING)
   facultyId     String
+  venueId       String?
   reviewMessage String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -80,6 +81,7 @@ model Project {
   ProjectPlan   ProjectPlan[]
   Registration  Registration[]
   students      Student[]
+  venue         Venue?         @relation(fields: [venueId], references: [id], onDelete: SetNull)
 }
 
 model ProjectPlan {
@@ -113,11 +115,12 @@ model Semester {
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
   active                   Boolean           @default(false)
-  projectApplicationsLimit Int               @default(3)
-  minimumGroupSize         Int               @default(3)
-  maximumGroupSize         Int               @default(5)
+  projectApplicationsLimit Int
+  minimumGroupSize         Int
+  maximumGroupSize         Int
   Programme                Programme[]
   SemesterTimeline         SemesterTimeline?
+  venues                   Venue[]
 }
 
 model SemesterTimeline {
@@ -136,6 +139,19 @@ model SemesterTimeline {
   createdAt                      DateTime @default(now())
   updatedAt                      DateTime @updatedAt
   Semester                       Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+}
+
+model Venue {
+  id         String    @id @default(uuid())
+  name       String
+  location   String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  projects   Project[]
+  semesterId String
+  semester   Semester  @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+
+  @@unique([name, semesterId, location])
 }
 
 enum UserRole {

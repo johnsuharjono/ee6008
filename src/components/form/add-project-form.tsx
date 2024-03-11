@@ -20,45 +20,32 @@ import {
 import { Input } from '@/src/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
 import { Textarea } from '@/src/components/ui/textarea'
+import { AddProjectFormSchema } from '@/src/lib/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Venue } from '@prisma/client'
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(2, {
-      message: 'Title must be at least 2 characters.'
-    })
-    .max(50, {
-      message: 'Title must not be longer than 50 characters.'
-    }),
-  programme: z.string().min(1, {
-    message: 'Please select a programme'
-  }),
-  description: z.string().max(1000).min(1),
-  semesterId: z.string()
-})
-
-type ProposalFormValues = z.infer<typeof formSchema>
+type ProposalFormValues = z.infer<typeof AddProjectFormSchema>
 
 interface AddProjectFormProps {
   semesterId: string
   programmeOptions: string[]
+  venueOptions: Venue[]
 }
 
-export function AddProjectForm({ semesterId, programmeOptions }: AddProjectFormProps) {
+export function AddProjectForm({ semesterId, programmeOptions, venueOptions }: AddProjectFormProps) {
   const router = useRouter()
   const session = useSession()
   const user = session?.data?.user
 
   const form = useForm<ProposalFormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(AddProjectFormSchema),
     defaultValues: {
       title: '',
       semesterId
     }
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof AddProjectFormSchema>) {
     if (!user?.facultyId) return
     const response = await addProject({ ...values, facultyId: user?.facultyId })
     if (response.status === 'ERROR') {
@@ -117,6 +104,31 @@ export function AddProjectForm({ semesterId, programmeOptions }: AddProjectFormP
                   {programmeOptions.map((programme) => (
                     <SelectItem key={programme} value={programme}>
                       {programme}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='venueId'
+          render={({ field }) => (
+            <FormItem className='md:col-span-2'>
+              <FormLabel>Venue</FormLabel>
+              <Select onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {venueOptions.map(({ id, name, location }) => (
+                    <SelectItem key={id} value={id}>
+                      {name} - {location}
                     </SelectItem>
                   ))}
                 </SelectContent>

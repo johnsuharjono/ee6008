@@ -15,7 +15,8 @@ const CreateProposal = async () => {
           facultyProposalSubmissionStart: true,
           facultyProposalSubmissionEnd: true
         }
-      }
+      },
+      venues: true
     }
   })
 
@@ -52,6 +53,9 @@ const CreateProposal = async () => {
 
   const programmeOptions = programmeData.map((programme) => programme.name)
 
+  // get lab venue data for the active semester
+  const venueData = semester.venues
+
   return (
     <div className='space-y-8'>
       <div className='flex w-full flex-col gap-1'>
@@ -59,7 +63,7 @@ const CreateProposal = async () => {
       </div>
 
       <div>
-        <AddProjectForm semesterId={semester.id} programmeOptions={programmeOptions} />
+        <AddProjectForm semesterId={semester.id} programmeOptions={programmeOptions} venueOptions={venueData} />
       </div>
     </div>
   )

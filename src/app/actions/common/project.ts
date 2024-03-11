@@ -6,7 +6,7 @@ import { prisma } from '@/src/lib/prisma'
 import { AddProjectFormSchema, EditProjectFormSchema } from '@/src/lib/schema'
 
 export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
-  const { description, programme, semesterId, title, facultyId } = data
+  const { description, programme, semesterId, title, facultyId, venueId } = data
 
   try {
     const data = await prisma.project.create({
@@ -14,6 +14,13 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
         title,
         description,
         status: 'PENDING',
+        ...(venueId && {
+          venue: {
+            connect: {
+              id: venueId
+            }
+          }
+        }),
         Faculty: {
           connect: {
             id: facultyId

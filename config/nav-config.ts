@@ -94,8 +94,7 @@ export const adminConfig: AdminConfig = {
       title: 'Venue',
       href: '/admin/venue',
       icon: 'venue',
-      type: 'link',
-      disabled: true
+      type: 'link'
     },
     {
       title: 'Registration',

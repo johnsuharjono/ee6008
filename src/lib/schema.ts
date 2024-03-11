@@ -64,10 +64,20 @@ export const AddSemesterDataFormSchema = z.object({
 })
 
 export const AddProjectFormSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: z
+    .string()
+    .min(2, {
+      message: 'Title must be at least 2 characters.'
+    })
+    .max(50, {
+      message: 'Title must not be longer than 50 characters.'
+    }),
+  programme: z.string().min(1, {
+    message: 'Please select a programme'
+  }),
+  description: z.string().max(1000).min(1),
+  venueId: z.string().nullable(),
   semesterId: z.string(),
-  programme: z.string(),
   facultyId: z.string()
 })
 
@@ -76,7 +86,8 @@ export const EditProjectFormSchema = z.object({
   description: z.string(),
   semesterId: z.string(),
   programme: z.string(),
-  projectId: z.string()
+  projectId: z.string(),
+  venueId: z.string().nullable()
 })
 
 export const AddStudentFormSchema = z.object({
