@@ -11,6 +11,7 @@ import { DataTableRowActions } from './data-table-row-actions'
 export const projectSchema = z.object({
   projectId: z.string(),
   projectTitle: z.string(),
+  projectCode: z.string(),
   totalSignUps: z.number(),
   registrantDetails: z.array(
     z.object({
@@ -26,11 +27,11 @@ export type Registration = z.infer<typeof projectSchema>
 export const columns: ColumnDef<Registration>[] = [
   {
     enableSorting: false,
-    accessorKey: 'projectId',
+    accessorKey: 'projectCode',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title='Id' />
+      return <DataTableColumnHeader column={column} title='Project Code' />
     },
-    cell: ({ row }) => <div>{row.getValue('projectId')}</div>
+    cell: ({ row }) => <div>{row.getValue('projectCode')}</div>
   },
   {
     enableSorting: false,

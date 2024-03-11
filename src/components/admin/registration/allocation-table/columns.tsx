@@ -11,6 +11,7 @@ import { DataTableRowActions } from './data-table-row-actions'
 export const projectAllocationSchema = z.object({
   projectId: z.string(),
   projectTitle: z.string(),
+  projectCode: z.string(),
   numberOfStudents: z.number(),
   students: z.array(
     z.object({
@@ -27,11 +28,11 @@ export type Allocation = z.infer<typeof projectAllocationSchema>
 export const columns: ColumnDef<Allocation>[] = [
   {
     enableSorting: false,
-    accessorKey: 'projectId',
+    accessorKey: 'projectCode',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title='Id' />
+      return <DataTableColumnHeader column={column} title='Project code' />
     },
-    cell: ({ row }) => <div>{row.getValue('projectId')}</div>
+    cell: ({ row }) => <div>{row.getValue('projectCode')}</div>
   },
   {
     enableSorting: false,

@@ -55,10 +55,11 @@ export const AddSemesterDataFormSchema = z.object({
     from: z.date(),
     to: z.date()
   }),
-  programmeLeaders: z.array(
+  programmeDetails: z.array(
     z.object({
       programmeName: z.string().min(1, { message: 'Programme name is required' }),
-      faculty: z.string().min(1, { message: 'Faculty name is required' })
+      faculty: z.string().min(1, { message: 'Faculty name is required' }),
+      programCode: z.string().min(1)
     })
   )
 })
@@ -77,8 +78,7 @@ export const AddProjectFormSchema = z.object({
   }),
   description: z.string().max(1000).min(1),
   venueId: z.string().nullable(),
-  semesterId: z.string(),
-  facultyId: z.string()
+  semesterId: z.string()
 })
 
 export const EditProjectFormSchema = z.object({

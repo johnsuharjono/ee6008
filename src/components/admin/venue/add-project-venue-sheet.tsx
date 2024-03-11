@@ -29,7 +29,6 @@ import {
   SheetTrigger
 } from '@/src/components/ui/sheet'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Row } from '@tanstack/react-table'
 
 interface AddProjectVenueSheetProps {
   semesterId: string

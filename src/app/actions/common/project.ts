@@ -1,19 +1,63 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { prisma } from '@/src/lib/prisma'
 import { AddProjectFormSchema, EditProjectFormSchema } from '@/src/lib/schema'
 
-export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
-  const { description, programme, semesterId, title, facultyId, venueId } = data
-
+export async function addProject(data: z.infer<typeof AddProjectFormSchema>, facultyId: string) {
+  const { description, programme, semesterId, title, venueId } = data
   try {
+    const programmeData = await prisma.programme.findUnique({
+      where: {
+        name_semesterId: {
+          name: programme,
+          semesterId
+        }
+      },
+      select: {
+        id: true,
+        programmeCode: true,
+        Semester: {
+          select: {
+            name: true
+          }
+        }
+      }
+    })
+
+    if (!programmeData) {
+      return { message: `Programme not found`, status: 'ERROR' }
+    }
+
+    const projectsUnderThisProgram = await prisma.project.findMany({
+      where: {
+        programmeId: programmeData.id
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    if (!programmeData.Semester) {
+      return { message: `Semester not found`, status: 'ERROR' }
+    }
+
+    const latestProjectCode = projectsUnderThisProgram[0]?.projectCode?.slice(1, 4) || '000'
+    const semesterName = programmeData.Semester.name
+    const nextId = latestProjectCode === '000' ? '000' : Number(latestProjectCode) + 1
+    const projectCode = `${programmeData.programmeCode}${nextId.toString().padStart(3, '0')}-${semesterName.slice(
+      0,
+      2
+    )}${semesterName.slice(-1)}`
+
     const data = await prisma.project.create({
       data: {
         title,
         description,
         status: 'PENDING',
+        projectCode,
         ...(venueId && {
           venue: {
             connect: {
@@ -36,6 +80,9 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>) {
         }
       }
     })
+
+    revalidatePath('/faculty/view-my-projects')
+    revalidatePath('/faculty/view-all-projects')
 
     return {
       message: `Project proposal successfully created!`,

@@ -10,11 +10,12 @@ interface DropzoneProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
   classNameWrapper?: string
   className?: string
   dropMessage: string
+  dropzoneClassName?: string
   handleOnDrop: (acceptedFiles: FileList | null) => void
 }
 
 const Dropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
-  ({ className, classNameWrapper, dropMessage, handleOnDrop, ...props }, ref) => {
+  ({ className, classNameWrapper, dropMessage, handleOnDrop, dropzoneClassName, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement | null>(null)
     // Function to handle drag over event
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -54,7 +55,7 @@ const Dropzone = React.forwardRef<HTMLDivElement, DropzoneProps>(
           onDrop={handleDrop}
           onClick={handleButtonClick}
         >
-          <div className='flex items-center justify-center text-muted-foreground'>
+          <div className={cn('flex items-center justify-center text-muted-foreground', dropzoneClassName)}>
             <span className='font-medium'>{dropMessage}</span>
             <Input
               {...props}

@@ -1,4 +1,4 @@
-import { NextRequest, type } from 'next/server'
+import { NextRequest } from 'next/server'
 
 import { prisma } from '@/src/lib/prisma'
 
@@ -11,7 +11,7 @@ export async function PUT(request: NextRequest) {
     },
     data: {
       description: body.description,
-      programme: body.programme,
+      programmeId: body.programme,
       title: body.title
     }
   })

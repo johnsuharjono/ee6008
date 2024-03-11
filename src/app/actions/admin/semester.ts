@@ -77,6 +77,9 @@ export async function createSemester(data: z.infer<typeof AddSemesterDataFormSch
     const semester = await prisma.semester.create({
       data: {
         name: formData.semesterName,
+        minimumGroupSize: formData.minimumGroupSize,
+        maximumGroupSize: formData.maximumGroupSize,
+        projectApplicationsLimit: formData.projectApplicationsLimit,
         SemesterTimeline: {
           create: {
             facultyProposalSubmissionStart: formData.facultyProposalSubmission.from,
@@ -95,11 +98,12 @@ export async function createSemester(data: z.infer<typeof AddSemesterDataFormSch
     })
 
     const semesterId = semester.id
-    const programmeData = formData.programmeLeaders.map((programme) => {
+    const programmeData = formData.programmeDetails.map((programme) => {
       return {
         semesterId,
         leaderId: programme.faculty,
-        name: programme.programmeName
+        name: programme.programmeName,
+        programmeCode: programme.programCode
       }
     })
     await prisma.programme.createMany({
@@ -107,7 +111,7 @@ export async function createSemester(data: z.infer<typeof AddSemesterDataFormSch
     })
 
     return {
-      message: `Semester timeline created successfully!`,
+      message: `Semester created successfully!`,
       status: 'OK',
       data: semester
     }

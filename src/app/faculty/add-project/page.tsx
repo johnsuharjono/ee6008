@@ -16,7 +16,11 @@ const CreateProposal = async () => {
           facultyProposalSubmissionEnd: true
         }
       },
-      venues: true
+      venues: {
+        orderBy: {
+          name: 'asc'
+        }
+      }
     }
   })
 

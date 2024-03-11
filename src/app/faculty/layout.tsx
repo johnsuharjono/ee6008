@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 
-import { facultyConfig, studentConfig } from '@/config/nav-config'
+import { facultyConfig } from '@/config/nav-config'
 import { MainNav } from '@/src/components/main-nav'
 import { ModeToggle } from '@/src/components/mode-toggle'
 import { Shell } from '@/src/components/shell'
@@ -51,9 +51,9 @@ export default async function FacultyLayout({ children }: FacultyLayoutProps) {
   }
 
   return (
-    <div className='flex min-h-screen flex-col bg-background/20 space-y-6 p-4 lg:p-8'>
-      <header className='container z-40'>
-        <Shell className='bg-background/70 flex w-full items-center justify-between px-3 py-3 backdrop-blur-lg md:px-6 md:py-3'>
+    <div className='container relative mx-auto flex min-h-screen w-full flex-col items-center justify-center gap-6 p-4'>
+      <header className='z-40 w-full'>
+        <Shell className='bg-background/70 flex w-full items-center justify-between backdrop-blur-lg md:px-6 md:py-3 px-3 py-3'>
           <MainNav items={facultyConfig.mainNav} homeUrl={facultyConfig.homeUrl} />
           <nav className='flex items-center justify-end gap-4'>
             <UserNav />
@@ -61,11 +61,11 @@ export default async function FacultyLayout({ children }: FacultyLayoutProps) {
           </nav>
         </Shell>
       </header>
-      <div className='container flex w-full flex-1 gap-6 lg:gap-8'>
-        <Shell className='hidden max-h-[calc(100vh-9rem)] max-w-min shrink-0 lg:block'>
+      <div className='flex w-full flex-1 gap-6 lg:gap-8'>
+        <Shell className='bg-background/70 hidden max-h-[calc(100vh-9rem)] max-w-min shrink-0 lg:block'>
           <SideNav items={isProgrammeLeader ? newItems : facultyConfig.sideNav} />
         </Shell>
-        <Shell>
+        <Shell className='bg-background/70'>
           <main className='flex w-full flex-1 flex-col overflow-hidden p-1'>{children}</main>
         </Shell>
       </div>

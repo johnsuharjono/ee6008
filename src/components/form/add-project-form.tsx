@@ -18,7 +18,7 @@ import {
   FormMessage
 } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
 import { Textarea } from '@/src/components/ui/textarea'
 import { AddProjectFormSchema } from '@/src/lib/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -47,7 +47,7 @@ export function AddProjectForm({ semesterId, programmeOptions, venueOptions }: A
 
   async function onSubmit(values: z.infer<typeof AddProjectFormSchema>) {
     if (!user?.facultyId) return
-    const response = await addProject({ ...values, facultyId: user?.facultyId })
+    const response = await addProject(values, user.facultyId)
     if (response.status === 'ERROR') {
       toast.error(response.message)
     } else {
@@ -126,11 +126,13 @@ export function AddProjectForm({ semesterId, programmeOptions, venueOptions }: A
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {venueOptions.map(({ id, name, location }) => (
-                    <SelectItem key={id} value={id}>
-                      {name} - {location}
-                    </SelectItem>
-                  ))}
+                  <SelectGroup className='overflow-y-auto max-h-[10rem]'>
+                    {venueOptions.map(({ id, name, location }) => (
+                      <SelectItem key={id} value={id}>
+                        {name} - {location}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
                 </SelectContent>
               </Select>
               <FormMessage />

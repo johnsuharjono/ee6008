@@ -49,26 +49,25 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Member Details</DialogTitle>
-          <DialogDescription>
-            <Table className='mt-2'>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Matric No.</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Student Id</TableHead>
+
+          <Table className='mt-2'>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Matric No.</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Student Id</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {studentDetails.map(({ name, matriculationNumber, studentId }) => (
+                <TableRow key={matriculationNumber}>
+                  <TableCell className='font-medium'>{matriculationNumber}</TableCell>
+                  <TableCell>{name}</TableCell>
+                  <TableCell>{studentId}</TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {studentDetails.map(({ name, matriculationNumber, studentId }) => (
-                  <TableRow key={matriculationNumber}>
-                    <TableCell className='font-medium'>{matriculationNumber}</TableCell>
-                    <TableCell>{name}</TableCell>
-                    <TableCell>{studentId}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </DialogDescription>
+              ))}
+            </TableBody>
+          </Table>
         </DialogHeader>
       </DialogContent>
     </Dialog>

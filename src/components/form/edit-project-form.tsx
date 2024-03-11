@@ -1,6 +1,5 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -18,7 +17,7 @@ import {
   FormMessage
 } from '@/src/components/ui/form'
 import { Input } from '@/src/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
 import { Textarea } from '@/src/components/ui/textarea'
 import { EditProjectFormSchema } from '@/src/lib/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -27,7 +26,7 @@ import { Project, Venue } from '@prisma/client'
 type ProposalFormValues = z.infer<typeof EditProjectFormSchema>
 
 interface EditProjectFormProps {
-  data: Project & { semesterId: string }
+  data: Project & { semesterId: string; programmeName: string }
   programmeOptions: string[]
   venueOptions: Venue[]
 }
@@ -39,7 +38,7 @@ export function EditProjectForm({ data, programmeOptions, venueOptions }: EditPr
     resolver: zodResolver(EditProjectFormSchema),
     defaultValues: {
       title: data.title,
-      programme: data.programme,
+      programme: data.programmeName,
       description: data.description,
       projectId: data.id,
       semesterId: data.semesterId,
@@ -106,7 +105,7 @@ export function EditProjectForm({ data, programmeOptions, venueOptions }: EditPr
           render={({ field }) => (
             <FormItem className='md:col-span-2'>
               <FormLabel>Programme</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={data.programme}>
+              <Select onValueChange={field.onChange} defaultValue={data.programmeName}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue />
@@ -131,18 +130,20 @@ export function EditProjectForm({ data, programmeOptions, venueOptions }: EditPr
           render={({ field }) => (
             <FormItem className='md:col-span-2'>
               <FormLabel>Venue</FormLabel>
-              <Select onValueChange={field.onChange}>
+              <Select onValueChange={field.onChange} defaultValue={data.venueId || undefined}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {venueOptions.map(({ id, name, location }) => (
-                    <SelectItem key={id} value={id}>
-                      {name} - {location}
-                    </SelectItem>
-                  ))}
+                  <SelectGroup className='overflow-y-auto max-h-[10rem]'>
+                    {venueOptions.map(({ id, name, location }) => (
+                      <SelectItem key={id} value={id}>
+                        {name} - {location}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
                 </SelectContent>
               </Select>
               <FormMessage />

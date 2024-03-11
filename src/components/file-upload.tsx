@@ -9,7 +9,7 @@ import Dropzone from './dropzone'
 import { Button } from './ui/button'
 import { FormControl, FormField, FormItem, FormMessage } from './ui/form'
 
-const FileUpload = ({ submitFunction }: { submitFunction: any }) => {
+const FileUpload = ({ submitFunction, dropzoneClassName }: { submitFunction: any; dropzoneClassName?: string }) => {
   const router = useRouter()
   const defaultValues: { file: null | File } = {
     file: null
@@ -89,7 +89,12 @@ const FileUpload = ({ submitFunction }: { submitFunction: any }) => {
           render={({ field }) => (
             <FormItem className='w-full'>
               <FormControl>
-                <Dropzone {...field} dropMessage='Drop files or click here' handleOnDrop={handleOnDrop} />
+                <Dropzone
+                  {...field}
+                  dropMessage='Drop files or click here'
+                  handleOnDrop={handleOnDrop}
+                  dropzoneClassName={dropzoneClassName || undefined}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

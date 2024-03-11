@@ -54,37 +54,36 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Registrant Details</DialogTitle>
-          <DialogDescription>
-            <Table className='mt-2'>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Matric No.</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Priority</TableHead>
+
+          <Table className='mt-2'>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Matric No.</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Priority</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {registrationDetailsSplitted[page].map(({ name, matriculationNumber, priority }) => (
+                <TableRow key={matriculationNumber}>
+                  <TableCell className='font-medium'>{matriculationNumber}</TableCell>
+                  <TableCell>{name}</TableCell>
+                  <TableCell>{priority}</TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {registrationDetailsSplitted[page].map(({ name, matriculationNumber, priority }) => (
-                  <TableRow key={matriculationNumber}>
-                    <TableCell className='font-medium'>{matriculationNumber}</TableCell>
-                    <TableCell>{name}</TableCell>
-                    <TableCell>{priority}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <Pagination>
-              <PaginationContent>
-                {Array.from({ length: paginationLength }, (_, i) => (
-                  <PaginationItem key={i}>
-                    <PaginationLink className='text-primary' isActive={i === page} onClick={() => setPage(i)}>
-                      {i + 1}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-              </PaginationContent>
-            </Pagination>
-          </DialogDescription>
+              ))}
+            </TableBody>
+          </Table>
+          <Pagination>
+            <PaginationContent>
+              {Array.from({ length: paginationLength }, (_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink className='text-primary' isActive={i === page} onClick={() => setPage(i)}>
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+            </PaginationContent>
+          </Pagination>
         </DialogHeader>
       </DialogContent>
     </Dialog>

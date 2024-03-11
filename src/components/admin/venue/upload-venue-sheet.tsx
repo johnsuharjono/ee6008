@@ -22,11 +22,21 @@ import {
   DrawerTrigger
 } from '@/src/components/ui/drawer'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
+} from '@/src/components/ui/sheet'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form'
 
-interface UploadVenueDrawerProps {
+interface UploadVenueSheetProps {
   semestersData: { id: string; name: string }[]
 }
 
@@ -35,7 +45,7 @@ const formSchema = z.object({
   semesterId: z.string()
 })
 
-export function UploadVenueDrawer({ semestersData }: UploadVenueDrawerProps) {
+export function UploadVenueSheet({ semestersData }: UploadVenueSheetProps) {
   const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -104,8 +114,8 @@ export function UploadVenueDrawer({ semestersData }: UploadVenueDrawerProps) {
       <DrawerTrigger asChild>
         <Button variant='default'>Upload</Button>
       </DrawerTrigger>
-      <DrawerContent className='bg-white flex flex-col rounded-t-[10px] h-full w-[400px] mt-24 fixed bottom-0 left-auto right-0'>
-        <div className='p-4 bg-white flex-1 h-full'>
+      <DrawerContent className='flex flex-col rounded-t-[10px] h-full w-[400px] mt-24 fixed bottom-0 left-auto right-0'>
+        <div className='p-4 flex-1 h-full'>
           <div className='mx-auto w-full max-w-sm'>
             <DrawerHeader>
               <DrawerTitle>Upload Venue</DrawerTitle>
@@ -159,7 +169,7 @@ export function UploadVenueDrawer({ semestersData }: UploadVenueDrawerProps) {
                   )}
 
                   <DrawerFooter>
-                    <Button disabled={form.watch('file') === null} type='submit'>
+                    <Button disabled={!form.watch('file')} type='submit'>
                       Submit
                     </Button>
                     <DrawerClose asChild>

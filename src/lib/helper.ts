@@ -160,13 +160,14 @@ export const getProjectDetailsMap = async () => {
     },
     select: {
       title: true,
-      id: true
+      id: true,
+      projectCode: true
     }
   })
 
-  const initialProjectMap: { [key: string]: string } = {}
+  const initialProjectMap: { [key: string]: { title: string; projectCode: string } } = {}
   const projectMap = projects.reduce((acc, project) => {
-    acc[project.id] = project.title
+    acc[project.id] = { title: project.title, projectCode: project.projectCode }
     return acc
   }, initialProjectMap)
   return projectMap
