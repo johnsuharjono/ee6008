@@ -16,17 +16,17 @@ const CreateProposal = async () => {
   const data = await prisma.project.findMany({
     where: { facultyId: user.facultyId },
     include: {
-      Programme: {
+      programme: {
         select: {
-          Semester: {
+          semester: {
             select: {
               name: true
             }
           },
           name: true,
-          Leader: {
+          leader: {
             select: {
-              User: {
+              user: {
                 select: {
                   name: true
                 }
@@ -38,7 +38,7 @@ const CreateProposal = async () => {
     }
   })
 
-  const semesterOptions = _.uniq(data.map((project) => project.Programme?.Semester?.name))
+  const semesterOptions = _.uniq(data.map((project) => project.programme?.semester?.name))
 
   const semesterOptionsSanitized = semesterOptions.map((semester) => ({
     label: semester,
@@ -50,20 +50,18 @@ const CreateProposal = async () => {
       id: project.id,
       title: project.title,
       status: project.status,
-      semester: project.Programme?.Semester?.name,
-      programme: project.Programme?.name,
-      reviewer: project.Programme?.Leader?.User?.name,
+      semester: project.programme?.semester?.name,
+      programme: project.programme?.name,
+      reviewer: project.programme?.leader?.user?.name,
       reviewMessage: project.reviewMessage
     }
   })
 
   return (
-    <div className='space-y-8'>
-      <div className='flex w-full flex-col gap-1'>
-        <Header title='View your projects' description='Check the status of your project below' />
+    <div className='space-y-4'>
+      <Header title='View your proposal' description='Check the status of your project below' />
 
-        <DataTable columns={columns} data={projectSanitized} semesterOptions={semesterOptionsSanitized} />
-      </div>
+      <DataTable columns={columns} data={projectSanitized} semesterOptions={semesterOptionsSanitized} />
     </div>
   )
 }

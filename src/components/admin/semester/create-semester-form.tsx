@@ -28,7 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 interface CreateSemesterFormProps {
   faculties: ({
-    User: {
+    user: {
       id: string
       name: string
     }
@@ -252,7 +252,7 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                                     )}
                                   >
                                     {field.value
-                                      ? faculties.find((faculty) => faculty.id === field.value)?.User.name
+                                      ? faculties.find((faculty) => faculty.id === field.value)?.user.name
                                       : 'Select faculty'}
                                     <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                   </Button>
@@ -265,8 +265,8 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                                   <CommandGroup>
                                     {faculties.map((faculty) => (
                                       <CommandItem
-                                        value={faculty.User.name}
-                                        key={faculty.User.id}
+                                        value={faculty.user.name}
+                                        key={faculty.user.id}
                                         onSelect={() => {
                                           form.setValue(`programmeDetails.${index}.faculty`, faculty.id)
                                         }}
@@ -274,10 +274,10 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                                         <Check
                                           className={cn(
                                             'mr-2 h-4 w-4',
-                                            faculty.User.name === field.value ? 'opacity-100' : 'opacity-0'
+                                            faculty.user.name === field.value ? 'opacity-100' : 'opacity-0'
                                           )}
                                         />
-                                        {faculty.User.name}
+                                        {faculty.user.name}
                                       </CommandItem>
                                     ))}
                                   </CommandGroup>

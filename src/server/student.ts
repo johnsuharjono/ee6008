@@ -4,23 +4,23 @@ export const getAvailableProjects = async () => {
   const data = await prisma.project.findMany({
     where: {
       status: 'APPROVED',
-      Programme: {
-        Semester: {
+      programme: {
+        semester: {
           active: true
         }
       }
     },
     include: {
-      Faculty: {
+      faculty: {
         include: {
-          User: {
+          user: {
             select: {
               name: true
             }
           }
         }
       },
-      Programme: {
+      programme: {
         select: {
           name: true
         }
@@ -32,8 +32,8 @@ export const getAvailableProjects = async () => {
     id: project.id,
     title: project.title,
     description: project.description,
-    programme: project.Programme.name,
-    faculty: project.Faculty.User.name
+    programme: project.programme.name,
+    faculty: project.faculty.user.name
   }))
 
   return projects
@@ -47,14 +47,14 @@ export const getStudentProjectPlan = async (studentId: string) => {
     include: {
       Project: {
         include: {
-          Programme: {
+          programme: {
             select: {
               name: true
             }
           },
-          Faculty: {
+          faculty: {
             include: {
-              User: {
+              user: {
                 select: {
                   name: true
                 }
@@ -70,8 +70,8 @@ export const getStudentProjectPlan = async (studentId: string) => {
     return {
       id: plan.projectId,
       title: plan.Project.title,
-      faculty: plan.Project.Faculty.User.name,
-      programme: plan.Project.Programme.name
+      faculty: plan.Project.faculty.user.name,
+      programme: plan.Project.programme.name
     }
   })
 
@@ -84,16 +84,16 @@ export const getStudentProjectRegistration = async (studentId: string) => {
       studentId
     },
     include: {
-      Project: {
+      project: {
         include: {
-          Programme: {
+          programme: {
             select: {
               name: true
             }
           },
-          Faculty: {
+          faculty: {
             include: {
-              User: {
+              user: {
                 select: {
                   name: true
                 }
@@ -108,10 +108,10 @@ export const getStudentProjectRegistration = async (studentId: string) => {
   const sanitizedData = data.map((project) => {
     return {
       id: project.projectId,
-      title: project.Project.title,
+      title: project.project.title,
       priority: project.priority,
-      faculty: project.Project.Faculty.User.name,
-      programme: project.Project.Programme.name
+      faculty: project.project.faculty.user.name,
+      programme: project.project.programme.name
     }
   })
 
@@ -124,16 +124,16 @@ export const getStudentAllocatedProject = async (studentId: string) => {
       id: studentId
     },
     select: {
-      Project: {
+      project: {
         include: {
-          Programme: {
+          programme: {
             select: {
               name: true
             }
           },
-          Faculty: {
+          faculty: {
             include: {
-              User: {
+              user: {
                 select: {
                   name: true
                 }
@@ -147,14 +147,14 @@ export const getStudentAllocatedProject = async (studentId: string) => {
 
   if (!data) return null
 
-  if (data.Project === null) return null
+  if (data.project === null) return null
 
   const projectMembers = await prisma.student.findMany({
     where: {
-      projectId: data.Project.id
+      projectId: data.project.id
     },
     select: {
-      User: {
+      user: {
         select: {
           name: true
         }
@@ -163,12 +163,12 @@ export const getStudentAllocatedProject = async (studentId: string) => {
   })
 
   const sanitizedData = {
-    id: data.Project.id,
-    title: data.Project.title,
-    faculty: data.Project.Faculty.User.name,
-    programme: data.Project.Programme.name,
-    description: data.Project.description,
-    members: projectMembers.map((member) => member.User.name)
+    id: data.project.id,
+    title: data.project.title,
+    faculty: data.project.faculty.user.name,
+    programme: data.project.programme.name,
+    description: data.project.description,
+    members: projectMembers.map((member) => member.user.name)
   }
 
   return sanitizedData

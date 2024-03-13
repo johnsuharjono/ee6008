@@ -10,7 +10,7 @@ const CreateProposal = async () => {
     select: {
       id: true,
       name: true,
-      SemesterTimeline: {
+      timeline: {
         select: {
           facultyProposalSubmissionStart: true,
           facultyProposalSubmissionEnd: true
@@ -24,7 +24,7 @@ const CreateProposal = async () => {
     }
   })
 
-  if (!semester || !semester.SemesterTimeline)
+  if (!semester || !semester.timeline)
     return (
       <Header
         title='Create a proposal'
@@ -34,11 +34,11 @@ const CreateProposal = async () => {
 
   // check the date against the timeline
   const now = new Date()
-  const start = semester.SemesterTimeline.facultyProposalSubmissionStart
-    ? new Date(semester.SemesterTimeline.facultyProposalSubmissionStart)
+  const start = semester.timeline.facultyProposalSubmissionStart
+    ? new Date(semester.timeline.facultyProposalSubmissionStart)
     : null
-  const end = semester.SemesterTimeline.facultyProposalSubmissionEnd
-    ? new Date(semester.SemesterTimeline.facultyProposalSubmissionEnd)
+  const end = semester.timeline.facultyProposalSubmissionEnd
+    ? new Date(semester.timeline.facultyProposalSubmissionEnd)
     : null
 
   if (start && end && (now < start || now > end)) {

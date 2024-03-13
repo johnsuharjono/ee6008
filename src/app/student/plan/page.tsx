@@ -1,8 +1,10 @@
 import { Grip } from 'lucide-react'
 import { getServerSession } from 'next-auth'
+import Link from 'next/link'
 
 import { CardContainer } from '@/src/components/student/planner/card-container'
 import { Alert, AlertDescription, AlertTitle } from '@/src/components/ui/alert'
+import { Button } from '@/src/components/ui/button'
 import { authOptions } from '@/src/lib/auth'
 import { getActiveSemester } from '@/src/server/data/semester'
 import { getStudentProjectPlan } from '@/src/server/student'
@@ -44,8 +46,18 @@ const StudentPlanPage = async () => {
           </AlertDescription>
         </Alert>
 
-        {data.length === 0 && <p>No project in your plan exist</p>}
-        <CardContainer plans={data} projectApplicationLimit={projectApplicationsLimit} />
+        {data.length === 0 ? (
+          <div className='grid gap-4'>
+            <p>You dont have any project on your plan, start by adding project from the homepage.</p>
+            <div>
+              <Button>
+                <Link href={'/student'}>Back to homepage</Link>
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <CardContainer plans={data} projectApplicationLimit={projectApplicationsLimit} />
+        )}
       </div>
     </section>
   )

@@ -32,9 +32,9 @@ export const authOptions: NextAuthOptions = {
             email: credentials.email
           },
           include: {
-            Admin: true,
-            Faculty: true,
-            Student: true
+            admin: true,
+            faculty: true,
+            student: true
           }
         })
 
@@ -52,9 +52,9 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
-          Student: user.Student,
-          Faculty: user.Faculty,
-          Admin: user.Admin
+          Student: user.student,
+          Faculty: user.faculty,
+          Admin: user.admin
         }
       }
     })

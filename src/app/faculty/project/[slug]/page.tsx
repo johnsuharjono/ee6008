@@ -16,7 +16,7 @@ const EditProjectPage = async ({ params }: { params: { slug: string } }) => {
       facultyId: session.user.facultyId
     },
     include: {
-      Programme: {
+      programme: {
         select: {
           name: true,
           semesterId: true
@@ -31,14 +31,14 @@ const EditProjectPage = async ({ params }: { params: { slug: string } }) => {
 
   const sanitizedProjectDetail = {
     ...projectDetail,
-    semesterId: projectDetail.Programme.semesterId,
-    programmeName: projectDetail.Programme.name
+    semesterId: projectDetail.programme.semesterId,
+    programmeName: projectDetail.programme.name
   }
 
   // check available programme for the semester
   const programmeData = await prisma.programme.findMany({
     where: {
-      semesterId: projectDetail.Programme.semesterId
+      semesterId: projectDetail.programme.semesterId
     },
     select: {
       name: true

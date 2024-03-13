@@ -19,7 +19,7 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>, fac
       select: {
         id: true,
         programmeCode: true,
-        Semester: {
+        semester: {
           select: {
             name: true
           }
@@ -40,12 +40,12 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>, fac
       }
     })
 
-    if (!programmeData.Semester) {
+    if (!programmeData.semester) {
       return { message: `Semester not found`, status: 'ERROR' }
     }
 
     const latestProjectCode = projectsUnderThisProgram[0]?.projectCode?.slice(1, 4) || '000'
-    const semesterName = programmeData.Semester.name
+    const semesterName = programmeData.semester.name
     const nextId = latestProjectCode === '000' ? '000' : Number(latestProjectCode) + 1
     const projectCode = `${programmeData.programmeCode}${nextId.toString().padStart(3, '0')}-${semesterName.slice(
       0,
@@ -65,12 +65,12 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>, fac
             }
           }
         }),
-        Faculty: {
+        faculty: {
           connect: {
             id: facultyId
           }
         },
-        Programme: {
+        programme: {
           connect: {
             name_semesterId: {
               name: programme,
@@ -106,7 +106,7 @@ export async function editProject(data: z.infer<typeof EditProjectFormSchema>) {
         title,
         description,
         status: 'PENDING',
-        Programme: {
+        programme: {
           connect: {
             name_semesterId: {
               name: programme,

@@ -5,7 +5,6 @@ import { prisma } from '@/src/lib/prisma'
 
 export const handleAllocation = async (studentProjectData: { projectCode: string; matriculationNumber: string }[]) => {
   'use server'
-  // TODO: Handle excel file with project code and student matriculation number
   const projectMap = await getProjectDetailsMap()
   const studentMap = await getStudentDetailsMap()
 

@@ -15,13 +15,13 @@ const EditTimeline = async ({ params }: { params: { semester: string } }) => {
       name: params.semester
     },
     include: {
-      SemesterTimeline: true
+      timeline: true
     }
   })
 
   const semesterId = data?.id
 
-  const semesterTimelineData = data?.SemesterTimeline
+  const semesterTimelineData = data?.timeline
 
   let sanitizedDefaultValues
 

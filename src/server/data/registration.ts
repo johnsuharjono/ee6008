@@ -3,17 +3,17 @@ import { prisma } from '@/src/lib/prisma'
 export const getRegistrations = async () => {
   return await prisma.registration.findMany({
     include: {
-      Student: {
+      student: {
         select: {
           matriculationNumber: true,
-          User: {
+          user: {
             select: {
               name: true
             }
           }
         }
       },
-      Project: {
+      project: {
         select: {
           title: true
         }

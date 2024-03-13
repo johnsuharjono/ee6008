@@ -133,7 +133,7 @@ function allocateStudentToProject(
 export const getStudentDetailsMap = async () => {
   const students = await prisma.student.findMany({
     include: {
-      User: {
+      user: {
         select: {
           name: true
         }
@@ -142,7 +142,7 @@ export const getStudentDetailsMap = async () => {
   })
   const initialStudentMap: { [studentId: string]: { name: string; matriculationNumber: string } } = {}
   const studentMap = students.reduce((acc, student) => {
-    acc[student.id] = { name: student.User.name, matriculationNumber: student.matriculationNumber }
+    acc[student.id] = { name: student.user.name, matriculationNumber: student.matriculationNumber }
     return acc
   }, initialStudentMap)
   return studentMap
@@ -152,8 +152,8 @@ export const getProjectDetailsMap = async () => {
   // create map from project id to project title
   const projects = await prisma.project.findMany({
     where: {
-      Programme: {
-        Semester: {
+      programme: {
+        semester: {
           active: true
         }
       }

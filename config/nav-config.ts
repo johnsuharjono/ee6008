@@ -33,14 +33,18 @@ export const facultyConfig: FacultyConfig = {
       type: 'link'
     },
     {
+      title: 'Proposal',
+      type: 'header'
+    },
+    {
       title: 'Add project',
       href: '/faculty/add-project',
       icon: 'addProject',
       type: 'link'
     },
     {
-      title: 'View your projects',
-      href: '/faculty/view-my-projects',
+      title: 'Proposed project',
+      href: '/faculty/my-proposal',
       icon: 'viewProject',
       type: 'link'
     },
@@ -51,11 +55,20 @@ export const facultyConfig: FacultyConfig = {
       type: 'link'
     },
     {
-      title: 'Marking',
-      href: '/faculty/marking',
+      title: 'Active project',
+      type: 'header'
+    },
+    {
+      title: 'Group',
+      href: '/faculty/group',
+      icon: 'student',
+      type: 'link'
+    },
+    {
+      title: 'Mark',
+      href: '/faculty/mark',
       icon: 'mark',
-      type: 'link',
-      disabled: true
+      type: 'link'
     }
   ]
 }

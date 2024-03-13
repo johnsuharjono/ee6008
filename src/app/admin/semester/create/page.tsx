@@ -5,7 +5,7 @@ import { prisma } from '@/src/lib/prisma'
 const AddSemester = async () => {
   const faculties = await prisma.faculty.findMany({
     include: {
-      User: {
+      user: {
         select: {
           id: true,
           name: true

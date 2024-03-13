@@ -32,11 +32,11 @@ export async function TimelineTable({
       name: semester
     },
     include: {
-      SemesterTimeline: true
+      timeline: true
     }
   })
 
-  const semesterTimelineData = semesterData?.SemesterTimeline
+  const semesterTimelineData = semesterData?.timeline
 
   if (!semesterTimelineData) {
     return <div>No timeline data exist for this semesteer</div>

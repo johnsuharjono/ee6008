@@ -265,8 +265,8 @@ async function projectRegistrationSeed() {
       id: true
     },
     where: {
-      Programme: {
-        Semester: {
+      programme: {
+        semester: {
           active: true
         }
       }

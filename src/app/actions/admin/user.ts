@@ -142,7 +142,7 @@ export async function addStudent(data: z.infer<typeof AddStudentFormSchema>) {
         email: formData.email,
         password: hashedPassword,
         role: 'STUDENT',
-        Student: {
+        student: {
           create: {
             matriculationNumber: formData.matriculationNumber
           }
@@ -177,7 +177,7 @@ export async function addFaculty(data: z.infer<typeof AddFacultyFormSchema>) {
         email: formData.email,
         password: hashedPassword,
         role: 'FACULTY',
-        Faculty: {
+        faculty: {
           create: {}
         }
       }

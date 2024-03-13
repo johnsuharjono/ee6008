@@ -20,26 +20,26 @@ const CreateProposal = async () => {
       }
     },
     include: {
-      Faculty: {
+      faculty: {
         select: {
-          User: {
+          user: {
             select: {
               name: true
             }
           }
         }
       },
-      Programme: {
+      programme: {
         select: {
-          Semester: {
+          semester: {
             select: {
               name: true
             }
           },
           name: true,
-          Leader: {
+          leader: {
             select: {
-              User: {
+              user: {
                 select: {
                   name: true
                 }
@@ -51,7 +51,7 @@ const CreateProposal = async () => {
     }
   })
 
-  const semesterOptions = _.uniq(data.map((project) => project.Programme?.Semester?.name))
+  const semesterOptions = _.uniq(data.map((project) => project.programme?.semester?.name))
 
   const semesterOptionsSanitized = semesterOptions.map((semester) => ({
     label: semester,
@@ -62,9 +62,9 @@ const CreateProposal = async () => {
     return {
       id: project.id,
       title: project.title,
-      semester: project.Programme?.Semester?.name,
-      programme: project.Programme?.name,
-      faculty: project.Faculty.User.name,
+      semester: project.programme?.semester?.name,
+      programme: project.programme?.name,
+      faculty: project.faculty.user.name,
       description: project.description,
       status: project.status,
       projectCode: project.projectCode
@@ -72,12 +72,10 @@ const CreateProposal = async () => {
   })
 
   return (
-    <div className='space-y-8'>
-      <div className='flex w-full flex-col gap-1'>
-        <Header title='View all projects' description='All approved projects are listed below.' />
+    <div className='space-y-4'>
+      <Header title='View all projects' description='All approved projects are listed below.' />
 
-        <DataTable columns={columns} data={projectSanitized} semesterOptions={semesterOptionsSanitized} />
-      </div>
+      <DataTable columns={columns} data={projectSanitized} semesterOptions={semesterOptionsSanitized} />
     </div>
   )
 }

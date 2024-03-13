@@ -22,31 +22,31 @@ const ReviewProjects = async () => {
 
   const data = await prisma.project.findMany({
     where: {
-      Programme: {
+      programme: {
         leaderId: user.facultyId
       }
     },
     include: {
-      Faculty: {
+      faculty: {
         select: {
-          User: {
+          user: {
             select: {
               name: true
             }
           }
         }
       },
-      Programme: {
+      programme: {
         select: {
-          Semester: {
+          semester: {
             select: {
               name: true
             }
           },
           name: true,
-          Leader: {
+          leader: {
             select: {
-              User: {
+              user: {
                 select: {
                   name: true
                 }
@@ -58,7 +58,7 @@ const ReviewProjects = async () => {
     }
   })
 
-  const semesterOptions = _.uniq(data.map((project) => project.Programme?.Semester?.name))
+  const semesterOptions = _.uniq(data.map((project) => project.programme?.semester?.name))
 
   const semesterOptionsSanitized = semesterOptions.map((semester) => ({
     label: semester,
@@ -70,9 +70,9 @@ const ReviewProjects = async () => {
       id: project.id,
       title: project.title,
       description: project.description,
-      programme: project.Programme?.name,
-      faculty: project.Faculty.User.name,
-      semester: project.Programme?.Semester?.name,
+      programme: project.programme?.name,
+      faculty: project.faculty.user.name,
+      semester: project.programme?.semester?.name,
       status: project.status
     }
   })

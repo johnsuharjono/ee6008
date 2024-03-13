@@ -41,8 +41,9 @@ export default async function FacultyLayout({ children }: FacultyLayoutProps) {
   if (isProgrammeLeader) {
     newItems = [
       ...facultyConfig.sideNav,
+      { title: 'Programme Leader', type: 'header' },
       {
-        title: 'Review projects',
+        title: 'Review',
         href: '/faculty/review-projects',
         icon: 'reviewProjects',
         type: 'link'
@@ -52,8 +53,8 @@ export default async function FacultyLayout({ children }: FacultyLayoutProps) {
 
   return (
     <div className='container relative mx-auto flex min-h-screen w-full flex-col items-center justify-center gap-6 p-4'>
-      <header className='z-40 w-full'>
-        <Shell className='bg-background/70 flex w-full items-center justify-between backdrop-blur-lg md:px-6 md:py-3 px-3 py-3'>
+      <header className='sticky top-4 z-50 w-full border-border'>
+        <Shell className='flex w-full items-center justify-between bg-background/70 px-3 py-3 backdrop-blur-lg md:px-6 md:py-3'>
           <MainNav items={facultyConfig.mainNav} homeUrl={facultyConfig.homeUrl} />
           <nav className='flex items-center justify-end gap-4'>
             <UserNav />
@@ -62,7 +63,7 @@ export default async function FacultyLayout({ children }: FacultyLayoutProps) {
         </Shell>
       </header>
       <div className='flex w-full flex-1 gap-6 lg:gap-8'>
-        <Shell className='bg-background/70 hidden max-h-[calc(100vh-9rem)] max-w-min shrink-0 lg:block'>
+        <Shell className='hidden max-h-[calc(100vh-7rem)] max-w-min shrink-0 bg-background/70 md:p-4 lg:sticky lg:top-[106px] lg:block'>
           <SideNav items={isProgrammeLeader ? newItems : facultyConfig.sideNav} />
         </Shell>
         <Shell className='bg-background/70'>

@@ -9,7 +9,7 @@ const FacultyUser = async () => {
       role: 'FACULTY'
     },
     include: {
-      Faculty: true
+      faculty: true
     }
   })
 
@@ -18,7 +18,7 @@ const FacultyUser = async () => {
       id: user.id,
       name: user.name,
       email: user.email,
-      facultyId: user.Faculty?.id || ''
+      facultyId: user.faculty?.id || ''
     }
   })
 

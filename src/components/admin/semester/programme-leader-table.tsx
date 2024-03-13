@@ -40,8 +40,8 @@ export async function ProgrammeLeaderTable({
       semesterId: semesterData.id
     },
     include: {
-      Leader: {
-        include: { User: true }
+      leader: {
+        include: { user: true }
       }
     }
   })
@@ -52,7 +52,7 @@ export async function ProgrammeLeaderTable({
 
   const sanitizedData = programmeLeaders.map((programme) => ({
     programme: programme.name,
-    name: programme.Leader?.User?.name
+    name: programme.leader?.user?.name
   }))
 
   return (

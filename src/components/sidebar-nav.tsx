@@ -20,7 +20,7 @@ export function SideNav({ items }: DashboardNavProps) {
   }
 
   return (
-    <nav className='grid items-start gap-1 min-w-[200px] tracking-wide'>
+    <nav className='grid min-w-[200px] items-start gap-1 tracking-wide'>
       {items.map((item, index) => {
         if (item.type === 'link' && item.href) {
           const isActive = path === item.href
@@ -30,8 +30,8 @@ export function SideNav({ items }: DashboardNavProps) {
               <Link
                 href={item.href}
                 className={cn(
-                  'text-md hover:bg-muted/50 hover:text-foreground text-muted-foreground group flex w-full items-center rounded-md border border-transparent px-3 py-1',
-                  isActive && 'bg-muted/50 border-border text-foreground',
+                  'text-md group flex w-full items-center rounded-md border border-transparent px-3 py-1 text-muted-foreground hover:bg-muted/50 hover:text-foreground',
+                  isActive && 'border-border bg-muted/50 text-foreground',
                   item.disabled && 'pointer-events-none opacity-60'
                 )}
                 key={index}

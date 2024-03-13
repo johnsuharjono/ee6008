@@ -23,7 +23,7 @@ const FacultyPage = async () => {
 
   const projects = await prisma.project.findMany({
     where: {
-      Programme: {
+      programme: {
         semesterId: activeSemester?.id
       },
       facultyId: user?.user.facultyId
@@ -36,7 +36,7 @@ const FacultyPage = async () => {
 
       <Separator />
 
-      <div className='grid md:grid-cols-2 gap-4 max-w-lg'>
+      <div className='grid max-w-lg gap-4 md:grid-cols-2'>
         <DashboardCard title='Current semester' description={activeSemester?.name} Icon={MonitorDot} />
         <DashboardCard title='Projects proposed' description={projects.length.toString()} Icon={FolderKanban} />
       </div>

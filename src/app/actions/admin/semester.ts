@@ -80,7 +80,7 @@ export async function createSemester(data: z.infer<typeof AddSemesterDataFormSch
         minimumGroupSize: formData.minimumGroupSize,
         maximumGroupSize: formData.maximumGroupSize,
         projectApplicationsLimit: formData.projectApplicationsLimit,
-        SemesterTimeline: {
+        timeline: {
           create: {
             facultyProposalSubmissionStart: formData.facultyProposalSubmission.from,
             facultyProposalSubmissionEnd: formData.facultyProposalSubmission.to,
