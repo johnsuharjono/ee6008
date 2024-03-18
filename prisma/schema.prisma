@@ -36,6 +36,7 @@ model Faculty {
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   programme Programme[]
   Project   Project[]
+  Grade     Grade[]
 }
 
 model Student {
@@ -49,6 +50,7 @@ model Student {
   registrations       Registration[]
   project             Project?       @relation(fields: [projectId], references: [id])
   user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Grade               Grade[]
 }
 
 model Programme {
@@ -84,6 +86,7 @@ model Project {
   registrations Registration[]
   students      Student[]
   venue         Venue?         @relation(fields: [venueId], references: [id], onDelete: SetNull)
+  Grade         Grade[]
 }
 
 model ProjectPlan {
@@ -123,6 +126,7 @@ model Semester {
   programmes               Programme[]
   timeline                 SemesterTimeline?
   venues                   Venue[]
+  SemesterGradeType        GradeType[]
 }
 
 model SemesterTimeline {
@@ -154,6 +158,36 @@ model Venue {
   semester   Semester  @relation(fields: [semesterId], references: [id], onDelete: Cascade)
 
   @@unique([name, semesterId, location])
+}
+
+model Grade {
+  id                  String   @id @default(uuid())
+  projectId           String
+  studentId           String
+  facultyId           String
+  score               Float?
+  semesterGradeTypeId String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  semesterGradeType GradeType @relation(fields: [semesterGradeTypeId], references: [id])
+  project           Project   @relation(fields: [projectId], references: [id])
+  student           Student   @relation(fields: [studentId], references: [id])
+  faculty           Faculty   @relation(fields: [facultyId], references: [id])
+
+  @@unique([studentId, projectId, facultyId, semesterGradeTypeId])
+}
+
+model GradeType {
+  id         String   @id @default(uuid())
+  name       String   @unique
+  semesterId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  semester   Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  Grade      Grade[]
+
+  @@unique([name, semesterId])
 }
 
 enum UserRole {

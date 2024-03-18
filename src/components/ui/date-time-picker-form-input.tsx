@@ -24,7 +24,7 @@ const DateTimePickerFormInput = ({ value, onChange }: DateTimePickerFormInputPro
         <FormControl>
           <Button
             variant={'outline'}
-            className={cn('justify-start text-left font-normal h-fit flex gap-1', !value && 'text-muted-foreground')}
+            className={cn('flex h-fit justify-start gap-1 text-left font-normal', !value && 'text-muted-foreground')}
           >
             <CalendarIcon className='mr-2 h-4 w-4' />
             <div className='min-h-fit'>
@@ -45,7 +45,7 @@ const DateTimePickerFormInput = ({ value, onChange }: DateTimePickerFormInputPro
       </PopoverTrigger>
       <PopoverContent className='w-auto p-0' align='start'>
         <Calendar initialFocus mode='range' selected={value} onSelect={onChange} numberOfMonths={2} />
-        <div className='p-3 border-t border-border grid grid-cols-2'>
+        <div className='grid justify-center gap-y-2 border-t border-border p-3 md:grid-cols-2'>
           <TimePicker
             setDate={(date) => {
               onChange({

@@ -6,9 +6,12 @@ import { UserRole } from '@prisma/client'
 const ManageFaculty = () => {
   return (
     <div className='space-y-4'>
-      <Header title='Manage faculty user' description='Configure faculty account!' />
+      <Header
+        title='Manage faculty user'
+        description='Configure faculty account!'
+        actions={<AddUser role={UserRole.FACULTY} />}
+      />
       <FacultyUser />
-      <AddUser role={UserRole.FACULTY} />
     </div>
   )
 }

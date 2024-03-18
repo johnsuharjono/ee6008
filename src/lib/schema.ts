@@ -28,7 +28,7 @@ export const EditSemesterDataFormSchema = z.object({
 })
 const semesterNameRegex = /^[0-9]{2}[S][0-9]{1}$/
 
-export const AddSemesterDataFormSchema = z.object({
+export const CreateSemesterDataFormSchema = z.object({
   semesterName: z
     .string()
     .refine((value) => semesterNameRegex.test(value), 'Semester name must be in the format {YY}{S}{#}'),
@@ -55,13 +55,20 @@ export const AddSemesterDataFormSchema = z.object({
     from: z.date(),
     to: z.date()
   }),
-  programmeDetails: z.array(
-    z.object({
+  programmeDetails: z
+    .object({
       programmeName: z.string().min(1, { message: 'Programme name is required' }),
       faculty: z.string().min(1, { message: 'Faculty name is required' }),
       programCode: z.string().min(1)
     })
-  )
+    .array()
+    .min(1, { message: 'At least one programme is required' }),
+  assessmentFormats: z
+    .object({
+      name: z.string().min(1, { message: 'Assessment name is required' })
+    })
+    .array()
+    .min(1, { message: 'At least one assessment format is required' })
 })
 
 export const AddProjectFormSchema = z.object({
@@ -115,4 +122,22 @@ export const AddFacultyFormSchema = z.object({
   password: z.string().min(1, {
     message: 'User password is required.'
   })
+})
+
+export const UpdateStudentGradeFormSchema = z.object({
+  studentGrades: z.array(
+    z.object({
+      studentName: z.string().min(1, { message: 'Student name is required' }),
+      studentId: z.string().min(1, { message: 'Student ID is required' }),
+      facultyId: z.string().min(1, { message: 'Faculty ID is required' }),
+      matriculationNumber: z.string().min(1, { message: 'Matriculation number is required' }),
+      projectId: z.string().min(1, { message: 'Project ID is required' }),
+      grade: z.union([
+        z.literal('', {
+          errorMap: () => ({ message: 'Leave empty for no marks' })
+        }),
+        z.coerce.number().min(0).max(100, { message: 'Grade must be between 0 and 100' })
+      ])
+    })
+  )
 })

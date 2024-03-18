@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { prisma } from '@/src/lib/prisma'
-import { AddSemesterDataFormSchema, EditSemesterDataFormSchema } from '@/src/lib/schema'
+import { CreateSemesterDataFormSchema, EditSemesterDataFormSchema } from '@/src/lib/schema'
 
 export async function setActiveSemester(semesterId: string) {
   await prisma.semester.updateMany({
@@ -70,8 +70,8 @@ export async function editSemester(data: z.infer<typeof EditSemesterDataFormSche
   }
 }
 
-export async function createSemester(data: z.infer<typeof AddSemesterDataFormSchema>) {
-  const formData: z.infer<typeof AddSemesterDataFormSchema> = AddSemesterDataFormSchema.parse(data)
+export async function createSemester(data: z.infer<typeof CreateSemesterDataFormSchema>) {
+  const formData: z.infer<typeof CreateSemesterDataFormSchema> = CreateSemesterDataFormSchema.parse(data)
 
   try {
     const semester = await prisma.semester.create({
@@ -108,6 +108,17 @@ export async function createSemester(data: z.infer<typeof AddSemesterDataFormSch
     })
     await prisma.programme.createMany({
       data: programmeData
+    })
+
+    const assessmentFormatsData = formData.assessmentFormats.map((assessmentFormat) => {
+      return {
+        semesterId,
+        name: assessmentFormat.name
+      }
+    })
+
+    await prisma.gradeType.createMany({
+      data: assessmentFormatsData
     })
 
     return {

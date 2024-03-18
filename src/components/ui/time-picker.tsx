@@ -19,7 +19,7 @@ export function TimePicker({ date, setDate }: TimePickerProps) {
 
   return (
     <div className='flex items-end gap-2'>
-      <div className='grid gap-1 text-center'>
+      <div className='gap-1 text-center md:grid'>
         <Label htmlFor='hours' className='text-xs'>
           Hours
         </Label>
