@@ -75,7 +75,7 @@ export function AddProjectVenueSheet<TData>({ semesterId }: AddProjectVenueSheet
         <SheetHeader>
           <SheetTitle>Add Venue</SheetTitle>
           <SheetDescription>
-            Fill the details for your project venue here. Click save when you're done.
+            Fill the details for your project venue here. Click save when you&apos;re done.
           </SheetDescription>
         </SheetHeader>
 

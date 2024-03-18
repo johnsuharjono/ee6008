@@ -114,12 +114,14 @@ export function UploadVenueSheet({ semestersData }: UploadVenueSheetProps) {
       <DrawerTrigger asChild>
         <Button variant='default'>Upload</Button>
       </DrawerTrigger>
-      <DrawerContent className='flex flex-col rounded-t-[10px] h-full w-[400px] mt-24 fixed bottom-0 left-auto right-0'>
-        <div className='p-4 flex-1 h-full'>
+      <DrawerContent className='fixed bottom-0 left-auto right-0 mt-24 flex h-full w-[400px] flex-col rounded-t-[10px]'>
+        <div className='h-full flex-1 p-4'>
           <div className='mx-auto w-full max-w-sm'>
             <DrawerHeader>
               <DrawerTitle>Upload Venue</DrawerTitle>
-              <DrawerDescription>Accept excel files, with 'name' and 'location' as the column name</DrawerDescription>
+              <DrawerDescription>
+                Accept excel files, with &apos;name&apos; and &apos;location&apos; as the column name
+              </DrawerDescription>
             </DrawerHeader>
             <div className='p-4'>
               <Form {...form}>
@@ -162,7 +164,7 @@ export function UploadVenueSheet({ semestersData }: UploadVenueSheetProps) {
                     )}
                   />
                   {form.watch('file') && (
-                    <div className='flex items-center justify-center gap-3 p-4 relative'>
+                    <div className='relative flex items-center justify-center gap-3 p-4'>
                       <FileCheck2Icon className='h-4 w-4' />
                       <p className='text-sm font-medium'>{form.watch('file')?.name}</p>
                     </div>

@@ -364,7 +364,7 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                 <FormLabel>Assessment Format</FormLabel>
               </div>
               {assessmentFields.map((field, index) => (
-                <div className='grid gap-x-4 md:grid-cols-12'>
+                <div className='grid gap-x-4 md:grid-cols-12' key={field.id}>
                   <div className='md:col-span-4'>
                     <FormField
                       key={field.id}

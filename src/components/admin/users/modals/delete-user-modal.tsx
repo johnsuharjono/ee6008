@@ -31,7 +31,7 @@ const DeleteUserModal = ({ setModalOpen, userId }: DeleteUserModalProps) => {
   useEffect(() => {
     if (state.status == 'OK') toast.success(state.message)
     else if (state.status === 'ERROR') toast.error(state.message)
-  }, [state.status, toast])
+  }, [state.status])
 
   return (
     <>

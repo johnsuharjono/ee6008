@@ -88,7 +88,9 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
       <SheetContent className='rounded-t-[10px]'>
         <SheetHeader>
           <SheetTitle>Edit Venue</SheetTitle>
-          <SheetDescription>Make changes to your project venue here. Click save when you're done.</SheetDescription>
+          <SheetDescription>
+            Make changes to your project venue here. Click save when you&apos;re done.
+          </SheetDescription>
         </SheetHeader>
 
         <Form {...form}>

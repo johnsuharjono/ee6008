@@ -51,7 +51,7 @@ function ProcessAllocation({
       setProjectStatus(localProjectStatus)
       setUnallocatedStudents(Array.from(localUnallocatedStudents))
     },
-    [studentPreferences, setProjectAllocations, setProjectStatus, setUnallocatedStudents]
+    [studentPreferences, setProjectAllocations, setProjectStatus, setUnallocatedStudents, maximumGroupSize, minimumGroupSize, projectMap]
   )
 
   const sanitizedAllocationData = Object.entries(projectAllocations).map(([projectId, studentIds]) => {
