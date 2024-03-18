@@ -54,7 +54,7 @@ const EditUserDataModal = ({ initialValue, setModalOpen, field }: EditUserDataMo
   useEffect(() => {
     if (state.status == 'OK') toast.success(state.message)
     else if (state.status === 'ERROR') toast.error(state.message)
-  }, [state.status])
+  }, [state.status, state.message])
 
   return (
     <>
