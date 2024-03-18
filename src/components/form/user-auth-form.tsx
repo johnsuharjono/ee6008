@@ -1,12 +1,13 @@
 'use client'
 
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, CircuitBoard } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import * as React from 'react'
 
 import { Icons } from '@/src/components/icons'
 import { Alert, AlertDescription, AlertTitle } from '@/src/components/ui/alert'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/src/components/ui/card'
 import { cn } from '@/src/lib/utils'
 
 import { Button } from '../ui/button'
@@ -46,46 +47,57 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn('grid gap-6', className)} {...props}>
+    <div className='flex min-h-screen items-center justify-center' {...props}>
       <form onSubmit={onSubmit}>
-        <div className='grid gap-4'>
-          <div className='grid gap-3'>
-            <Label className='sr-only' htmlFor='email'>
-              Email
-            </Label>
-            <Input
-              id='email'
-              name='email'
-              placeholder='example@e.ntu.edu.sg'
-              autoCapitalize='none'
-              autoComplete='email'
-              autoCorrect='off'
-              disabled={isLoading}
-            />
-            <Label className='sr-only' htmlFor='email'>
-              Password
-            </Label>
-            <Input
-              name='password'
-              id='password'
-              placeholder='password'
-              type='password'
-              autoCorrect='off'
-              disabled={isLoading}
-            />
-          </div>
-          <Button disabled={isLoading}>
-            {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
-            Sign In
-          </Button>
-          {!!errorMessage.length && (
-            <Alert variant='destructive'>
-              <AlertCircle className='h-4 w-4' />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{errorMessage}</AlertDescription>
-            </Alert>
-          )}
-        </div>
+        <Card className='w-[400px] max-w-[90vw]'>
+          <CardHeader>
+            <CardTitle className='flex items-center gap-1 text-xl'>
+              <CircuitBoard size={20} />
+              <span>EE6008</span>
+            </CardTitle>
+            <CardDescription>Enter your credentials below</CardDescription>
+          </CardHeader>
+          <CardContent className={cn('grid gap-6', className)}>
+            <div className='grid gap-4'>
+              <div className='grid gap-2'>
+                <Label htmlFor='email'>Email</Label>
+                <Input
+                  id='email'
+                  name='email'
+                  placeholder='example@e.ntu.edu.sg'
+                  autoCapitalize='none'
+                  autoComplete='email'
+                  autoCorrect='off'
+                  disabled={isLoading}
+                />
+              </div>
+              <div className='grid gap-2'>
+                <Label htmlFor='email'>Password</Label>
+                <Input
+                  name='password'
+                  id='password'
+                  placeholder='password'
+                  type='password'
+                  autoCorrect='off'
+                  disabled={isLoading}
+                />
+              </div>
+              {!!errorMessage.length && (
+                <Alert variant='destructive'>
+                  <AlertCircle className='h-4 w-4' />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{errorMessage}</AlertDescription>
+                </Alert>
+              )}
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button className='w-full' disabled={isLoading}>
+              {isLoading && <Icons.spinner className='mr-2 h-4 w-4 animate-spin' />}
+              Sign In
+            </Button>
+          </CardFooter>
+        </Card>
       </form>
     </div>
   )
