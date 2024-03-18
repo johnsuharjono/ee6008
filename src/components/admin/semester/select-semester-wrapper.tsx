@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+
 import { prisma } from '@/src/lib/prisma'
 
 import { SelectSemester } from './select-semester'
@@ -15,11 +17,13 @@ export const SelectSemesterWrapper = async ({
 
   if (selectedSemesterRow) {
     return (
-      <SelectSemester
-        key={searchParams?.semester}
-        options={allSemester.map((row) => row.name)}
-        defaultValue={selectedSemesterRow.name}
-      />
+      <Suspense>
+        <SelectSemester
+          key={searchParams?.semester}
+          options={allSemester.map((row) => row.name)}
+          defaultValue={selectedSemesterRow.name}
+        />
+      </Suspense>
     )
   }
 
