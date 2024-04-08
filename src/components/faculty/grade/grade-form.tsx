@@ -34,7 +34,6 @@ interface GradeFormProps {
 }
 
 export function GradeForm({ defaultValues, semesterGradeTypeId }: GradeFormProps) {
-  // 1. Define your form.
   const form = useForm<z.infer<typeof UpdateStudentGradeFormSchema>>({
     resolver: zodResolver(UpdateStudentGradeFormSchema),
     defaultValues: { studentGrades: defaultValues }
@@ -45,7 +44,6 @@ export function GradeForm({ defaultValues, semesterGradeTypeId }: GradeFormProps
     control: form.control
   })
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof UpdateStudentGradeFormSchema>) {
     const filteredValues = values.studentGrades.filter((student) => student.grade !== '')
     values.studentGrades = filteredValues
