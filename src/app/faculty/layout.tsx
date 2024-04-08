@@ -1,11 +1,11 @@
 import { getServerSession } from 'next-auth'
 
-import { facultyConfig } from '@/config/nav-config'
 import { MainNav } from '@/src/components/main-nav'
 import { ModeToggle } from '@/src/components/mode-toggle'
 import { Shell } from '@/src/components/shell'
 import { SideNav } from '@/src/components/sidebar-nav'
 import { UserNav } from '@/src/components/user-nav'
+import { facultyConfig } from '@/src/config/nav-config'
 import { authOptions } from '@/src/lib/auth'
 import { prisma } from '@/src/lib/prisma'
 import { SidebarNavItem } from '@/types'

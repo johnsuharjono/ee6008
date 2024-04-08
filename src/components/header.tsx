@@ -14,7 +14,7 @@ function Header({ title, description, className, actions }: HeaderProps) {
   return (
     <div className={cn('col-span-full flex items-start justify-between gap-1', className)}>
       <div className='flex min-w-0 flex-col gap-1'>
-        <h1 className='text-3xl font-semibold'>{title}</h1>
+        <h1 className='text-2xl font-semibold md:text-3xl'>{title}</h1>
         {description ? <p className='text-muted-foreground'>{description}</p> : null}
       </div>
       {actions ? <div className='flex flex-1 items-center justify-end gap-2'>{actions}</div> : null}

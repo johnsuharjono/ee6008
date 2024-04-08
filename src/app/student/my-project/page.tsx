@@ -16,10 +16,10 @@ const StudentAllocatedProjectPage = async () => {
 
   return (
     <section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
-      <div className='container flex max-w-[80rem] flex-col gap-4'>
+      <div className='flex flex-col gap-4'>
         <TypographyH2>Allocated project</TypographyH2>
         {data == null ? (
-          <p className='text-muted-foreground text-md md:text-lg'>You have not registered any project</p>
+          <p className='text-md text-muted-foreground md:text-lg'>You have not registered any project</p>
         ) : (
           <Card>
             <CardHeader>

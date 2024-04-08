@@ -1,9 +1,9 @@
-import { adminConfig } from '@/config/nav-config'
 import { MainNav } from '@/src/components/main-nav'
 import { ModeToggle } from '@/src/components/mode-toggle'
 import { Shell } from '@/src/components/shell'
 import { SideNav } from '@/src/components/sidebar-nav'
 import { UserNav } from '@/src/components/user-nav'
+import { adminConfig } from '@/src/config/nav-config'
 
 interface AdminLayoutProps {
   children: React.ReactNode

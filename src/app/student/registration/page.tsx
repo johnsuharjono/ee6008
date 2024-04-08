@@ -15,10 +15,10 @@ const StudentRegistrationPage = async () => {
 
   return (
     <section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
-      <div className='container flex max-w-[80rem] flex-col gap-4'>
+      <div className='flex flex-col gap-4'>
         <TypographyH2>Project Registration</TypographyH2>
         {data.length === 0 ? (
-          <p className='text-muted-foreground text-md md:text-lg'>You have not registered any project</p>
+          <p className='text-md text-muted-foreground md:text-lg'>You have not registered any project</p>
         ) : (
           <Table>
             <TableCaption>A list of your project applications.</TableCaption>

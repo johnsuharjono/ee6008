@@ -15,9 +15,9 @@ export default async function Home() {
 
   return (
     <section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
-      <div className='container flex max-w-[80rem] flex-col gap-4'>
+      <div className='flex-col gap-4'>
         <h1 className='text-3xl font-semibold'>Welcome back, {session?.user.name}!</h1>
-        <h3 className='text-muted-foreground text-lg tracking-tight'>Here are the list of projects available:</h3>
+        <h3 className='text-lg tracking-tight text-muted-foreground'>Here are the list of projects available:</h3>
         <DataTable columns={columns} data={projects} programmeFilterOptions={programmeFilterOptions} />
       </div>
     </section>

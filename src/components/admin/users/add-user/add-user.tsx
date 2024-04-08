@@ -11,7 +11,7 @@ const AddUser = ({ role }: { role: UserRole }) => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false)
   return (
     <>
-      <Button onClick={() => setModalOpen(true)}>Add user</Button>
+      <Button onClick={() => setModalOpen(true)}>Add</Button>
       {role === 'FACULTY' && <AddFacultyModal isModalOpen={isModalOpen} setModalOpen={setModalOpen} />}
       {role === 'STUDENT' && <AddStudentModal isModalOpen={isModalOpen} setModalOpen={setModalOpen} />}
     </>

@@ -55,15 +55,13 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
               <TableRow>
                 <TableHead>Matric No.</TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead>Student Id</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {studentDetails.map(({ name, matriculationNumber, studentId }) => (
+              {studentDetails.map(({ name, matriculationNumber }) => (
                 <TableRow key={matriculationNumber}>
                   <TableCell className='font-medium'>{matriculationNumber}</TableCell>
                   <TableCell>{name}</TableCell>
-                  <TableCell>{studentId}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

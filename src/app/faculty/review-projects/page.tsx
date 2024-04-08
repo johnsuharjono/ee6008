@@ -16,14 +16,20 @@ const ReviewProjects = async () => {
 
   const programmeUnderFaculty = await prisma.programme.findMany({
     where: {
-      leaderId: user.facultyId
+      leaderId: user.facultyId,
+      semester: {
+        active: true
+      }
     }
   })
 
   const data = await prisma.project.findMany({
     where: {
       programme: {
-        leaderId: user.facultyId
+        leaderId: user.facultyId,
+        semester: {
+          active: true
+        }
       }
     },
     include: {
@@ -81,7 +87,7 @@ const ReviewProjects = async () => {
     <div className='space-y-4'>
       <Header title='Review projects!' description='Approve or reject project under your programme' />
 
-      <div className='flex gap-2 items-center'>
+      <div className='flex items-center gap-2'>
         {programmeUnderFaculty.map((programme) => (
           <Badge className='max-w-fit' key={programme.id}>
             {programme.name}

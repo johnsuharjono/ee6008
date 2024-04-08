@@ -53,7 +53,7 @@ export function EditProjectForm({ data, programmeOptions, venueOptions }: EditPr
       toast.error(response.message)
     } else {
       toast.success(response.message)
-      router.push(`/faculty/view-my-projects`)
+      router.push(`/faculty/my-proposal`)
       router.refresh()
     }
   }
@@ -66,7 +66,7 @@ export function EditProjectForm({ data, programmeOptions, venueOptions }: EditPr
           control={form.control}
           name='projectId'
           render={({ field }) => (
-            <FormItem className='hidden m-0'>
+            <FormItem className='m-0 hidden'>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -77,7 +77,7 @@ export function EditProjectForm({ data, programmeOptions, venueOptions }: EditPr
           control={form.control}
           name='semesterId'
           render={({ field }) => (
-            <FormItem className='hidden m-0'>
+            <FormItem className='m-0 hidden'>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -137,7 +137,7 @@ export function EditProjectForm({ data, programmeOptions, venueOptions }: EditPr
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectGroup className='overflow-y-auto max-h-[10rem]'>
+                  <SelectGroup className='max-h-[10rem] overflow-y-auto'>
                     {venueOptions.map(({ id, name, location }) => (
                       <SelectItem key={id} value={id}>
                         {name} - {location}

@@ -81,7 +81,7 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>, fac
       }
     })
 
-    revalidatePath('/faculty/view-my-projects')
+    revalidatePath('/faculty/my-proposal')
     revalidatePath('/faculty/view-all-projects')
 
     return {

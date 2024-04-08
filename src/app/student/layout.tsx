@@ -1,9 +1,7 @@
-import Link from 'next/link'
-
-import { studentConfig } from '@/config/nav-config'
 import { MainNav } from '@/src/components/main-nav'
 import { ModeToggle } from '@/src/components/mode-toggle'
 import { UserNav } from '@/src/components/user-nav'
+import { studentConfig } from '@/src/config/nav-config'
 
 interface StudentLayoutProps {
   children: React.ReactNode
@@ -11,8 +9,8 @@ interface StudentLayoutProps {
 
 export default async function StudentLayout({ children }: StudentLayoutProps) {
   return (
-    <div className='flex min-h-screen flex-col bg-background/50'>
-      <header className='container z-40'>
+    <div className='container relative mx-auto flex min-h-screen flex-col bg-background/50'>
+      <header className='z-40'>
         <div className='flex h-20 items-center justify-between py-6'>
           <MainNav items={studentConfig.mainNav} homeUrl={studentConfig.homeUrl} />
 
@@ -22,7 +20,7 @@ export default async function StudentLayout({ children }: StudentLayoutProps) {
           </nav>
         </div>
       </header>
-      <main className='flex-1 container'>{children}</main>
+      <main className='flex-1'>{children}</main>
     </div>
   )
 }

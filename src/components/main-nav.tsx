@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { useSelectedLayoutSegment } from 'next/navigation'
 import * as React from 'react'
 
-import { siteConfig } from '@/config/site'
 import { Icons } from '@/src/components/icons'
 import { MobileNav } from '@/src/components/mobile-nav'
+import { siteConfig } from '@/src/config/site'
 import { cn } from '@/src/lib/utils'
 import { MainNavItem } from '@/types'
 
@@ -24,7 +24,7 @@ export function MainNav({ items, homeUrl, children }: MainNavProps) {
     <div className='flex gap-6 md:gap-10'>
       <Link href={homeUrl} className='hidden items-center space-x-2 md:flex'>
         <Icons.logo />
-        <span className={cn(`text-xl tracking-tight hidden font-semibold sm:inline-block`)}>{siteConfig.name}</span>
+        <span className={cn(`hidden text-xl font-semibold tracking-tight sm:inline-block`)}>{siteConfig.name}</span>
       </Link>
       {items?.length ? (
         <nav className='hidden gap-6 md:flex'>

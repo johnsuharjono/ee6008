@@ -52,7 +52,7 @@ export function AddProjectForm({ semesterId, programmeOptions, venueOptions }: A
       toast.error(response.message)
     } else {
       toast.success(response.message)
-      router.push(`/faculty/view-my-projects`)
+      router.push(`/faculty/my-proposal`)
       router.refresh()
     }
   }
@@ -64,7 +64,7 @@ export function AddProjectForm({ semesterId, programmeOptions, venueOptions }: A
           control={form.control}
           name='semesterId'
           render={({ field }) => (
-            <FormItem className='hidden m-0'>
+            <FormItem className='m-0 hidden'>
               <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input {...field} />
@@ -126,7 +126,7 @@ export function AddProjectForm({ semesterId, programmeOptions, venueOptions }: A
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectGroup className='overflow-y-auto max-h-[10rem]'>
+                  <SelectGroup className='max-h-[10rem] overflow-y-auto'>
                     {venueOptions.map(({ id, name, location }) => (
                       <SelectItem key={id} value={id}>
                         {name} - {location}
