@@ -35,18 +35,6 @@ const EditProjectPage = async ({ params }: { params: { slug: string } }) => {
     programmeName: projectDetail.programme.name
   }
 
-  // check available programme for the semester
-  const programmeData = await prisma.programme.findMany({
-    where: {
-      semesterId: projectDetail.programme.semesterId
-    },
-    select: {
-      name: true
-    }
-  })
-
-  const programmeOptions = programmeData.map((programme) => programme.name)
-
   const venueData = await getProjectVenue(sanitizedProjectDetail.semesterId)
 
   return (
@@ -55,7 +43,7 @@ const EditProjectPage = async ({ params }: { params: { slug: string } }) => {
         <h1 className='text-3xl font-semibold'>Edit Project</h1>
       </div>
       <div>
-        <EditProjectForm data={sanitizedProjectDetail} programmeOptions={programmeOptions} venueOptions={venueData} />
+        <EditProjectForm data={sanitizedProjectDetail} venueOptions={venueData} />
       </div>
     </div>
   )
