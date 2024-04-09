@@ -95,7 +95,7 @@ export async function addProject(data: z.infer<typeof AddProjectFormSchema>, fac
 }
 
 export async function editProject(data: z.infer<typeof EditProjectFormSchema>) {
-  const { description, programme, semesterId, title, projectId } = data
+  const { description, semesterId, title, projectId } = data
 
   try {
     const data = await prisma.project.update({
@@ -105,15 +105,7 @@ export async function editProject(data: z.infer<typeof EditProjectFormSchema>) {
       data: {
         title,
         description,
-        status: 'PENDING',
-        programme: {
-          connect: {
-            name_semesterId: {
-              name: programme,
-              semesterId
-            }
-          }
-        }
+        status: 'PENDING'
       }
     })
 

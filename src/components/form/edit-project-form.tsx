@@ -27,18 +27,16 @@ type ProposalFormValues = z.infer<typeof EditProjectFormSchema>
 
 interface EditProjectFormProps {
   data: Project & { semesterId: string; programmeName: string }
-  programmeOptions: string[]
   venueOptions: Venue[]
 }
 
-export function EditProjectForm({ data, programmeOptions, venueOptions }: EditProjectFormProps) {
+export function EditProjectForm({ data, venueOptions }: EditProjectFormProps) {
   const router = useRouter()
 
   const form = useForm<ProposalFormValues>({
     resolver: zodResolver(EditProjectFormSchema),
     defaultValues: {
       title: data.title,
-      programme: data.programmeName,
       description: data.description,
       projectId: data.id,
       semesterId: data.semesterId,
@@ -95,30 +93,6 @@ export function EditProjectForm({ data, programmeOptions, venueOptions }: EditPr
                 <Input {...field} />
               </FormControl>
               <FormDescription>This is your project title.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='programme'
-          render={({ field }) => (
-            <FormItem className='md:col-span-2'>
-              <FormLabel>Programme</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={data.programmeName}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {programmeOptions.map((programme) => (
-                    <SelectItem key={programme} value={programme}>
-                      {programme}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
               <FormMessage />
             </FormItem>
           )}

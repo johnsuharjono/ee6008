@@ -9,7 +9,7 @@ interface StudentLayoutProps {
 
 export default async function StudentLayout({ children }: StudentLayoutProps) {
   return (
-    <div className='container relative mx-auto flex min-h-screen flex-col bg-background/50'>
+    <div className='container relative mx-auto flex min-h-screen flex-col'>
       <header className='z-40'>
         <div className='flex h-20 items-center justify-between py-6'>
           <MainNav items={studentConfig.mainNav} homeUrl={studentConfig.homeUrl} />

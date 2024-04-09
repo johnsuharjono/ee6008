@@ -55,7 +55,7 @@ export default async function FacultyLayout({ children }: FacultyLayoutProps) {
     <div className='container relative mx-auto flex min-h-screen w-full flex-col items-center justify-center gap-6 p-4'>
       <header className='sticky top-4 z-50 w-full border-border'>
         <Shell className='flex w-full items-center justify-between bg-background/70 px-3 py-3 backdrop-blur-lg md:px-6 md:py-3'>
-          <MainNav items={facultyConfig.mainNav} homeUrl={facultyConfig.homeUrl} />
+          <MainNav items={facultyConfig.mainNav} homeUrl={facultyConfig.homeUrl} showDesktopNav={false} />
           <nav className='flex items-center justify-end gap-4'>
             <UserNav />
             <ModeToggle />

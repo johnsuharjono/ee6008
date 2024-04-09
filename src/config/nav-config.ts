@@ -24,7 +24,32 @@ export const studentConfig: StudentConfig = {
 
 export const facultyConfig: FacultyConfig = {
   homeUrl: '/faculty',
-  mainNav: [],
+  mainNav: [
+    {
+      title: 'Dashboard',
+      href: '/faculty'
+    },
+    {
+      title: 'Add project',
+      href: '/faculty/add-project'
+    },
+    {
+      title: 'Your proposed project',
+      href: '/faculty/my-proposal'
+    },
+    {
+      title: 'View all projects',
+      href: '/faculty/view-all-projects'
+    },
+    {
+      title: 'Project Member',
+      href: '/faculty/group'
+    },
+    {
+      title: 'Mark Students',
+      href: '/faculty/mark'
+    }
+  ],
   sideNav: [
     {
       title: 'Dashboard',
@@ -75,7 +100,42 @@ export const facultyConfig: FacultyConfig = {
 
 export const adminConfig: AdminConfig = {
   homeUrl: '/admin',
-  mainNav: [],
+  mainNav: [
+    {
+      title: 'Manage Faculty',
+      href: '/admin/users/manage-faculty'
+    },
+    {
+      title: 'Manage Student',
+      href: '/admin/users/manage-student'
+    },
+
+    {
+      title: 'Semester Setting',
+      href: '/admin/semester'
+    },
+    {
+      title: 'Semester Venue',
+      href: '/admin/venue'
+    },
+    {
+      title: 'View Registration',
+      href: '/admin/registration/view'
+    },
+    {
+      title: 'Generate Registration',
+      href: '/admin/registration/generate'
+    },
+    {
+      title: 'Upload Registration',
+      href: '/admin/registration/upload'
+    },
+
+    {
+      title: 'View Projects',
+      href: '/admin/project/view'
+    }
+  ],
   sideNav: [
     {
       title: 'Users',

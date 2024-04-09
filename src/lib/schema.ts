@@ -92,7 +92,6 @@ export const EditProjectFormSchema = z.object({
   title: z.string(),
   description: z.string(),
   semesterId: z.string(),
-  programme: z.string(),
   projectId: z.string(),
   venueId: z.string().nullable()
 })

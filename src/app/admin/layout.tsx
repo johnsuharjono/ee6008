@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
     <div className='container relative mx-auto flex min-h-screen w-full flex-col items-center justify-center gap-6 p-4'>
       <header className='sticky top-4 z-50 w-full border-border'>
         <Shell className='flex w-full items-center justify-between bg-background/70 px-3 py-3 backdrop-blur-lg md:px-6 md:py-3'>
-          <MainNav items={adminConfig.mainNav} homeUrl={adminConfig.homeUrl} />
+          <MainNav items={adminConfig.mainNav} homeUrl={adminConfig.homeUrl} showDesktopNav={false} />
           <nav className='flex items-center justify-end gap-4'>
             <UserNav />
             <ModeToggle />
