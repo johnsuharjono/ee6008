@@ -29,9 +29,50 @@ interface AddFacultyModalProps {
 }
 
 export const AddFacultyModal = ({ isModalOpen, setModalOpen }: AddFacultyModalProps) => {
-  const router = useRouter()
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
+  if (isDesktop) {
+    return (
+      <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
+        <DialogContent className='sm:max-w-[500px]'>
+          <DialogHeader>
+            <DialogTitle className='text-center text-2xl'>Create a faculty user</DialogTitle>
+            <DialogDescription className='text-center text-lg'>
+              Enter your email below to create your account
+            </DialogDescription>
+          </DialogHeader>
+          <FacultyForm setModalOpen={setModalOpen} />
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
+  return (
+    <Drawer open={isModalOpen} onOpenChange={setModalOpen}>
+      <DrawerContent>
+        <DrawerHeader className='text-left'>
+          <DrawerTitle className='text-xl'>Create a faculty user</DrawerTitle>
+          <DrawerDescription> Enter the credentials below to create an account.</DrawerDescription>
+        </DrawerHeader>
+        <div className='px-4'>
+          <FacultyForm setModalOpen={setModalOpen} />
+        </div>
+        <DrawerFooter className='pt-2'>
+          <DrawerClose asChild>
+            <Button variant='outline'>Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  )
+}
+
+interface FacultyFormProps {
+  setModalOpen: (bool: boolean) => void
+}
+
+function FacultyForm({ setModalOpen }: FacultyFormProps) {
+  const router = useRouter()
   const form = useForm({
     resolver: zodResolver(AddFacultyFormSchema),
     defaultValues: {
@@ -40,8 +81,6 @@ export const AddFacultyModal = ({ isModalOpen, setModalOpen }: AddFacultyModalPr
       password: ''
     }
   })
-
-  const isLoading = form.formState.isSubmitting
 
   const onSubmit = async (values: z.infer<typeof AddFacultyFormSchema>) => {
     const result = await addFaculty(values)
@@ -56,92 +95,56 @@ export const AddFacultyModal = ({ isModalOpen, setModalOpen }: AddFacultyModalPr
     }
   }
 
-  if (isDesktop) {
-    return (
-      <Dialog open={isModalOpen} onOpenChange={() => setModalOpen(!isModalOpen)}>
-        <DialogContent className='sm:max-w-[500px]'>
-          <DialogHeader>
-            <DialogTitle className='text-center text-2xl'>Create a faculty user</DialogTitle>
-            <DialogDescription className='text-center text-lg'>
-              Enter your email below to create your account
-            </DialogDescription>
-          </DialogHeader>
-          <FacultyForm />
-        </DialogContent>
-      </Dialog>
-    )
-  }
-
+  const isLoading = form.formState.isSubmitting
   return (
-    <Drawer open={isModalOpen} onOpenChange={setModalOpen}>
-      <DrawerContent>
-        <DrawerHeader className='text-left'>
-          <DrawerTitle className='text-xl'>Create a faculty user</DrawerTitle>
-          <DrawerDescription> Enter the credentials below to create an account.</DrawerDescription>
-        </DrawerHeader>
-        <div className='px-4'>
-          <FacultyForm />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+        <div className='grid gap-4 py-4'>
+          <FormField
+            control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input disabled={isLoading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input disabled={isLoading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type='password' disabled={isLoading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <DrawerFooter className='pt-2'>
-          <DrawerClose asChild>
-            <Button variant='outline'>Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+
+        <Button className='w-full' disabled={isLoading}>
+          Create user
+        </Button>
+      </form>
+    </Form>
   )
-
-  function FacultyForm() {
-    return (
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-          <div className='grid gap-4 py-4'>
-            <FormField
-              control={form.control}
-              name='name'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input disabled={isLoading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='email'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input disabled={isLoading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='password'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type='password' disabled={isLoading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <Button className='w-full' disabled={isLoading}>
-            Create user
-          </Button>
-        </form>
-      </Form>
-    )
-  }
 }

@@ -1,9 +1,8 @@
 import format from 'date-fns/format'
 
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table'
+import { TypographyH4 } from '@/src/components/typography'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table'
 import { prisma } from '@/src/lib/prisma'
-
-import { TypographyH4 } from '../typography'
 
 export async function SemesterTimeline() {
   const semesterData = await prisma.semester.findFirst({

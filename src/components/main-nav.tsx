@@ -23,7 +23,7 @@ export function MainNav({ items, homeUrl, children, showDesktopNav = true }: Mai
   const segment = useSelectedLayoutSegment()
 
   return (
-    <div className='flex gap-2'>
+    <div className='flex gap-2 md:gap-6'>
       {/* Mobile Nav */}
       <Sheet>
         <SheetTrigger asChild>

@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { getServerSession } from 'next-auth'
+import Link from 'next/link'
 
 import { columns } from '@/src/components/faculty/review-projects-table/columns'
 import { DataTable } from '@/src/components/faculty/review-projects-table/data-table'
@@ -13,6 +14,43 @@ const ReviewProjects = async () => {
   const user = session?.user
 
   if (!user) return null
+
+  const activeSemester = await prisma.semester.findFirst({
+    where: {
+      active: true
+    },
+    include: {
+      timeline: {
+        select: {
+          facultyProposalReviewStart: true,
+          facultyProposalReviewEnd: true
+        }
+      }
+    }
+  })
+
+  const notFoundJSX = (
+    <div className='space-y-4'>
+      <Header
+        title='Review projects!'
+        description='You can only review projects during the faculty proposal review period'
+      />
+      <div>
+        <Link className='text-primary hover:underline' href={'/faculty'}>
+          Back to dashboard
+        </Link>
+      </div>
+    </div>
+  )
+
+  // check if the current date is between the faculty proposal review start and end date
+  if (!activeSemester || !activeSemester.timeline) return notFoundJSX
+
+  const currentDate = new Date()
+  const facultyProposalReviewStart = new Date(activeSemester.timeline.facultyProposalReviewStart)
+  const facultyProposalReviewEnd = new Date(activeSemester.timeline.facultyProposalReviewEnd)
+
+  if (currentDate < facultyProposalReviewStart || currentDate > facultyProposalReviewEnd) return notFoundJSX
 
   const programmeUnderFaculty = await prisma.programme.findMany({
     where: {

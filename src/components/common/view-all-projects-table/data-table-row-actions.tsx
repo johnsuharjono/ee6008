@@ -2,8 +2,9 @@
 
 import { Expand } from 'lucide-react'
 
-import ProjectDetailModal from '@/src/components/common/project-detail-modal'
+import { TypographyH4, TypographyP } from '@/src/components/typography'
 import { Button } from '@/src/components/ui/button'
+import { Separator } from '@/src/components/ui/separator'
 import {
   Sheet,
   SheetClose,
@@ -16,11 +17,6 @@ import {
 } from '@/src/components/ui/sheet'
 import { Row } from '@tanstack/react-table'
 
-import { TypographyH4, TypographyP } from '../../typography'
-import { Input } from '../../ui/input'
-import { Label } from '../../ui/label'
-import { Separator } from '../../ui/separator'
-import { Textarea } from '../../ui/textarea'
 import { Project } from './columns'
 
 interface DataTableRowActionsProps<TData> {
@@ -39,7 +35,7 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
           <Expand size={14} />
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className='max-h-screen overflow-y-auto'>
         <SheetHeader>
           <SheetTitle>Project Detail</SheetTitle>
           <SheetDescription>View project details</SheetDescription>

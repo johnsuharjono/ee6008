@@ -5,6 +5,7 @@ import { ProjectMemberCard } from '@/src/components/faculty/project-member-card'
 import { Header } from '@/src/components/header'
 import { authOptions } from '@/src/lib/auth'
 import { prisma } from '@/src/lib/prisma'
+import { ProjectStatus } from '@prisma/client'
 
 const GroupPage = async () => {
   const session = await getServerSession(authOptions)
@@ -14,6 +15,7 @@ const GroupPage = async () => {
 
   const myProjectsData = await prisma.project.findMany({
     where: {
+      status: ProjectStatus.APPROVED,
       facultyId: user.facultyId,
       programme: {
         semester: {

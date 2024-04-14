@@ -29,9 +29,50 @@ interface AddStudentModalProps {
 }
 
 export const AddStudentModal = ({ isModalOpen, setModalOpen }: AddStudentModalProps) => {
-  const router = useRouter()
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
+  if (isDesktop) {
+    return (
+      <Dialog open={isModalOpen} onOpenChange={() => setModalOpen(!isModalOpen)}>
+        <DialogContent className='sm:max-w-[500px]'>
+          <DialogHeader>
+            <DialogTitle className='text-center text-2xl'>Create a student user</DialogTitle>
+            <DialogDescription className='text-center text-lg'>
+              Enter your email below to create your account
+            </DialogDescription>
+          </DialogHeader>
+          <StudentForm setModalOpen={setModalOpen} />
+        </DialogContent>
+      </Dialog>
+    )
+  }
+
+  return (
+    <Drawer open={isModalOpen} onOpenChange={setModalOpen}>
+      <DrawerContent>
+        <DrawerHeader className='text-left'>
+          <DrawerTitle className='text-2xl'>Create a student user</DrawerTitle>
+          <DrawerDescription> Enter the credentials below to create an account.</DrawerDescription>
+        </DrawerHeader>
+        <div className='px-4'>
+          <StudentForm setModalOpen={setModalOpen} />
+        </div>
+        <DrawerFooter className='pt-2'>
+          <DrawerClose asChild>
+            <Button variant='outline'>Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  )
+}
+
+interface StudentFormProps {
+  setModalOpen: (bool: boolean) => void
+}
+
+function StudentForm({ setModalOpen }: StudentFormProps) {
+  const router = useRouter()
   const form = useForm({
     resolver: zodResolver(AddStudentFormSchema),
     defaultValues: {
@@ -56,103 +97,67 @@ export const AddStudentModal = ({ isModalOpen, setModalOpen }: AddStudentModalPr
       router.refresh()
     }
   }
-  if (isDesktop) {
-    return (
-      <Dialog open={isModalOpen} onOpenChange={() => setModalOpen(!isModalOpen)}>
-        <DialogContent className='sm:max-w-[500px]'>
-          <DialogHeader>
-            <DialogTitle className='text-center text-2xl'>Create a student user</DialogTitle>
-            <DialogDescription className='text-center text-lg'>
-              Enter your email below to create your account
-            </DialogDescription>
-          </DialogHeader>
-          <StudentForm />
-        </DialogContent>
-      </Dialog>
-    )
-  }
-
   return (
-    <Drawer open={isModalOpen} onOpenChange={setModalOpen}>
-      <DrawerContent>
-        <DrawerHeader className='text-left'>
-          <DrawerTitle className='text-2xl'>Create a student user</DrawerTitle>
-          <DrawerDescription> Enter the credentials below to create an account.</DrawerDescription>
-        </DrawerHeader>
-        <div className='px-4'>
-          <StudentForm />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+        <div className='grid gap-4 py-4'>
+          <FormField
+            control={form.control}
+            name='name'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input disabled={isLoading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input disabled={isLoading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='matriculationNumber'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Matriculation Number</FormLabel>
+                <FormControl>
+                  <Input disabled={isLoading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type='password' disabled={isLoading} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
-        <DrawerFooter className='pt-2'>
-          <DrawerClose asChild>
-            <Button variant='outline'>Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+        <Button className='w-full' disabled={isLoading}>
+          Create user
+        </Button>
+      </form>
+    </Form>
   )
-  function StudentForm() {
-    return (
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-          <div className='grid gap-4 py-4'>
-            <FormField
-              control={form.control}
-              name='name'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input disabled={isLoading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='email'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input disabled={isLoading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='matriculationNumber'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Matriculation Number</FormLabel>
-                  <FormControl>
-                    <Input disabled={isLoading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='password'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type='password' disabled={isLoading} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <Button className='w-full' disabled={isLoading}>
-            Create user
-          </Button>
-        </form>
-      </Form>
-    )
-  }
 }

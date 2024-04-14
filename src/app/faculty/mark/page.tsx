@@ -6,6 +6,7 @@ import { Header } from '@/src/components/header'
 import { TypographyP } from '@/src/components/typography'
 import { authOptions } from '@/src/lib/auth'
 import { prisma } from '@/src/lib/prisma'
+import { ProjectStatus } from '@prisma/client'
 
 const MarkPage = async () => {
   const session = await getServerSession(authOptions)
@@ -13,9 +14,49 @@ const MarkPage = async () => {
 
   if (!user) return null
 
+  const activeSemester = await prisma.semester.findFirst({
+    where: {
+      active: true
+    },
+    include: {
+      timeline: {
+        select: {
+          facultyMarkEntryStart: true,
+          facultyMarkEntryEnd: true
+        }
+      }
+    }
+  })
+
+  const notMarkingPeriodJSX = (
+    <div className='space-y-4'>
+      <Header title='Marking' description='You can only mark projects during the faculty mark entry period' />
+      <div>
+        <Link className='text-primary hover:underline' href={'/faculty'}>
+          Back to dashboard
+        </Link>
+      </div>
+    </div>
+  )
+
+  // check if the current date is between the faculty mark entry start and end date
+  if (!activeSemester || !activeSemester.timeline) return notMarkingPeriodJSX
+
+  const currentDate = new Date()
+  const facultyMarkEntryStart = new Date(activeSemester.timeline.facultyMarkEntryStart)
+  const facultyMarkEntryEnd = new Date(activeSemester.timeline.facultyMarkEntryEnd)
+
+  if (currentDate < facultyMarkEntryStart || currentDate > facultyMarkEntryEnd) return notMarkingPeriodJSX
+
   const projects = await prisma.project.findMany({
     where: {
-      facultyId: user.facultyId
+      facultyId: user.facultyId,
+      status: ProjectStatus.APPROVED,
+      programme: {
+        semester: {
+          active: true
+        }
+      }
     }
   })
 

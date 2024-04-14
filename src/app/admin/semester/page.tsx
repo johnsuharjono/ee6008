@@ -29,15 +29,17 @@ const Semester = async ({
         }
       />
 
-      <div className='py-4 space-y-4'>
+      <div className='space-y-6 py-4'>
         {/* Set active semester component */}
         <ActiveSemesterWrapper />
 
         {/* Semester Details */}
-        <TypographyH2>View & Edit Semester Details</TypographyH2>
-        <div className='flex justify-between'>
-          <SelectSemesterWrapper searchParams={searchParams} />
-          <EditSemesterButton semester={searchParams?.semester} />
+        <div>
+          <TypographyH2>View & Edit Semester Details</TypographyH2>
+          <div className='flex justify-between'>
+            <SelectSemesterWrapper searchParams={searchParams} />
+            <EditSemesterButton semester={searchParams?.semester} />
+          </div>
         </div>
 
         <Suspense fallback={<h1>Loading...</h1>}>

@@ -7,7 +7,6 @@ import * as z from 'zod'
 
 import { editSemester } from '@/src/app/actions/admin/semester'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/tabs'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/src/components/ui/accordion'
 import { Button } from '@/src/components/ui/button'
 import DateTimePickerFormInput from '@/src/components/ui/date-time-picker-form-input'
 import {

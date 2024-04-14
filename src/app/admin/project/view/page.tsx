@@ -7,7 +7,7 @@ import { Header } from '@/src/components/header'
 import { authOptions } from '@/src/lib/auth'
 import { prisma } from '@/src/lib/prisma'
 
-const ViewAllProjectPage = async () => {
+const ViewProjectPage = async () => {
   const session = await getServerSession(authOptions)
   const user = session?.user
 
@@ -80,4 +80,4 @@ const ViewAllProjectPage = async () => {
   )
 }
 
-export default ViewAllProjectPage
+export default ViewProjectPage

@@ -51,7 +51,15 @@ function ProcessAllocation({
       setProjectStatus(localProjectStatus)
       setUnallocatedStudents(Array.from(localUnallocatedStudents))
     },
-    [studentPreferences, setProjectAllocations, setProjectStatus, setUnallocatedStudents, maximumGroupSize, minimumGroupSize, projectMap]
+    [
+      studentPreferences,
+      setProjectAllocations,
+      setProjectStatus,
+      setUnallocatedStudents,
+      maximumGroupSize,
+      minimumGroupSize,
+      projectMap
+    ]
   )
 
   const sanitizedAllocationData = Object.entries(projectAllocations).map(([projectId, studentIds]) => {
@@ -92,10 +100,12 @@ function ProcessAllocation({
       <div>Closed Projects: {numberOfClosedProjects}</div>
 
       <div className='flex gap-2'>
-        <Button onClick={() => processAllocations(100)}>Best Allocation</Button>
+        <Button onClick={() => processAllocations(10000)}>Best Allocation</Button>
         <Button onClick={() => processAllocations(1)}>Single Allocation</Button>
         {numberOfUnallocatedStudents !== Object.keys(studentPreferences).length && (
-          <Button onClick={() => downloadAllocationResults(downloadData)}>Download</Button>
+          <Button variant={'link'} onClick={() => downloadAllocationResults(downloadData)}>
+            Download
+          </Button>
         )}
       </div>
 

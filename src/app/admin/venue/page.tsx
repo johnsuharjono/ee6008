@@ -10,7 +10,7 @@ const VenuePage = async () => {
   const activeSemester = await getActiveSemester()
 
   if (!activeSemester) {
-    return <div>There is no active semester</div>
+    return <Header title='No semester found' description={'Start by creating a semester!'} />
   }
 
   const venueData = await getProjectVenue()

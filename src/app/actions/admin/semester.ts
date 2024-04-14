@@ -55,6 +55,8 @@ export async function editSemester(data: z.infer<typeof EditSemesterDataFormSche
       data: {
         facultyProposalSubmissionStart: formData.facultyProposalSubmission.from,
         facultyProposalSubmissionEnd: formData.facultyProposalSubmission.to,
+        facultyProposalReviewStart: formData.facultyProposalReview.from,
+        facultyProposalReviewEnd: formData.facultyProposalReview.to,
         studentRegistrationStart: formData.studentRegistration.from,
         studentRegistrationEnd: formData.studentRegistration.to,
         facultyMarkEntryStart: formData.markEntry.from,
