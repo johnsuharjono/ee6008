@@ -9,7 +9,14 @@ import * as z from 'zod'
 import { createSemester } from '@/src/app/actions/admin/semester'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/tabs'
 import { Button } from '@/src/components/ui/button'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/src/components/ui/command'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from '@/src/components/ui/command'
 import DateTimePickerFormInput from '@/src/components/ui/date-time-picker-form-input'
 import {
   Form,
@@ -285,26 +292,28 @@ export function CreateSemesterForm({ faculties }: CreateSemesterFormProps) {
                             <PopoverContent className='w-[300px] p-0'>
                               <Command>
                                 <CommandInput placeholder='Search faculty...' />
-                                <CommandEmpty>No faculty member found.</CommandEmpty>
-                                <CommandGroup>
-                                  {faculties.map((faculty) => (
-                                    <CommandItem
-                                      value={faculty.user.name}
-                                      key={faculty.user.id}
-                                      onSelect={() => {
-                                        form.setValue(`programmeDetails.${index}.faculty`, faculty.id)
-                                      }}
-                                    >
-                                      <Check
-                                        className={cn(
-                                          'mr-2 h-4 w-4',
-                                          faculty.user.name === field.value ? 'opacity-100' : 'opacity-0'
-                                        )}
-                                      />
-                                      {faculty.user.name}
-                                    </CommandItem>
-                                  ))}
-                                </CommandGroup>
+                                <CommandList>
+                                  <CommandEmpty>No faculty member found.</CommandEmpty>
+                                  <CommandGroup>
+                                    {faculties.map((faculty) => (
+                                      <CommandItem
+                                        value={faculty.user.name}
+                                        key={faculty.user.id}
+                                        onSelect={() => {
+                                          form.setValue(`programmeDetails.${index}.faculty`, faculty.id)
+                                        }}
+                                      >
+                                        <Check
+                                          className={cn(
+                                            'mr-2 h-4 w-4',
+                                            faculty.user.name === field.value ? 'opacity-100' : 'opacity-0'
+                                          )}
+                                        />
+                                        {faculty.user.name}
+                                      </CommandItem>
+                                    ))}
+                                  </CommandGroup>
+                                </CommandList>
                               </Command>
                             </PopoverContent>
                           </Popover>

@@ -48,19 +48,7 @@ export function EditSemesterForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='my-2 space-y-8'>
-        {/* Hidden form field for id */}
-        <FormField
-          control={form.control}
-          name='semesterId'
-          render={({ field }) => (
-            <FormItem className='m-0 hidden'>
-              <Input {...field} type='hidden' />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+      <form onSubmit={form.handleSubmit(onSubmit)} className='mt-0 space-y-4'>
         <Tabs defaultValue='semester-setting'>
           <TabsList>
             <TabsTrigger value='semester-setting'>Semester Setting</TabsTrigger>
@@ -176,7 +164,20 @@ export function EditSemesterForm({
             />
           </TabsContent>
         </Tabs>
+
         <Button type='submit'>Submit</Button>
+
+        {/* Hidden form field for id */}
+        <FormField
+          control={form.control}
+          name='semesterId'
+          render={({ field }) => (
+            <FormItem className='m-0 hidden'>
+              <Input {...field} type='hidden' />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </form>
     </Form>
   )

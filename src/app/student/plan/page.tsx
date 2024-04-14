@@ -2,6 +2,7 @@ import { Grip } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 
+import { Header } from '@/src/components/header'
 import { CardContainer } from '@/src/components/student/planner/card-container'
 import { Alert, AlertDescription, AlertTitle } from '@/src/components/ui/alert'
 import { Button } from '@/src/components/ui/button'
@@ -29,10 +30,9 @@ const StudentPlanPage = async () => {
   const data = await getStudentProjectPlan(user.studentId)
 
   return (
-    <section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
+    <section className='space-y-6 py-6'>
       <div className='flex flex-col gap-4'>
-        <h1 className='text-3xl font-semibold'>Welcome back, {user?.name}!</h1>
-        <h3 className='text-lg text-muted-foreground'>Start planning your project</h3>
+        <Header title='Project Planner Page!' description='Plan your projects here' />
         <Alert className='max-w-[800px]'>
           <Grip className='h-4 w-4' />
           <AlertTitle>Heads up!</AlertTitle>

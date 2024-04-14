@@ -1,8 +1,8 @@
 import { getServerSession } from 'next-auth'
+import Link from 'next/link'
 
 import { Header } from '@/src/components/header'
 import PeerReviewSection from '@/src/components/student/peer-review/peer-review-section'
-import { TypographyH2 } from '@/src/components/typography'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table'
 import { authOptions } from '@/src/lib/auth'
 import { prisma } from '@/src/lib/prisma'
@@ -10,16 +10,12 @@ import { prisma } from '@/src/lib/prisma'
 const PeerReview = async () => {
   const session = await getServerSession(authOptions)
 
-  if (!session?.user) {
-    return <TypographyH2>Please sign in</TypographyH2>
-  }
-
-  const studentId = session.user.studentId
+  const studentId = session?.user.studentId
 
   if (!studentId) {
-    return <TypographyH2>No student ID found</TypographyH2>
+    return null
   }
-  const activeSemesterData = await prisma.semester.findFirst({
+  const activeSemester = await prisma.semester.findFirst({
     where: {
       active: true
     },
@@ -33,24 +29,15 @@ const PeerReview = async () => {
     }
   })
 
-  if (!activeSemesterData) {
-    return <TypographyH2>No active semester set</TypographyH2>
-  }
-
-  if (!activeSemesterData.timeline) {
-    return <TypographyH2>No timeline set for the active semester</TypographyH2>
-  }
-
-  if (!activeSemesterData.timeline.studentPeerReviewStart || !activeSemesterData.timeline.studentPeerReviewEnd) {
-    return <TypographyH2>No peer review timeline set for the active semester</TypographyH2>
-  }
+  if (!activeSemester || !activeSemester.timeline)
+    return <NoAccessToThePage message='You can only review projects during the student peer review period' />
 
   const currentDate = new Date()
-  const peerReviewStartDate = new Date(activeSemesterData.timeline.studentPeerReviewStart)
-  const peerReviewEndDate = new Date(activeSemesterData.timeline.studentPeerReviewEnd)
+  const peerReviewStartDate = new Date(activeSemester.timeline.studentPeerReviewStart)
+  const peerReviewEndDate = new Date(activeSemester.timeline.studentPeerReviewEnd)
 
   if (currentDate < peerReviewStartDate || currentDate > peerReviewEndDate) {
-    return <TypographyH2>Not peer review period</TypographyH2>
+    return <NoAccessToThePage message='You can only review projects during the student peer review period' />
   }
 
   const studentData = await prisma.student.findFirst({
@@ -63,7 +50,7 @@ const PeerReview = async () => {
   })
 
   if (!studentData?.projectId) {
-    return <TypographyH2>No project found for this student</TypographyH2>
+    return <NoAccessToThePage message='You are not allocated to any project' />
   }
 
   const projectStudents = await prisma.student.findMany({
@@ -111,7 +98,7 @@ const PeerReview = async () => {
   })
 
   return (
-    <section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
+    <section className='space-y-6 py-6'>
       <Header title='Peer Review' description='Rank your peers here.' />
       <PeerReviewSection peers={peers} reviewerId={studentId} projectId={studentData.projectId} />
       {peerReviewData.length === 0 ? (
@@ -140,3 +127,18 @@ const PeerReview = async () => {
 }
 
 export default PeerReview
+
+const NoAccessToThePage = ({ message }: { message: string }) => {
+  return (
+    <section className='py-6'>
+      <div className='space-y-4'>
+        <Header title='Peer Review!' description={message} />
+        <div>
+          <Link className='text-primary hover:underline' href={'/student'}>
+            Back to dashboard
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}

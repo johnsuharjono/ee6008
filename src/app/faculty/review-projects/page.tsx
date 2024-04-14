@@ -29,7 +29,7 @@ const ReviewProjects = async () => {
     }
   })
 
-  const notFoundJSX = (
+  const notReviewPeriodJSX = (
     <div className='space-y-4'>
       <Header
         title='Review projects!'
@@ -44,13 +44,13 @@ const ReviewProjects = async () => {
   )
 
   // check if the current date is between the faculty proposal review start and end date
-  if (!activeSemester || !activeSemester.timeline) return notFoundJSX
+  if (!activeSemester || !activeSemester.timeline) return notReviewPeriodJSX
 
   const currentDate = new Date()
   const facultyProposalReviewStart = new Date(activeSemester.timeline.facultyProposalReviewStart)
   const facultyProposalReviewEnd = new Date(activeSemester.timeline.facultyProposalReviewEnd)
 
-  if (currentDate < facultyProposalReviewStart || currentDate > facultyProposalReviewEnd) return notFoundJSX
+  if (currentDate < facultyProposalReviewStart || currentDate > facultyProposalReviewEnd) return notReviewPeriodJSX
 
   const programmeUnderFaculty = await prisma.programme.findMany({
     where: {

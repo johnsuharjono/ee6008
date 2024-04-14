@@ -13,7 +13,7 @@ interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 function Header({ title, description, className, actions }: HeaderProps) {
   return (
     <div className={cn('col-span-full flex items-start justify-between gap-1', className)}>
-      <div className='flex min-w-0 flex-col gap-1'>
+      <div className='flex min-w-0 flex-col gap-2'>
         <h1 className='text-2xl font-semibold md:text-3xl'>{title}</h1>
         {description ? <p className='text-muted-foreground'>{description}</p> : null}
       </div>

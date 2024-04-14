@@ -1,6 +1,8 @@
 import { getServerSession } from 'next-auth'
+import Link from 'next/link'
 
-import { TypographyH2, TypographyH4 } from '@/src/components/typography'
+import { Header } from '@/src/components/header'
+import { TypographyH4 } from '@/src/components/typography'
 import { Badge } from '@/src/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/src/components/ui/card'
 import { authOptions } from '@/src/lib/auth'
@@ -15,11 +17,18 @@ const StudentAllocatedProjectPage = async () => {
   const data = await getStudentAllocatedProject(user.studentId)
 
   return (
-    <section className='space-y-6 pb-8 pt-6 md:pb-12 md:pt-10'>
+    <section className='space-y-6 py-6'>
       <div className='flex flex-col gap-4'>
-        <TypographyH2>Allocated project</TypographyH2>
+        <Header title='Allocated Project Page!' description='See your allocated project here' />
         {data == null ? (
-          <p className='text-md text-muted-foreground md:text-lg'>You have not registered any project</p>
+          <div className='grid gap-2'>
+            <p className='text-md text-secondary-foreground md:text-lg'>You have not allocated to any project</p>
+            <div>
+              <Link className='text-primary hover:underline' href={'/student'}>
+                Back to dashboard
+              </Link>
+            </div>
+          </div>
         ) : (
           <Card>
             <CardHeader>

@@ -62,10 +62,8 @@ const EditTimeline = async ({ params }: { params: { semester: string } }) => {
   }
 
   return (
-    <div className='space-y-8'>
-      <Header title='Edit timeline' description='Change the dates and times below!' />
-
-      <Badge className='text-md px-4 py-2 rounded-xl'>{params.semester}</Badge>
+    <div className='space-y-4'>
+      <Header title={`Edit ${params.semester} configurations`} description='Change the dates and times below!' />
       <EditSemesterForm defaultValues={sanitizedDefaultValues} semesterName={params.semester} />
     </div>
   )
