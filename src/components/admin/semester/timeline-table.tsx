@@ -1,4 +1,4 @@
-import format from 'date-fns/format'
+import { format } from 'date-fns/format'
 
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table'
 import { prisma } from '@/src/lib/prisma'
@@ -72,7 +72,7 @@ export async function TimelineTable({
 
   return (
     <>
-      <h1 className='text-lg md:text-xl font-semibold'>Timeline</h1>
+      <h1 className='text-lg font-semibold md:text-xl'>Timeline</h1>
       <Table>
         <TableCaption>{semester} semester timeline</TableCaption>
         <TableHeader>
